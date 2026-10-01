@@ -1,0 +1,36 @@
+{
+  "name": "live-main",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@10.15.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter=!./demo-repo run build",
+    "test": "pnpm -r --filter=!@livemain/edge run test",
+    "typecheck": "pnpm -r run typecheck",
+    "setup": "bash scripts/setup.sh",
+    "livemain": "pnpm --filter @livemain/local exec tsx src/bench.ts",
+    "synth": "pnpm --filter @livemain/synth-swarm exec tsx src/main.ts",
+    "test:e2e": "LIVEMAIN_E2E=1 pnpm --filter @livemain/local exec vitest run test/stack.e2e.test.ts",
+    "validate": "pnpm --filter @livemain/bench validate"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "3.2.7",
+    "@types/node": "^20.19.0",
+    "tsx": "^4.20.0",
+    "esbuild": "^0.25.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd",
+      "better-sqlite3",
+      "sharp"
+    ]
+  },
+  "license": "MIT"
+}

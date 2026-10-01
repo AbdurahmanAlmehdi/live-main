@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+*.log
+.env
+bench/runs/
+.cache/
+containers/workcell/bin/
+bench/.libreoffice/
+.livemain/
+video/out/
+video/.profile/
+video/rec/
+video/public/rec/
+.DS_Store
