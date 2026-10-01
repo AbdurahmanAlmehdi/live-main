@@ -1,0 +1,9 @@
+# Used by BuildKit for containers/workcell/Dockerfile (context = repo root).
+# Later lines override earlier ones.
+*
+!containers/workcell
+containers/workcell/bin
+!demo-repo
+demo-repo/node_modules
+demo-repo/**/node_modules
+!packages/sigdiff/dist/sigdiff.cjs
