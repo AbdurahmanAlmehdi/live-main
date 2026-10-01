@@ -1,0 +1,113 @@
+{
+  "checked": 300,
+  "comparable": 292,
+  "agree": 280,
+  "unsupported": [
+    "=XLOOKUP(\"b\", {\"a\", \"b\", \"c\"}, {1, 2, 3})",
+    "=COUNTBLANK(5)",
+    "=MAX(\"40\", TRUE)",
+    "=XLOOKUP(\"b*\", {\"a\", \"bb\", \"b*\"}, {1, 2, 3}, \"none\", 2)",
+    "=SKEW.P({3, 4, 5, 2, 3, 4, 5, 6, 4, 7})",
+    "=ROWS(5)",
+    "=MIN(\"-4\", TRUE)",
+    "=FACTDOUBLE(-1)"
+  ],
+  "disagreements": [
+    {
+      "file": "VAR_P.test.ts",
+      "formula": "=VAR.P({1, \"a\", TRUE}, 3)",
+      "expected": 1,
+      "libreoffice": "0.888888888888889",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "SUMIF.test.ts",
+      "formula": "=SUMIF({1, 2, 3, 4}, \">2\")",
+      "expected": 7,
+      "libreoffice": "0",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "SUMX2PY2.test.ts",
+      "formula": "=SUMX2PY2({1, TRUE, 3}, {1, 2, 3})",
+      "expected": 20,
+      "libreoffice": "25",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "COUNTIF.test.ts",
+      "formula": "=COUNTIF({\"apples\", \"oranges\", \"Apples\"}, \"a*\")",
+      "expected": 2,
+      "libreoffice": "1",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "FLOOR.test.ts",
+      "formula": "=FLOOR(-2.5, -2)",
+      "expected": -2,
+      "libreoffice": "-4",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "FIND.test.ts",
+      "formula": "=FIND(\"\", \"abc\")",
+      "expected": 1,
+      "libreoffice": "#VALUE!",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "NUMBERVALUE.test.ts",
+      "formula": "=NUMBERVALUE(\"3.5%\")",
+      "expected": 0.035,
+      "libreoffice": "#VALUE!",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "YEAR.test.ts",
+      "formula": "=YEAR(1)",
+      "expected": 1900,
+      "libreoffice": "1899",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "SUM.test.ts",
+      "formula": "=SUM({1, \"a\", TRUE}, 2)",
+      "expected": 3,
+      "libreoffice": "4",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "DAYS.test.ts",
+      "formula": "=DAYS(43845.9, 43845.1)",
+      "expected": 0,
+      "libreoffice": "0.80000000000291",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "NUMBERVALUE.test.ts",
+      "formula": "=NUMBERVALUE(\"\")",
+      "expected": 0,
+      "libreoffice": "#VALUE!",
+      "agree": false,
+      "unsupported": false
+    },
+    {
+      "file": "AVERAGE.test.ts",
+      "formula": "=AVERAGE({1, \"a\", TRUE}, 3)",
+      "expected": 2,
+      "libreoffice": "1.66666666666667",
+      "agree": false,
+      "unsupported": false
+    }
+  ]
+}

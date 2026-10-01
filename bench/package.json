@@ -1,0 +1,20 @@
+{
+  "name": "@livemain/bench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Task bank, reference solutions, oracle test generator and validator for the demo repo.",
+  "scripts": {
+    "oracle": "tsx oracle/generate.ts",
+    "build-bank": "tsx scripts/build-bank.ts",
+    "validate": "tsx scripts/validate.ts",
+    "typecheck": "tsc --noEmit",
+    "oracle:libreoffice": "tsx oracle/libreoffice.ts"
+  },
+  "devDependencies": {
+    "@formulajs/formulajs": "4.6.1",
+    "@types/node": "^20.19.0",
+    "tsx": "^4.20.0",
+    "typescript": "5.9.3"
+  }
+}
