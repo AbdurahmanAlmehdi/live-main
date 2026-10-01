@@ -1,0 +1,41 @@
+{
+  "taskId": "co-compare-opts",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/compare.ts",
+          "oldString": "/** -1, 0 or 1. Both arguments must be non-error scalars. */\nexport function compareScalars(a: Scalar, b: Scalar): -1 | 0 | 1 {\n  if (a === null && b === null) return 0;",
+          "newString": "export interface CompareOptions {\n  /** Compare text case-sensitively (\"a\" < \"B\" either way; \"a\" and \"A\" differ only when true). */\n  caseSensitive: boolean;\n}\n\n/** -1, 0 or 1. Both arguments must be non-error scalars. */\nexport function compareScalars(a: Scalar, b: Scalar, opts: CompareOptions): -1 | 0 | 1 {\n  const { caseSensitive } = opts;\n  if (a === null && b === null) return 0;"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/compare.ts",
+          "oldString": "  const l = typeof left === 'string' ? left.toLowerCase() : left;\n  const r = typeof right === 'string' ? (right as string).toLowerCase() : right;\n  if (l === r) return 0;\n  return l < r ? -1 : 1;",
+          "newString": "  const l = typeof left === 'string' ? left.toLowerCase() : left;\n  const r = typeof right === 'string' ? (right as string).toLowerCase() : right;\n  if (l === r) {\n    if (!caseSensitive || left === right) return 0;\n    return left < right ? 1 : -1;\n  }\n  return l < r ? -1 : 1;"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\bcompareScalars\\(([^(),]+), ([^(),]+)\\)",
+          "flags": "g",
+          "replace": "compareScalars($1, $2, { caseSensitive: false })"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\bcompareScalars\\(([^(),]+), ([^(),]+)\\)",
+          "flags": "g",
+          "replace": "compareScalars($1, $2, { caseSensitive: false })"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-compare-opts.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { compareScalars, scalarsEqual } from '../../src/core/compare';\n\ndescribe('compareScalars options', () => {\n  it('compares text case-insensitively when asked', () => {\n    expect(compareScalars('abc', 'ABC', { caseSensitive: false })).toBe(0);\n    expect(compareScalars('a', 'B', { caseSensitive: false })).toBe(-1);\n  });\n\n  it('compares text case-sensitively when asked', () => {\n    expect(compareScalars('abc', 'ABC', { caseSensitive: true })).not.toBe(0);\n    expect(compareScalars('abc', 'abc', { caseSensitive: true })).toBe(0);\n    expect(compareScalars('a', 'B', { caseSensitive: true })).toBe(-1);\n  });\n\n  it('keeps scalarsEqual case-insensitive', () => {\n    expect(scalarsEqual('x', 'X')).toBe(true);\n  });\n\n  it('requires the options', () => {\n    const call = compareScalars as unknown as (a: unknown, b: unknown) => unknown;\n    expect(() => call(1, 2)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-GAMMALN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMALN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\n\n/** GAMMALN(x): the natural logarithm of the gamma function, for x > 0. */\nconst GAMMALN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const x = toNumber(value);\n    if (isError(x)) return x;\n    if (x <= 0) return err.num;\n    return gammaLn(x);\n  },\n};\n\nexport default GAMMALN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  GAMMALN: () => import('../functions/statistical/GAMMALN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMALN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\n\n/** GAMMALN(x): the natural logarithm of the gamma function, for x > 0. */\nconst GAMMALN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const x = toNumber(value);\n    if (isError(x)) return x;\n    if (x <= 0) return err.num;\n    return gammaLn(x);\n  },\n};\n\nexport default GAMMALN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  GAMMALN: () => import('../functions/statistical/GAMMALN'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-WEEKDAY",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { weekdayOf } from '../../helpers/weekday';\n\n/** WEEKDAY(serial_number, [return_type]): the day of the week, numbered per return_type (1 by default). */\nconst WEEKDAY: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args, 1, 1);\n    if (isError(returnType)) return returnType;\n    return weekdayOf(serial, returnType);\n  },\n};\n\nexport default WEEKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKDAY: () => import('../functions/date/WEEKDAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { weekdayOf } from '../../helpers/weekday';\n\n/** WEEKDAY(serial_number, [return_type]): the day of the week, numbered per return_type (1 by default). */\nconst WEEKDAY: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args, 1, 1);\n    if (isError(returnType)) return returnType;\n    return weekdayOf(serial, returnType);\n  },\n};\n\nexport default WEEKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKDAY: () => import('../functions/date/WEEKDAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { weekdayOf } from '../../helpers/weekday';\n\n/** WEEKDAY(serial_number, [return_type]): the day of the week, numbered per return_type (1 by default). */\nconst WEEKDAY: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args[1], 1);\n    if (isError(returnType)) return returnType;\n    return weekdayOf(serial, returnType);\n  },\n};\n\nexport default WEEKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKDAY: () => import('../functions/date/WEEKDAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { weekdayOf } from '../../helpers/weekday';\n\n/** WEEKDAY(serial_number, [return_type]): the day of the week, numbered per return_type (1 by default). */\nconst WEEKDAY: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args[1], 1);\n    if (isError(returnType)) return returnType;\n    return weekdayOf(serial, returnType);\n  },\n};\n\nexport default WEEKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKDAY: () => import('../functions/date/WEEKDAY'),\n"
+        }
+      ]
+    }
+  ]
+}

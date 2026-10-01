@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-solver",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/solver.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\nexport interface SolveOptions {\n  /** Stop when |f(x)| or the step falls below this (default 1e-10). */\n  tolerance?: number;\n  /** Give up after this many iterations (default 100). */\n  maxIterations?: number;\n}\n\n/**\n * Finds a root of `f` near `guess` with Newton's method, using a numerical derivative.\n * Used by RATE, IRR and XIRR. #NUM! when it does not converge or leaves the finite\n * numbers.\n */\nexport function solveNewton(f: (x: number) => number, guess: number, options: SolveOptions = {}): number | FormulaError {\n  const tolerance = options.tolerance ?? 1e-10;\n  const maxIterations = options.maxIterations ?? 100;\n  let x = guess;\n  for (let i = 0; i < maxIterations; i++) {\n    const y = f(x);\n    if (!Number.isFinite(y)) return err.num;\n    if (Math.abs(y) < tolerance) return x;\n    const h = Math.max(Math.abs(x), 1) * 1e-7;\n    const slope = (f(x + h) - f(x - h)) / (2 * h);\n    if (!Number.isFinite(slope) || slope === 0) return err.num;\n    const next = x - y / slope;\n    if (!Number.isFinite(next)) return err.num;\n    if (Math.abs(next - x) < tolerance * Math.max(1, Math.abs(x))) return next;\n    x = next;\n  }\n  return err.num;\n}\n"
+        }
+      ]
+    }
+  ]
+}

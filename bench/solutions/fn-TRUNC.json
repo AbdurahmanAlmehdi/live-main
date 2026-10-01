@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-TRUNC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/TRUNC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { roundTowardZero } from '../../helpers/rounding';\n\n/** TRUNC(number, [num_digits]): truncates toward zero to num_digits digits (0 by default). */\nconst TRUNC: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const digits = optionalInteger(args, 1, 0);\n    if (isError(digits)) return digits;\n    return roundTowardZero(n, digits);\n  },\n};\n\nexport default TRUNC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRUNC: () => import('../functions/math/TRUNC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/TRUNC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { roundTowardZero } from '../../helpers/rounding';\n\n/** TRUNC(number, [num_digits]): truncates toward zero to num_digits digits (0 by default). */\nconst TRUNC: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const digits = optionalInteger(args, 1, 0);\n    if (isError(digits)) return digits;\n    return roundTowardZero(n, digits);\n  },\n};\n\nexport default TRUNC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRUNC: () => import('../functions/math/TRUNC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/TRUNC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { roundTowardZero } from '../../helpers/rounding';\n\n/** TRUNC(number, [num_digits]): truncates toward zero to num_digits digits (0 by default). */\nconst TRUNC: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const digits = optionalInteger(args[1], 0);\n    if (isError(digits)) return digits;\n    return roundTowardZero(n, digits);\n  },\n};\n\nexport default TRUNC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRUNC: () => import('../functions/math/TRUNC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/TRUNC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { roundTowardZero } from '../../helpers/rounding';\n\n/** TRUNC(number, [num_digits]): truncates toward zero to num_digits digits (0 by default). */\nconst TRUNC: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const digits = optionalInteger(args[1], 0);\n    if (isError(digits)) return digits;\n    return roundTowardZero(n, digits);\n  },\n};\n\nexport default TRUNC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRUNC: () => import('../functions/math/TRUNC'),\n"
+        }
+      ]
+    }
+  ]
+}

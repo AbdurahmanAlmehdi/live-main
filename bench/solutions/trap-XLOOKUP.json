@@ -1,0 +1,404 @@
+{
+  "taskId": "trap-XLOOKUP",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-compare-opts",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue)[0];\n    const keys = cellsOf(lookupArray);\n    const results = cellsOf(returnArray);\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-compare-opts",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args, 4, 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args, 5, 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-compare-opts",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/XLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\n\n/** Index of the closest match below (-1) or above (1) the needle, among cells of its type. */\nfunction findNearest(needle: Scalar, cells: readonly Scalar[], direction: -1 | 1): number {\n  let best = -1;\n  for (let i = 0; i < cells.length; i++) {\n    const cell = cells[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (c === 0) return i;\n    if (c !== direction) continue;\n    const prev = best < 0 ? undefined : cells[best];\n    if (prev === undefined || compareScalars(cell, prev as Scalar, { caseSensitive: false }) === -direction) best = i;\n  }\n  return best;\n}\n\n/**\n * XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]):\n * the return_array cell matching lookup_value. match_mode 0 exact (default; * and ? are\n * literal), -1 exact or next smaller, 1 exact or next larger, 2 wildcard; search_mode 1\n * first-to-last (default) or -1 last-to-first.\n */\nconst XLOOKUP: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const [needleValue, lookupArray, returnArray] = args;\n    if (isError(needleValue)) return needleValue;\n    const matchMode = optionalInteger(args[4], 0);\n    if (isError(matchMode)) return matchMode;\n    const searchMode = optionalInteger(args[5], 1);\n    if (isError(searchMode)) return searchMode;\n    const needle = cellsOf(needleValue, { order: 'rows' })[0];\n    const keys = cellsOf(lookupArray, { order: 'rows' });\n    const results = cellsOf(returnArray, { order: 'rows' });\n    if (keys.length !== results.length) return err.value;\n    if (searchMode !== 1 && searchMode !== -1) return err.value;\n    const ordered = searchMode === 1 ? keys : [...keys].reverse();\n    let index: number;\n    if (matchMode === 0) index = findExact(needle, ordered, { wildcards: false });\n    else if (matchMode === 2) index = findExact(needle, ordered);\n    else if (matchMode === -1 || matchMode === 1) index = findNearest(needle, ordered, matchMode);\n    else return err.value;\n    if (index < 0) return args.length > 3 && args[3] !== null ? args[3] : err.na;\n    return results[searchMode === 1 ? index : keys.length - 1 - index];\n  },\n};\n\nexport default XLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XLOOKUP: () => import('../functions/lookup/XLOOKUP'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/lookupExact.ts",
+          "oldString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {",
+          "newString": " *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells unless { wildcards: false } is given.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[], options: { wildcards?: boolean } = {}): number {\n  if (options.wildcards !== false && typeof needle === 'string' && hasWildcards(needle)) {"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-HOUR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/HOUR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { timeFromSerial } from '../../helpers/timeOfDay';\n\n/** HOUR(serial_number): the hour (0-23) of a time serial. */\nconst HOUR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    const time = timeFromSerial(serial);\n    return isError(time) ? time : time.hour;\n  },\n};\n\nexport default HOUR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HOUR: () => import('../functions/date/HOUR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/HOUR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { timeFromSerial } from '../../helpers/timeOfDay';\n\n/** HOUR(serial_number): the hour (0-23) of a time serial. */\nconst HOUR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    const time = timeFromSerial(serial);\n    return isError(time) ? time : time.hour;\n  },\n};\n\nexport default HOUR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HOUR: () => import('../functions/date/HOUR'),\n"
+        }
+      ]
+    }
+  ]
+}

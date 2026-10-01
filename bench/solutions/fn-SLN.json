@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SLN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SLN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SLN(cost, salvage, life): the straight-line depreciation of an asset for one period. */\nconst SLN: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([costValue, salvageValue, lifeValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    if (life === 0) return err.div0;\n    return checkNumber((cost - salvage) / life);\n  },\n};\n\nexport default SLN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SLN: () => import('../functions/financial/SLN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SLN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SLN(cost, salvage, life): the straight-line depreciation of an asset for one period. */\nconst SLN: FormulaFunction = {\n  arity: [3, 3],\n  call([costValue, salvageValue, lifeValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    if (life === 0) return err.div0;\n    return checkNumber((cost - salvage) / life);\n  },\n};\n\nexport default SLN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SLN: () => import('../functions/financial/SLN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SLN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SLN(cost, salvage, life): the straight-line depreciation of an asset for one period. */\nconst SLN: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([costValue, salvageValue, lifeValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    if (life === 0) return err.div0;\n    return numberResult((cost - salvage) / life);\n  },\n};\n\nexport default SLN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SLN: () => import('../functions/financial/SLN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SLN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SLN(cost, salvage, life): the straight-line depreciation of an asset for one period. */\nconst SLN: FormulaFunction = {\n  arity: [3, 3],\n  call([costValue, salvageValue, lifeValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    if (life === 0) return err.div0;\n    return numberResult((cost - salvage) / life);\n  },\n};\n\nexport default SLN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SLN: () => import('../functions/financial/SLN'),\n"
+        }
+      ]
+    }
+  ]
+}

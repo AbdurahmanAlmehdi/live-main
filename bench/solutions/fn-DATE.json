@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-DATE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromDate } from '../../helpers/dateSerial';\n\n/** DATE(year, month, day): the serial number of a date (arguments truncated; out-of-range months and days roll over). */\nconst DATE: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [year, month, day] = parts as number[];\n    return serialFromDate(year, month, day);\n  },\n};\n\nexport default DATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATE: () => import('../functions/date/DATE'),\n"
+        }
+      ]
+    }
+  ]
+}

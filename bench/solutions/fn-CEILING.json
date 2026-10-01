@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-CEILING",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CEILING.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { ceilToMultiple } from '../../helpers/multiples';\n\n/**\n * CEILING(number, significance): rounds up to a multiple of significance. A negative\n * number with a negative significance rounds away from zero; a negative number with a\n * positive significance rounds toward zero (up).\n */\nconst CEILING: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, significanceValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const significance = toNumber(significanceValue);\n    if (isError(significance)) return significance;\n    if (n === 0 || significance === 0) return 0;\n    if (n > 0 && significance < 0) return err.num;\n    if (significance < 0) return -ceilToMultiple(-n, -significance);\n    return ceilToMultiple(n, significance);\n  },\n};\n\nexport default CEILING;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CEILING: () => import('../functions/math/CEILING'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CEILING.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { ceilToMultiple } from '../../helpers/multiples';\n\n/**\n * CEILING(number, significance): rounds up to a multiple of significance. A negative\n * number with a negative significance rounds away from zero; a negative number with a\n * positive significance rounds toward zero (up).\n */\nconst CEILING: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, significanceValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const significance = toNumber(significanceValue);\n    if (isError(significance)) return significance;\n    if (n === 0 || significance === 0) return 0;\n    if (n > 0 && significance < 0) return err.num;\n    if (significance < 0) return -ceilToMultiple(-n, -significance);\n    return ceilToMultiple(n, significance);\n  },\n};\n\nexport default CEILING;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CEILING: () => import('../functions/math/CEILING'),\n"
+        }
+      ]
+    }
+  ]
+}

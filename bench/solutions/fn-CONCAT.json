@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-CONCAT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CONCAT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** CONCAT(text1, ...): joins all arguments, array cells included, as text. */\nconst CONCAT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    let out = '';\n    for (const cell of flattenArgs(args)) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      out += text;\n    }\n    return out;\n  },\n};\n\nexport default CONCAT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CONCAT: () => import('../functions/text/CONCAT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CONCAT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** CONCAT(text1, ...): joins all arguments, array cells included, as text. */\nconst CONCAT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    let out = '';\n    for (const cell of flattenArgs(args)) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      out += text;\n    }\n    return out;\n  },\n};\n\nexport default CONCAT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CONCAT: () => import('../functions/text/CONCAT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CONCAT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** CONCAT(text1, ...): joins all arguments, array cells included, as text. */\nconst CONCAT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    let out = '';\n    for (const cell of flattenArgs(args, { blanks: 'keep' })) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      out += text;\n    }\n    return out;\n  },\n};\n\nexport default CONCAT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CONCAT: () => import('../functions/text/CONCAT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CONCAT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** CONCAT(text1, ...): joins all arguments, array cells included, as text. */\nconst CONCAT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    let out = '';\n    for (const cell of flattenArgs(args, { blanks: 'keep' })) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      out += text;\n    }\n    return out;\n  },\n};\n\nexport default CONCAT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CONCAT: () => import('../functions/text/CONCAT'),\n"
+        }
+      ]
+    }
+  ]
+}

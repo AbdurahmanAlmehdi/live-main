@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-BIN2OCT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BIN2OCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** BIN2OCT(number, [places]): a binary number written in octal, zero-padded to places digits (two's complement for negatives). */\nconst BIN2OCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 2);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toInteger(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 8, places);\n  },\n};\n\nexport default BIN2OCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BIN2OCT: () => import('../functions/engineering/BIN2OCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BIN2OCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** BIN2OCT(number, [places]): a binary number written in octal, zero-padded to places digits (two's complement for negatives). */\nconst BIN2OCT: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 2);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toInteger(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 8, places);\n  },\n};\n\nexport default BIN2OCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BIN2OCT: () => import('../functions/engineering/BIN2OCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BIN2OCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** BIN2OCT(number, [places]): a binary number written in octal, zero-padded to places digits (two's complement for negatives). */\nconst BIN2OCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 2);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toIntTrunc(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 8, places);\n  },\n};\n\nexport default BIN2OCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BIN2OCT: () => import('../functions/engineering/BIN2OCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BIN2OCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** BIN2OCT(number, [places]): a binary number written in octal, zero-padded to places digits (two's complement for negatives). */\nconst BIN2OCT: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 2);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toIntTrunc(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 8, places);\n  },\n};\n\nexport default BIN2OCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BIN2OCT: () => import('../functions/engineering/BIN2OCT'),\n"
+        }
+      ]
+    }
+  ]
+}

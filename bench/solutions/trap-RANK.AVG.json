@@ -1,0 +1,100 @@
+{
+  "taskId": "trap-RANK.AVG",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/RANK_AVG.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers, optionalNumber } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { rankOf } from '../../helpers/rank';\n\n/** RANK.AVG(number, ref, [order]): the rank of number in ref; tied numbers get the average of their ranks. */\nconst RANK_AVG: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const numbers = collectNumbers([args[1]]);\n    if (isError(numbers)) return numbers;\n    const order = optionalNumber(args, 2, 0);\n    if (isError(order)) return order;\n    return rankOf(n, numbers, order !== 0, { ties: 'average' });\n  },\n};\n\nexport default RANK_AVG;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'RANK.AVG': () => import('../functions/statistical/RANK_AVG'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/rank.ts",
+          "oldString": "/**\n * Rank of `value` within `values` (RANK.EQ): 1 for the largest when descending, 1 for the\n * smallest when ascending. Ties share the best rank. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  for (const v of values) {\n    if (ascending ? v < value : v > value) better++;\n  }\n  return better + 1;\n}",
+          "newString": "export interface RankOptions {\n  /** How tied values are ranked: 'best' (default, RANK.EQ) or 'average' (RANK.AVG). */\n  ties?: 'best' | 'average';\n}\n\n/**\n * Rank of `value` within `values`: 1 for the largest when descending, 1 for the smallest\n * when ascending. Ties share the best rank, or the average of their ranks with\n * { ties: 'average' }. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean, options: RankOptions = {}): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  let equal = 0;\n  for (const v of values) {\n    if (v === value) equal++;\n    else if (ascending ? v < value : v > value) better++;\n  }\n  return options.ties === 'average' ? better + (equal + 1) / 2 : better + 1;\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/RANK_AVG.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers, optionalNumber } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { rankOf } from '../../helpers/rank';\n\n/** RANK.AVG(number, ref, [order]): the rank of number in ref; tied numbers get the average of their ranks. */\nconst RANK_AVG: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const numbers = collectNumbers([args[1]]);\n    if (isError(numbers)) return numbers;\n    const order = optionalNumber(args, 2, 0);\n    if (isError(order)) return order;\n    return rankOf(n, numbers, order !== 0, { ties: 'average' });\n  },\n};\n\nexport default RANK_AVG;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'RANK.AVG': () => import('../functions/statistical/RANK_AVG'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/rank.ts",
+          "oldString": "/**\n * Rank of `value` within `values` (RANK.EQ): 1 for the largest when descending, 1 for the\n * smallest when ascending. Ties share the best rank. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  for (const v of values) {\n    if (ascending ? v < value : v > value) better++;\n  }\n  return better + 1;\n}",
+          "newString": "export interface RankOptions {\n  /** How tied values are ranked: 'best' (default, RANK.EQ) or 'average' (RANK.AVG). */\n  ties?: 'best' | 'average';\n}\n\n/**\n * Rank of `value` within `values`: 1 for the largest when descending, 1 for the smallest\n * when ascending. Ties share the best rank, or the average of their ranks with\n * { ties: 'average' }. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean, options: RankOptions = {}): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  let equal = 0;\n  for (const v of values) {\n    if (v === value) equal++;\n    else if (ascending ? v < value : v > value) better++;\n  }\n  return options.ties === 'average' ? better + (equal + 1) / 2 : better + 1;\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/RANK_AVG.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers, optionalNumber } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { rankOf } from '../../helpers/rank';\n\n/** RANK.AVG(number, ref, [order]): the rank of number in ref; tied numbers get the average of their ranks. */\nconst RANK_AVG: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const numbers = collectNumbers([args[1]]);\n    if (isError(numbers)) return numbers;\n    const order = optionalNumber(args[2], 0);\n    if (isError(order)) return order;\n    return rankOf(n, numbers, order !== 0, { ties: 'average' });\n  },\n};\n\nexport default RANK_AVG;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'RANK.AVG': () => import('../functions/statistical/RANK_AVG'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/rank.ts",
+          "oldString": "/**\n * Rank of `value` within `values` (RANK.EQ): 1 for the largest when descending, 1 for the\n * smallest when ascending. Ties share the best rank. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  for (const v of values) {\n    if (ascending ? v < value : v > value) better++;\n  }\n  return better + 1;\n}",
+          "newString": "export interface RankOptions {\n  /** How tied values are ranked: 'best' (default, RANK.EQ) or 'average' (RANK.AVG). */\n  ties?: 'best' | 'average';\n}\n\n/**\n * Rank of `value` within `values`: 1 for the largest when descending, 1 for the smallest\n * when ascending. Ties share the best rank, or the average of their ranks with\n * { ties: 'average' }. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean, options: RankOptions = {}): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  let equal = 0;\n  for (const v of values) {\n    if (v === value) equal++;\n    else if (ascending ? v < value : v > value) better++;\n  }\n  return options.ties === 'average' ? better + (equal + 1) / 2 : better + 1;\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/RANK_AVG.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers, optionalNumber } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { rankOf } from '../../helpers/rank';\n\n/** RANK.AVG(number, ref, [order]): the rank of number in ref; tied numbers get the average of their ranks. */\nconst RANK_AVG: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const numbers = collectNumbers([args[1]]);\n    if (isError(numbers)) return numbers;\n    const order = optionalNumber(args[2], 0);\n    if (isError(order)) return order;\n    return rankOf(n, numbers, order !== 0, { ties: 'average' });\n  },\n};\n\nexport default RANK_AVG;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'RANK.AVG': () => import('../functions/statistical/RANK_AVG'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/rank.ts",
+          "oldString": "/**\n * Rank of `value` within `values` (RANK.EQ): 1 for the largest when descending, 1 for the\n * smallest when ascending. Ties share the best rank. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  for (const v of values) {\n    if (ascending ? v < value : v > value) better++;\n  }\n  return better + 1;\n}",
+          "newString": "export interface RankOptions {\n  /** How tied values are ranked: 'best' (default, RANK.EQ) or 'average' (RANK.AVG). */\n  ties?: 'best' | 'average';\n}\n\n/**\n * Rank of `value` within `values`: 1 for the largest when descending, 1 for the smallest\n * when ascending. Ties share the best rank, or the average of their ranks with\n * { ties: 'average' }. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean, options: RankOptions = {}): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  let equal = 0;\n  for (const v of values) {\n    if (v === value) equal++;\n    else if (ascending ? v < value : v > value) better++;\n  }\n  return options.ties === 'average' ? better + (equal + 1) / 2 : better + 1;\n}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-MULTINOMIAL",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MULTINOMIAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** MULTINOMIAL(number1, ...): (n1 + n2 + ...)! / (n1! n2! ...), arguments truncated. */\nconst MULTINOMIAL: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    let result = 1;\n    for (const raw of numbers) {\n      const n = Math.trunc(raw);\n      if (n < 0) return err.num;\n      total += n;\n      // build the multinomial as a product of binomials to stay exact longer\n      result *= combinations(total, n);\n    }\n    return checkNumber(result);\n  },\n};\n\nexport default MULTINOMIAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MULTINOMIAL: () => import('../functions/math/MULTINOMIAL'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MULTINOMIAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** MULTINOMIAL(number1, ...): (n1 + n2 + ...)! / (n1! n2! ...), arguments truncated. */\nconst MULTINOMIAL: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    let result = 1;\n    for (const raw of numbers) {\n      const n = Math.trunc(raw);\n      if (n < 0) return err.num;\n      total += n;\n      // build the multinomial as a product of binomials to stay exact longer\n      result *= combinations(total, n);\n    }\n    return checkNumber(result);\n  },\n};\n\nexport default MULTINOMIAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MULTINOMIAL: () => import('../functions/math/MULTINOMIAL'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MULTINOMIAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** MULTINOMIAL(number1, ...): (n1 + n2 + ...)! / (n1! n2! ...), arguments truncated. */\nconst MULTINOMIAL: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    let result = 1;\n    for (const raw of numbers) {\n      const n = Math.trunc(raw);\n      if (n < 0) return err.num;\n      total += n;\n      // build the multinomial as a product of binomials to stay exact longer\n      result *= combinations(total, n);\n    }\n    return numberResult(result);\n  },\n};\n\nexport default MULTINOMIAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MULTINOMIAL: () => import('../functions/math/MULTINOMIAL'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MULTINOMIAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** MULTINOMIAL(number1, ...): (n1 + n2 + ...)! / (n1! n2! ...), arguments truncated. */\nconst MULTINOMIAL: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    let result = 1;\n    for (const raw of numbers) {\n      const n = Math.trunc(raw);\n      if (n < 0) return err.num;\n      total += n;\n      // build the multinomial as a product of binomials to stay exact longer\n      result *= combinations(total, n);\n    }\n    return numberResult(result);\n  },\n};\n\nexport default MULTINOMIAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MULTINOMIAL: () => import('../functions/math/MULTINOMIAL'),\n"
+        }
+      ]
+    }
+  ]
+}

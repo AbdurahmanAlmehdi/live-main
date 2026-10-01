@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-CONFIDENCE.NORM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/CONFIDENCE_NORM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { normalInv } from '../../helpers/normal';\n\n/** CONFIDENCE.NORM(alpha, standard_dev, size): the half-width of a normal confidence interval for a mean (size is truncated). */\nconst CONFIDENCE_NORM: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([alphaValue, sdValue, sizeValue]) {\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const sd = toNumber(sdValue);\n    if (isError(sd)) return sd;\n    const size = toInteger(sizeValue);\n    if (isError(size)) return size;\n    if (alpha <= 0 || alpha >= 1 || sd <= 0 || size < 1) return err.num;\n    return (normalInv(1 - alpha / 2) * sd) / Math.sqrt(size);\n  },\n};\n\nexport default CONFIDENCE_NORM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CONFIDENCE.NORM': () => import('../functions/statistical/CONFIDENCE_NORM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/CONFIDENCE_NORM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { normalInv } from '../../helpers/normal';\n\n/** CONFIDENCE.NORM(alpha, standard_dev, size): the half-width of a normal confidence interval for a mean (size is truncated). */\nconst CONFIDENCE_NORM: FormulaFunction = {\n  arity: [3, 3],\n  call([alphaValue, sdValue, sizeValue]) {\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const sd = toNumber(sdValue);\n    if (isError(sd)) return sd;\n    const size = toInteger(sizeValue);\n    if (isError(size)) return size;\n    if (alpha <= 0 || alpha >= 1 || sd <= 0 || size < 1) return err.num;\n    return (normalInv(1 - alpha / 2) * sd) / Math.sqrt(size);\n  },\n};\n\nexport default CONFIDENCE_NORM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CONFIDENCE.NORM': () => import('../functions/statistical/CONFIDENCE_NORM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/CONFIDENCE_NORM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { normalInv } from '../../helpers/normal';\n\n/** CONFIDENCE.NORM(alpha, standard_dev, size): the half-width of a normal confidence interval for a mean (size is truncated). */\nconst CONFIDENCE_NORM: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([alphaValue, sdValue, sizeValue]) {\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const sd = toNumber(sdValue);\n    if (isError(sd)) return sd;\n    const size = toIntTrunc(sizeValue);\n    if (isError(size)) return size;\n    if (alpha <= 0 || alpha >= 1 || sd <= 0 || size < 1) return err.num;\n    return (normalInv(1 - alpha / 2) * sd) / Math.sqrt(size);\n  },\n};\n\nexport default CONFIDENCE_NORM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CONFIDENCE.NORM': () => import('../functions/statistical/CONFIDENCE_NORM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/CONFIDENCE_NORM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { normalInv } from '../../helpers/normal';\n\n/** CONFIDENCE.NORM(alpha, standard_dev, size): the half-width of a normal confidence interval for a mean (size is truncated). */\nconst CONFIDENCE_NORM: FormulaFunction = {\n  arity: [3, 3],\n  call([alphaValue, sdValue, sizeValue]) {\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const sd = toNumber(sdValue);\n    if (isError(sd)) return sd;\n    const size = toIntTrunc(sizeValue);\n    if (isError(size)) return size;\n    if (alpha <= 0 || alpha >= 1 || sd <= 0 || size < 1) return err.num;\n    return (normalInv(1 - alpha / 2) * sd) / Math.sqrt(size);\n  },\n};\n\nexport default CONFIDENCE_NORM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CONFIDENCE.NORM': () => import('../functions/statistical/CONFIDENCE_NORM'),\n"
+        }
+      ]
+    }
+  ]
+}

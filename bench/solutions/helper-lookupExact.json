@@ -1,0 +1,27 @@
+{
+  "taskId": "helper-lookupExact",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/lookupExact.ts",
+          "content": "import type { Scalar } from '../core/value';\nimport { isError } from '../core/errors';\nimport { compareScalars } from '../core/compare';\nimport { hasWildcards, wildcardToRegExp } from './wildcard';\n\n/**\n * Exact-match search used by MATCH(…, 0), VLOOKUP(…, FALSE) and HLOOKUP(…, FALSE):\n * the index of the first cell equal to `needle`, or -1.\n *   - values only match cells of the same type (1 does not match \"1\");\n *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {\n    const pattern = wildcardToRegExp(needle);\n    return haystack.findIndex((cell) => typeof cell === 'string' && pattern.test(cell));\n  }\n  return haystack.findIndex(\n    (cell) => cell !== null && !isError(cell) && typeof cell === typeof needle && compareScalars(cell, needle) === 0,\n  );\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/lookupExact.ts",
+          "content": "import type { Scalar } from '../core/value';\nimport { isError } from '../core/errors';\nimport { compareScalars } from '../core/compare';\nimport { hasWildcards, wildcardToRegExp } from './wildcard';\n\n/**\n * Exact-match search used by MATCH(…, 0), VLOOKUP(…, FALSE) and HLOOKUP(…, FALSE):\n * the index of the first cell equal to `needle`, or -1.\n *   - values only match cells of the same type (1 does not match \"1\");\n *   - text matches case-insensitively, and a needle with wildcards (* ? ~) is matched\n *     as a pattern against text cells.\n */\nexport function findExact(needle: Scalar, haystack: readonly Scalar[]): number {\n  if (typeof needle === 'string' && hasWildcards(needle)) {\n    const pattern = wildcardToRegExp(needle);\n    return haystack.findIndex((cell) => typeof cell === 'string' && pattern.test(cell));\n  }\n  return haystack.findIndex(\n    (cell) => cell !== null && !isError(cell) && typeof cell === typeof needle && compareScalars(cell, needle, { caseSensitive: false }) === 0,\n  );\n}\n"
+        }
+      ]
+    }
+  ]
+}

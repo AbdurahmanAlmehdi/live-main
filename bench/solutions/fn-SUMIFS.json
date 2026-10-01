@@ -1,0 +1,308 @@
+{
+  "taskId": "fn-SUMIFS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange);\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(sumRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** SUMIFS(sum_range, criteria_range1, criteria1, ...): adds the sum_range cells meeting every criterion. */\nconst SUMIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([sumRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(sumRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(sumRange, { order: 'rows' });\n    let total = 0;\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIFS: () => import('../functions/math/SUMIFS'),\n"
+        }
+      ]
+    }
+  ]
+}

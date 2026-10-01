@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ROUND",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundHalfAwayFromZero } from '../../helpers/rounding';\n\n/** ROUND(number, num_digits): rounds a number to num_digits digits, halves away from zero (num_digits is truncated). */\nconst ROUND: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toInteger(digitsValue);\n    if (isError(digits)) return digits;\n    return roundHalfAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUND: () => import('../functions/math/ROUND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundHalfAwayFromZero } from '../../helpers/rounding';\n\n/** ROUND(number, num_digits): rounds a number to num_digits digits, halves away from zero (num_digits is truncated). */\nconst ROUND: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toInteger(digitsValue);\n    if (isError(digits)) return digits;\n    return roundHalfAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUND: () => import('../functions/math/ROUND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundHalfAwayFromZero } from '../../helpers/rounding';\n\n/** ROUND(number, num_digits): rounds a number to num_digits digits, halves away from zero (num_digits is truncated). */\nconst ROUND: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toIntTrunc(digitsValue);\n    if (isError(digits)) return digits;\n    return roundHalfAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUND: () => import('../functions/math/ROUND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundHalfAwayFromZero } from '../../helpers/rounding';\n\n/** ROUND(number, num_digits): rounds a number to num_digits digits, halves away from zero (num_digits is truncated). */\nconst ROUND: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toIntTrunc(digitsValue);\n    if (isError(digits)) return digits;\n    return roundHalfAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUND: () => import('../functions/math/ROUND'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "taskId": "helper-pairs",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/pairs.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf } from '../core/range';\n\nexport interface Pairs {\n  xs: number[];\n  ys: number[];\n}\n\n/**\n * Pairs up two equally sized arrays for two-variable statistics (CORREL, SLOPE, ...):\n * the cells are matched in row-major order, an error in either array is returned, and a\n * pair is kept only when both cells are numbers. #N/A when the arrays differ in size.\n */\nexport function collectPairs(left: Value, right: Value): Pairs | FormulaError {\n  const a = cellsOf(left);\n  const b = cellsOf(right);\n  if (a.length !== b.length) return err.na;\n  const xs: number[] = [];\n  const ys: number[] = [];\n  for (let i = 0; i < a.length; i++) {\n    const x = a[i];\n    const y = b[i];\n    if (isError(x)) return x;\n    if (isError(y)) return y;\n    if (typeof x === 'number' && typeof y === 'number') {\n      xs.push(x);\n      ys.push(y);\n    }\n  }\n  return { xs, ys };\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/pairs.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf } from '../core/range';\n\nexport interface Pairs {\n  xs: number[];\n  ys: number[];\n}\n\n/**\n * Pairs up two equally sized arrays for two-variable statistics (CORREL, SLOPE, ...):\n * the cells are matched in row-major order, an error in either array is returned, and a\n * pair is kept only when both cells are numbers. #N/A when the arrays differ in size.\n */\nexport function collectPairs(left: Value, right: Value): Pairs | FormulaError {\n  const a = cellsOf(left, { order: 'rows' });\n  const b = cellsOf(right, { order: 'rows' });\n  if (a.length !== b.length) return err.na;\n  const xs: number[] = [];\n  const ys: number[] = [];\n  for (let i = 0; i < a.length; i++) {\n    const x = a[i];\n    const y = b[i];\n    if (isError(x)) return x;\n    if (isError(y)) return y;\n    if (typeof x === 'number' && typeof y === 'number') {\n      xs.push(x);\n      ys.push(y);\n    }\n  }\n  return { xs, ys };\n}\n"
+        }
+      ]
+    }
+  ]
+}

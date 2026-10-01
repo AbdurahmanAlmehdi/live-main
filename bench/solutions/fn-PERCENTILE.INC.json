@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-PERCENTILE.INC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERCENTILE_INC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { percentileInclusive } from '../../helpers/quantile';\n\n/** PERCENTILE.INC(array, k): the k-th percentile, 0 <= k <= 1, interpolated. */\nconst PERCENTILE_INC: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toNumber(kValue);\n    if (isError(k)) return k;\n    return percentileInclusive(numbers, k);\n  },\n};\n\nexport default PERCENTILE_INC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'PERCENTILE.INC': () => import('../functions/statistical/PERCENTILE_INC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERCENTILE_INC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { percentileInclusive } from '../../helpers/quantile';\n\n/** PERCENTILE.INC(array, k): the k-th percentile, 0 <= k <= 1, interpolated. */\nconst PERCENTILE_INC: FormulaFunction = {\n  arity: [2, 2],\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toNumber(kValue);\n    if (isError(k)) return k;\n    return percentileInclusive(numbers, k);\n  },\n};\n\nexport default PERCENTILE_INC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'PERCENTILE.INC': () => import('../functions/statistical/PERCENTILE_INC'),\n"
+        }
+      ]
+    }
+  ]
+}

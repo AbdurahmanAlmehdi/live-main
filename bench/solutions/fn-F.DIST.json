@@ -1,0 +1,308 @@
+{
+  "taskId": "fn-F.DIST",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return checkNumber(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toInteger(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toInteger(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/F_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedBeta } from '../../helpers/incompleteBeta';\n\n/** F.DIST(x, deg_freedom1, deg_freedom2, cumulative): the left-tailed F distribution (degrees of freedom are truncated). */\nconst F_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, d1Value, d2Value, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const d1 = toIntTrunc(d1Value);\n    if (isError(d1)) return d1;\n    const d2 = toIntTrunc(d2Value);\n    if (isError(d2)) return d2;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || d1 < 1 || d2 < 1) return err.num;\n    if (cumulative) return regularizedBeta((d1 * x) / (d1 * x + d2), d1 / 2, d2 / 2);\n    if (x === 0) return d1 === 2 ? 1 : d1 > 2 ? 0 : err.num;\n    const logBeta = gammaLn(d1 / 2) + gammaLn(d2 / 2) - gammaLn((d1 + d2) / 2);\n    const logDensity = (d1 / 2) * Math.log(d1 / d2) + (d1 / 2 - 1) * Math.log(x) - ((d1 + d2) / 2) * Math.log1p((d1 * x) / d2) - logBeta;\n    return numberResult(Math.exp(logDensity));\n  },\n};\n\nexport default F_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'F.DIST': () => import('../functions/statistical/F_DIST'),\n"
+        }
+      ]
+    }
+  ]
+}

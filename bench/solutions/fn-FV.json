@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-FV",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args, 3, 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    return checkNumber(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args, 3, 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    return checkNumber(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args[3], 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    return checkNumber(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args[3], 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    return checkNumber(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args, 3, 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    return numberResult(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args, 3, 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    return numberResult(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args[3], 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    return numberResult(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/FV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { futureValue } from '../../helpers/annuity';\n\n/** FV(rate, nper, pmt, [pv], [type]): the future value of an investment with constant payments and rate. */\nconst FV: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[2]);\n    if (isError(pmt)) return pmt;\n    const pv = optionalNumber(args[3], 0);\n    if (isError(pv)) return pv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    return numberResult(futureValue(rate, nper, pmt, pv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default FV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FV: () => import('../functions/financial/FV'),\n"
+        }
+      ]
+    }
+  ]
+}

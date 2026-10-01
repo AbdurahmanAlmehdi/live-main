@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-IMABS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMABS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMABS(inumber): the modulus |z| of a complex number. */\nconst IMABS: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return checkNumber(Math.hypot(z.re, z.im));\n  },\n};\n\nexport default IMABS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMABS: () => import('../functions/engineering/IMABS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMABS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMABS(inumber): the modulus |z| of a complex number. */\nconst IMABS: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return checkNumber(Math.hypot(z.re, z.im));\n  },\n};\n\nexport default IMABS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMABS: () => import('../functions/engineering/IMABS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMABS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMABS(inumber): the modulus |z| of a complex number. */\nconst IMABS: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return numberResult(Math.hypot(z.re, z.im));\n  },\n};\n\nexport default IMABS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMABS: () => import('../functions/engineering/IMABS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMABS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMABS(inumber): the modulus |z| of a complex number. */\nconst IMABS: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return numberResult(Math.hypot(z.re, z.im));\n  },\n};\n\nexport default IMABS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMABS: () => import('../functions/engineering/IMABS'),\n"
+        }
+      ]
+    }
+  ]
+}

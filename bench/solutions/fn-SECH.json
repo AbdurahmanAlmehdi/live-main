@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-SECH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SECH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SECH(number): the hyperbolic secant of a number. */\nconst SECH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return 1 / Math.cosh(n);\n  },\n};\n\nexport default SECH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SECH: () => import('../functions/math/SECH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SECH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SECH(number): the hyperbolic secant of a number. */\nconst SECH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return 1 / Math.cosh(n);\n  },\n};\n\nexport default SECH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SECH: () => import('../functions/math/SECH'),\n"
+        }
+      ]
+    }
+  ]
+}

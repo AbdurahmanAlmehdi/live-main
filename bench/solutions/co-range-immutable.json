@@ -1,0 +1,49 @@
+{
+  "taskId": "co-range-immutable",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/value.ts",
+          "oldString": "/** A rectangular 2D array of scalars, stored row by row. */\nexport class RangeValue {\n  constructor(readonly rows: Scalar[][]) {\n    const width = rows[0]?.length ?? 0;\n    if (rows.length === 0 || width === 0) throw new RangeError('RangeValue must have at least one cell');\n    if (rows.some((row) => row.length !== width)) throw new RangeError('RangeValue rows must all have the same width');\n  }\n\n  get height(): number {\n    return this.rows.length;\n  }\n\n  get width(): number {\n    return this.rows[0].length;\n  }\n\n  /** The cell at (row, col), zero-based. */\n  at(row: number, col: number): Scalar {\n    return this.rows[row][col];\n  }\n}",
+          "newString": "/** A rectangular 2D array of scalars. Immutable: build one with RangeValue.fromRows. */\nexport class RangeValue {\n  private constructor(\n    readonly height: number,\n    readonly width: number,\n    private readonly cells: readonly Scalar[],\n  ) {}\n\n  /** Builds a range from rows of equal, non-zero length (the rows are copied). */\n  static fromRows(rows: readonly (readonly Scalar[])[]): RangeValue {\n    const height = rows.length;\n    const width = rows[0]?.length ?? 0;\n    if (height === 0 || width === 0) throw new RangeError('RangeValue must have at least one cell');\n    if (rows.some((row) => row.length !== width)) throw new RangeError('RangeValue rows must all have the same width');\n    return new RangeValue(height, width, rows.flat());\n  }\n\n  /** The cell at (row, col), zero-based. */\n  at(row: number, col: number): Scalar {\n    return this.cells[row * this.width + col];\n  }\n\n  /** A copy of the cells, row by row. */\n  toRows(): Scalar[][] {\n    return Array.from({ length: this.height }, (_, r) => this.cells.slice(r * this.width, (r + 1) * this.width));\n  }\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "\\bnew RangeValue\\((?!height, width)",
+          "flags": "g",
+          "replace": "RangeValue.fromRows("
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "\\bnew RangeValue\\((?!height, width)",
+          "flags": "g",
+          "replace": "RangeValue.fromRows("
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "\\.rows\\b(?!\\()",
+          "flags": "g",
+          "replace": ".toRows()"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "\\.rows\\b(?!\\()",
+          "flags": "g",
+          "replace": ".toRows()"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-range-immutable.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { RangeValue } from '../../src/core/value';\n\ndescribe('immutable RangeValue', () => {\n  it('builds from rows and reads cells', () => {\n    const r = RangeValue.fromRows([[1, 2, 3], [4, 5, 6]]);\n    expect([r.height, r.width]).toEqual([2, 3]);\n    expect(r.at(1, 0)).toBe(4);\n    expect(r.toRows()).toEqual([[1, 2, 3], [4, 5, 6]]);\n  });\n\n  it('does not share its storage', () => {\n    const rows = [[1, 2]];\n    const r = RangeValue.fromRows(rows);\n    rows[0][0] = 99;\n    r.toRows()[0][1] = 99;\n    expect(r.toRows()).toEqual([[1, 2]]);\n  });\n\n  it('no longer exposes rows', () => {\n    expect((RangeValue.fromRows([[1]]) as unknown as { rows?: unknown }).rows).toBeUndefined();\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

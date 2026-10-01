@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-radixFormat",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/radixFormat.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/**\n * Formats an integer in base 2, 8 or 16 the way DEC2BIN / DEC2OCT / DEC2HEX (and the\n * BIN2HEX-style conversions) do:\n *   - the value must fit in 10 digits of two's complement: -radix^10/2 <= n < radix^10/2,\n *     otherwise #NUM!;\n *   - negative numbers are written as 10-digit two's complement (\"FFFFFFFFFF\" for -1),\n *     and `places` is ignored for them;\n *   - `places`, when given, pads with leading zeros; it must be 1..10 and at least the\n *     number of digits needed, otherwise #NUM!.\n * Output digits are upper case.\n */\nexport function formatRadix(n: number, radix: number, places?: number): string | FormulaError {\n  const limit = Math.pow(radix, 10) / 2;\n  if (n < -limit || n >= limit) return err.num;\n  if (n < 0) return (Math.pow(radix, 10) + n).toString(radix).toUpperCase();\n  const digits = n.toString(radix).toUpperCase();\n  if (places === undefined) return digits;\n  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-DOLLARFR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toInteger(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return checkNumber(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  arity: [2, 2],\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toInteger(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return checkNumber(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toIntTrunc(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return checkNumber(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  arity: [2, 2],\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toIntTrunc(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return checkNumber(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toInteger(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return numberResult(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  arity: [2, 2],\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toInteger(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return numberResult(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toIntTrunc(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return numberResult(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DOLLARFR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DOLLARFR(decimal_dollar, fraction): writes a decimal price with its decimals as a\n * numerator over fraction (1.125 with 16 gives 1.02, i.e. 1 + 2/16). fraction is truncated.\n */\nconst DOLLARFR: FormulaFunction = {\n  arity: [2, 2],\n  call([dollarValue, fractionValue]) {\n    const dollar = toNumber(dollarValue);\n    if (isError(dollar)) return dollar;\n    const fraction = toIntTrunc(fractionValue);\n    if (isError(fraction)) return fraction;\n    if (fraction < 0) return err.num;\n    if (fraction === 0) return err.div0;\n    const whole = Math.trunc(dollar);\n    const scale = Math.pow(10, Math.ceil(Math.log10(fraction)));\n    return numberResult(whole + ((dollar - whole) * fraction) / scale);\n  },\n};\n\nexport default DOLLARFR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLARFR: () => import('../functions/financial/DOLLARFR'),\n"
+        }
+      ]
+    }
+  ]
+}

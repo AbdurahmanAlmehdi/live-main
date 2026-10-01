@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-INDEX",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toInteger(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args, 2, 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toInteger(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args, 2, 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toIntTrunc(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args, 2, 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toIntTrunc(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args, 2, 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toInteger(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args[2], 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toInteger(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args[2], 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toIntTrunc(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args[2], 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/INDEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * INDEX(array, row_num, [column_num]): the cell at (row_num, column_num), 1-based. A\n * single-row array may be indexed by column with one number. #REF! when out of range.\n */\nconst INDEX: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    let row = toIntTrunc(args[1]);\n    if (isError(row)) return row;\n    let col = optionalInteger(args[2], 1);\n    if (isError(col)) return col;\n    if (row < 0 || col < 0) return err.value;\n    if (args.length < 3 && range.height === 1 && range.width > 1) {\n      col = row;\n      row = 1;\n    }\n    if (row === 0 || col === 0 || row > range.height || col > range.width) return err.ref;\n    return range.at(row - 1, col - 1);\n  },\n};\n\nexport default INDEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INDEX: () => import('../functions/lookup/INDEX'),\n"
+        }
+      ]
+    }
+  ]
+}

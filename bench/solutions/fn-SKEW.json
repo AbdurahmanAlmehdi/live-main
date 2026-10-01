@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-SKEW",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/SKEW.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { skewness } from '../../helpers/shape';\n\n/** SKEW(number1, ...): the sample skewness of the numbers. */\nconst SKEW: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return skewness(numbers);\n  },\n};\n\nexport default SKEW;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SKEW: () => import('../functions/statistical/SKEW'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/SKEW.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { skewness } from '../../helpers/shape';\n\n/** SKEW(number1, ...): the sample skewness of the numbers. */\nconst SKEW: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return skewness(numbers);\n  },\n};\n\nexport default SKEW;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SKEW: () => import('../functions/statistical/SKEW'),\n"
+        }
+      ]
+    }
+  ]
+}

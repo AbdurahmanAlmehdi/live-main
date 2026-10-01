@@ -1,0 +1,42 @@
+{
+  "taskId": "co-check-number-rename",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "/**\n * Turns a raw numeric result into a cell value: NaN and ±Infinity become #NUM!,\n * -0 becomes 0. Use it on results of Math.* / arithmetic that can overflow.\n */\nexport function checkNumber(n: number): number | FormulaError {",
+          "newString": "/**\n * A raw numeric result as a cell value: NaN and ±Infinity become #NUM!, -0 becomes 0.\n * Use it on results of Math.* / arithmetic that can overflow.\n */\nexport function numberResult(n: number): number | FormulaError {"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "\\bcheckNumber\\b",
+          "flags": "g",
+          "replace": "numberResult"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "\\bcheckNumber\\b",
+          "flags": "g",
+          "replace": "numberResult"
+        },
+        {
+          "op": "codemod",
+          "glob": "README.md",
+          "find": "\\bcheckNumber\\b",
+          "flags": "g",
+          "replace": "numberResult"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-check-number-rename.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport * as coerce from '../../src/core/coerce';\n\ndescribe('numberResult', () => {\n  it('maps non-finite numbers to #NUM!', () => {\n    expect(coerce.numberResult(Infinity)).toMatchObject({ code: '#NUM!' });\n    expect(coerce.numberResult(NaN)).toMatchObject({ code: '#NUM!' });\n    expect(Object.is(coerce.numberResult(-0), 0)).toBe(true);\n    expect(coerce.numberResult(1.5)).toBe(1.5);\n  });\n\n  it('replaces checkNumber', () => {\n    expect('checkNumber' in coerce).toBe(false);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

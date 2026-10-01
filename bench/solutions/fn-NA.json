@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-NA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/NA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err } from '../../core/errors';\n\n/** NA(): the #N/A error. */\nconst NA: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: 0,\n  call() {\n    return err.na;\n  },\n};\n\nexport default NA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NA: () => import('../functions/information/NA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/NA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err } from '../../core/errors';\n\n/** NA(): the #N/A error. */\nconst NA: FormulaFunction = {\n  arity: [0, 0],\n  call() {\n    return err.na;\n  },\n};\n\nexport default NA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NA: () => import('../functions/information/NA'),\n"
+        }
+      ]
+    }
+  ]
+}

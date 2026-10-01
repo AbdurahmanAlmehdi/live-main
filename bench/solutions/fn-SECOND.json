@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-SECOND",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/SECOND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { timeFromSerial } from '../../helpers/timeOfDay';\n\n/** SECOND(serial_number): the second (0-59) of a time serial. */\nconst SECOND: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    const time = timeFromSerial(serial);\n    return isError(time) ? time : time.second;\n  },\n};\n\nexport default SECOND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SECOND: () => import('../functions/date/SECOND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/SECOND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { timeFromSerial } from '../../helpers/timeOfDay';\n\n/** SECOND(serial_number): the second (0-59) of a time serial. */\nconst SECOND: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    const time = timeFromSerial(serial);\n    return isError(time) ? time : time.second;\n  },\n};\n\nexport default SECOND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SECOND: () => import('../functions/date/SECOND'),\n"
+        }
+      ]
+    }
+  ]
+}

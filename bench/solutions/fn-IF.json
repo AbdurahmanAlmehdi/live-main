@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-IF",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/**\n * IF(logical_test, [value_if_true], [value_if_false]): picks a value by a test. An omitted\n * value_if_false gives FALSE; an empty chosen value gives 0.\n */\nconst IF: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const test = toBoolean(args[0]);\n    if (isError(test)) return test;\n    if (!test && args.length < 3) return false;\n    const chosen = test ? args[1] : args[2];\n    return chosen === null || chosen === undefined ? 0 : chosen;\n  },\n};\n\nexport default IF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IF: () => import('../functions/logical/IF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/**\n * IF(logical_test, [value_if_true], [value_if_false]): picks a value by a test. An omitted\n * value_if_false gives FALSE; an empty chosen value gives 0.\n */\nconst IF: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const test = toBoolean(args[0]);\n    if (isError(test)) return test;\n    if (!test && args.length < 3) return false;\n    const chosen = test ? args[1] : args[2];\n    return chosen === null || chosen === undefined ? 0 : chosen;\n  },\n};\n\nexport default IF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IF: () => import('../functions/logical/IF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/**\n * IF(logical_test, [value_if_true], [value_if_false]): picks a value by a test. An omitted\n * value_if_false gives FALSE; an empty chosen value gives 0.\n */\nconst IF: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const test = toBoolean(args[0], { text: 'parse' });\n    if (isError(test)) return test;\n    if (!test && args.length < 3) return false;\n    const chosen = test ? args[1] : args[2];\n    return chosen === null || chosen === undefined ? 0 : chosen;\n  },\n};\n\nexport default IF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IF: () => import('../functions/logical/IF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/**\n * IF(logical_test, [value_if_true], [value_if_false]): picks a value by a test. An omitted\n * value_if_false gives FALSE; an empty chosen value gives 0.\n */\nconst IF: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const test = toBoolean(args[0], { text: 'parse' });\n    if (isError(test)) return test;\n    if (!test && args.length < 3) return false;\n    const chosen = test ? args[1] : args[2];\n    return chosen === null || chosen === undefined ? 0 : chosen;\n  },\n};\n\nexport default IF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IF: () => import('../functions/logical/IF'),\n"
+        }
+      ]
+    }
+  ]
+}

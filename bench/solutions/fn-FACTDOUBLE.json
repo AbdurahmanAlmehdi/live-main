@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-FACTDOUBLE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return checkNumber(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return checkNumber(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return checkNumber(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return checkNumber(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return numberResult(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return numberResult(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return numberResult(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACTDOUBLE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { doubleFactorial } from '../../helpers/combinatorics';\n\n/** FACTDOUBLE(number): the double factorial of a number, truncated to an integer (-1!! is 1). */\nconst FACTDOUBLE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < -1) return err.num;\n    return numberResult(doubleFactorial(n));\n  },\n};\n\nexport default FACTDOUBLE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACTDOUBLE: () => import('../functions/math/FACTDOUBLE'),\n"
+        }
+      ]
+    }
+  ]
+}

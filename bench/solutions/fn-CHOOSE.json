@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-CHOOSE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSE(index_num, value1, ...): the value at position index_num (truncated, 1-based). */\nconst CHOOSE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call([indexValue, ...values]) {\n    const index = toInteger(indexValue);\n    if (isError(index)) return index;\n    if (index < 1 || index > values.length) return err.value;\n    return values[index - 1] ?? 0;\n  },\n};\n\nexport default CHOOSE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSE: () => import('../functions/lookup/CHOOSE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSE(index_num, value1, ...): the value at position index_num (truncated, 1-based). */\nconst CHOOSE: FormulaFunction = {\n  arity: [2, Infinity],\n  call([indexValue, ...values]) {\n    const index = toInteger(indexValue);\n    if (isError(index)) return index;\n    if (index < 1 || index > values.length) return err.value;\n    return values[index - 1] ?? 0;\n  },\n};\n\nexport default CHOOSE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSE: () => import('../functions/lookup/CHOOSE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSE(index_num, value1, ...): the value at position index_num (truncated, 1-based). */\nconst CHOOSE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call([indexValue, ...values]) {\n    const index = toIntTrunc(indexValue);\n    if (isError(index)) return index;\n    if (index < 1 || index > values.length) return err.value;\n    return values[index - 1] ?? 0;\n  },\n};\n\nexport default CHOOSE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSE: () => import('../functions/lookup/CHOOSE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSE(index_num, value1, ...): the value at position index_num (truncated, 1-based). */\nconst CHOOSE: FormulaFunction = {\n  arity: [2, Infinity],\n  call([indexValue, ...values]) {\n    const index = toIntTrunc(indexValue);\n    if (isError(index)) return index;\n    if (index < 1 || index > values.length) return err.value;\n    return values[index - 1] ?? 0;\n  },\n};\n\nexport default CHOOSE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSE: () => import('../functions/lookup/CHOOSE'),\n"
+        }
+      ]
+    }
+  ]
+}

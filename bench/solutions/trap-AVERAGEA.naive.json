@@ -1,0 +1,51 @@
+{
+  "taskId": "trap-AVERAGEA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { mean } from '../../helpers/moments';\n\n/**\n * AVERAGEA(value1, ...): the mean of all values; inside arrays text counts as 0 and\n * booleans as 1 or 0. #DIV/0! when there are no values.\n */\nconst AVERAGEA: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEA: () => import('../functions/statistical/AVERAGEA'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "          if (typeof cell === 'number') out.push(cell);",
+          "newString": "          if (typeof cell === 'number') out.push(cell);\n          else if (typeof cell === 'boolean') out.push(cell ? 1 : 0);\n          else if (typeof cell === 'string') out.push(0);"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { mean } from '../../helpers/moments';\n\n/**\n * AVERAGEA(value1, ...): the mean of all values; inside arrays text counts as 0 and\n * booleans as 1 or 0. #DIV/0! when there are no values.\n */\nconst AVERAGEA: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEA: () => import('../functions/statistical/AVERAGEA'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "          if (typeof cell === 'number') out.push(cell);",
+          "newString": "          if (typeof cell === 'number') out.push(cell);\n          else if (typeof cell === 'boolean') out.push(cell ? 1 : 0);\n          else if (typeof cell === 'string') out.push(0);"
+        }
+      ]
+    }
+  ]
+}

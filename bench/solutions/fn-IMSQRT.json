@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IMSQRT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSQRT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** IMSQRT(inumber): the principal square root of a complex number, computed in polar form. */\nconst IMSQRT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    const modulus = Math.sqrt(Math.hypot(z.re, z.im));\n    const angle = Math.atan2(z.im, z.re) / 2;\n    return formatComplex({ re: modulus * Math.cos(angle), im: modulus * Math.sin(angle), suffix: z.suffix });\n  },\n};\n\nexport default IMSQRT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSQRT: () => import('../functions/engineering/IMSQRT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSQRT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** IMSQRT(inumber): the principal square root of a complex number, computed in polar form. */\nconst IMSQRT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    const modulus = Math.sqrt(Math.hypot(z.re, z.im));\n    const angle = Math.atan2(z.im, z.re) / 2;\n    return formatComplex({ re: modulus * Math.cos(angle), im: modulus * Math.sin(angle), suffix: z.suffix });\n  },\n};\n\nexport default IMSQRT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSQRT: () => import('../functions/engineering/IMSQRT'),\n"
+        }
+      ]
+    }
+  ]
+}

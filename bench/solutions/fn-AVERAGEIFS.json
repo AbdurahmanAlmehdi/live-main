@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-AVERAGEIFS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(valueRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange);\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(valueRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange);\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(valueRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange);\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(valueRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange);\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(valueRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange, { order: 'rows' });\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const [height, width] = dimensions(valueRange);\n    const [criteriaHeight, criteriaWidth] = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange, { order: 'rows' });\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(valueRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange, { order: 'rows' });\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIFS(range, criteria_range1, criteria1, ...): the mean of the average_range numbers meeting every criterion; #DIV/0! when none do. */\nconst AVERAGEIFS: FormulaFunction = {\n  arity: [3, Infinity],\n  call([valueRange, ...rest]) {\n    if (rest.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < rest.length; i += 2) pairs.push({ range: rest[i], criterion: rest[i + 1] });\n    const { height: height, width: width } = dimensions(valueRange);\n    const { height: criteriaHeight, width: criteriaWidth } = dimensions(pairs[0].range);\n    if (height !== criteriaHeight || width !== criteriaWidth) return err.value;\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    const cells = cellsOf(valueRange, { order: 'rows' });\n    const numbers: number[] = [];\n    for (const i of indices) {\n      const cell = cells[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIFS: () => import('../functions/statistical/AVERAGEIFS'),\n"
+        }
+      ]
+    }
+  ]
+}

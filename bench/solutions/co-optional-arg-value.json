@@ -1,0 +1,132 @@
+{
+  "taskId": "co-optional-arg-value",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "function isMissing(args: readonly Value[], index: number): boolean {\n  return index >= args.length || args[index] === null;\n}\n\n/** The number at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalNumber(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toNumber(args[index]);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toInteger(args[index]);\n}\n\n/** The boolean at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalBoolean(args: readonly Value[], index: number, fallback: boolean): boolean | FormulaError {\n  return isMissing(args, index) ? fallback : toBoolean(args[index]);\n}\n\n/** The text at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalText(args: readonly Value[], index: number, fallback: string): string | FormulaError {\n  return isMissing(args, index) ? fallback : toText(args[index]);\n}",
+          "newString": "/**\n * Optional arguments. Pass the argument itself, e.g. `optionalNumber(args[2], 0)`: an\n * omitted (undefined) or empty (null) argument gives the fallback.\n */\n\n/** The number in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalNumber(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toNumber(value);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toInteger(value);\n}\n\n/** The boolean in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalBoolean(value: Value | undefined, fallback: boolean): boolean | FormulaError {\n  return value === undefined || value === null ? fallback : toBoolean(value);\n}\n\n/** The text in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalText(value: Value | undefined, fallback: string): string | FormulaError {\n  return value === undefined || value === null ? fallback : toText(value);\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-optional-arg-value.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { optionalBoolean, optionalInteger, optionalNumber, optionalText } from '../../src/core/args';\n\ndescribe('optional argument helpers take the value', () => {\n  it('fall back for omitted and empty arguments', () => {\n    expect(optionalNumber(undefined, 7)).toBe(7);\n    expect(optionalNumber(null, 7)).toBe(7);\n    expect(optionalText(undefined, 'd')).toBe('d');\n    expect(optionalBoolean(null, true)).toBe(true);\n  });\n\n  it('coerce present arguments', () => {\n    expect(optionalNumber('2.5', 7)).toBe(2.5);\n    expect(optionalInteger(-2.5, 7)).toBe(-2);\n    expect(optionalBoolean(0, true)).toBe(false);\n    expect(optionalText(1.5, '')).toBe('1.5');\n  });\n\n  it('reject the old (args, index, fallback) call', () => {\n    const call = optionalNumber as unknown as (a: unknown, i: unknown, f: unknown) => unknown;\n    expect(() => call([1, 2], 1, 0)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "function isMissing(args: readonly Value[], index: number): boolean {\n  return index >= args.length || args[index] === null;\n}\n\n/** The number at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalNumber(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toNumber(args[index]);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toIntTrunc(args[index]);\n}\n\n/** The boolean at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalBoolean(args: readonly Value[], index: number, fallback: boolean): boolean | FormulaError {\n  return isMissing(args, index) ? fallback : toBoolean(args[index]);\n}\n\n/** The text at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalText(args: readonly Value[], index: number, fallback: string): string | FormulaError {\n  return isMissing(args, index) ? fallback : toText(args[index]);\n}",
+          "newString": "/**\n * Optional arguments. Pass the argument itself, e.g. `optionalNumber(args[2], 0)`: an\n * omitted (undefined) or empty (null) argument gives the fallback.\n */\n\n/** The number in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalNumber(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toNumber(value);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toIntTrunc(value);\n}\n\n/** The boolean in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalBoolean(value: Value | undefined, fallback: boolean): boolean | FormulaError {\n  return value === undefined || value === null ? fallback : toBoolean(value);\n}\n\n/** The text in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalText(value: Value | undefined, fallback: string): string | FormulaError {\n  return value === undefined || value === null ? fallback : toText(value);\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-optional-arg-value.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { optionalBoolean, optionalInteger, optionalNumber, optionalText } from '../../src/core/args';\n\ndescribe('optional argument helpers take the value', () => {\n  it('fall back for omitted and empty arguments', () => {\n    expect(optionalNumber(undefined, 7)).toBe(7);\n    expect(optionalNumber(null, 7)).toBe(7);\n    expect(optionalText(undefined, 'd')).toBe('d');\n    expect(optionalBoolean(null, true)).toBe(true);\n  });\n\n  it('coerce present arguments', () => {\n    expect(optionalNumber('2.5', 7)).toBe(2.5);\n    expect(optionalInteger(-2.5, 7)).toBe(-2);\n    expect(optionalBoolean(0, true)).toBe(false);\n    expect(optionalText(1.5, '')).toBe('1.5');\n  });\n\n  it('reject the old (args, index, fallback) call', () => {\n    const call = optionalNumber as unknown as (a: unknown, i: unknown, f: unknown) => unknown;\n    expect(() => call([1, 2], 1, 0)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "function isMissing(args: readonly Value[], index: number): boolean {\n  return index >= args.length || args[index] === null;\n}\n\n/** The number at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalNumber(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toNumber(args[index]);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toInteger(args[index]);\n}\n\n/** The boolean at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalBoolean(args: readonly Value[], index: number, fallback: boolean): boolean | FormulaError {\n  return isMissing(args, index) ? fallback : toBoolean(args[index], { text: 'parse' });\n}\n\n/** The text at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalText(args: readonly Value[], index: number, fallback: string): string | FormulaError {\n  return isMissing(args, index) ? fallback : toText(args[index]);\n}",
+          "newString": "/**\n * Optional arguments. Pass the argument itself, e.g. `optionalNumber(args[2], 0)`: an\n * omitted (undefined) or empty (null) argument gives the fallback.\n */\n\n/** The number in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalNumber(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toNumber(value);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toInteger(value);\n}\n\n/** The boolean in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalBoolean(value: Value | undefined, fallback: boolean): boolean | FormulaError {\n  return value === undefined || value === null ? fallback : toBoolean(value, { text: 'parse' });\n}\n\n/** The text in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalText(value: Value | undefined, fallback: string): string | FormulaError {\n  return value === undefined || value === null ? fallback : toText(value);\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-optional-arg-value.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { optionalBoolean, optionalInteger, optionalNumber, optionalText } from '../../src/core/args';\n\ndescribe('optional argument helpers take the value', () => {\n  it('fall back for omitted and empty arguments', () => {\n    expect(optionalNumber(undefined, 7)).toBe(7);\n    expect(optionalNumber(null, 7)).toBe(7);\n    expect(optionalText(undefined, 'd')).toBe('d');\n    expect(optionalBoolean(null, true)).toBe(true);\n  });\n\n  it('coerce present arguments', () => {\n    expect(optionalNumber('2.5', 7)).toBe(2.5);\n    expect(optionalInteger(-2.5, 7)).toBe(-2);\n    expect(optionalBoolean(0, true)).toBe(false);\n    expect(optionalText(1.5, '')).toBe('1.5');\n  });\n\n  it('reject the old (args, index, fallback) call', () => {\n    const call = optionalNumber as unknown as (a: unknown, i: unknown, f: unknown) => unknown;\n    expect(() => call([1, 2], 1, 0)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "function isMissing(args: readonly Value[], index: number): boolean {\n  return index >= args.length || args[index] === null;\n}\n\n/** The number at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalNumber(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toNumber(args[index]);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(args: readonly Value[], index: number, fallback: number): number | FormulaError {\n  return isMissing(args, index) ? fallback : toIntTrunc(args[index]);\n}\n\n/** The boolean at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalBoolean(args: readonly Value[], index: number, fallback: boolean): boolean | FormulaError {\n  return isMissing(args, index) ? fallback : toBoolean(args[index], { text: 'parse' });\n}\n\n/** The text at args[index], or `fallback` when the argument is omitted or empty. */\nexport function optionalText(args: readonly Value[], index: number, fallback: string): string | FormulaError {\n  return isMissing(args, index) ? fallback : toText(args[index]);\n}",
+          "newString": "/**\n * Optional arguments. Pass the argument itself, e.g. `optionalNumber(args[2], 0)`: an\n * omitted (undefined) or empty (null) argument gives the fallback.\n */\n\n/** The number in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalNumber(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toNumber(value);\n}\n\n/** Like optionalNumber, truncated to an integer. */\nexport function optionalInteger(value: Value | undefined, fallback: number): number | FormulaError {\n  return value === undefined || value === null ? fallback : toIntTrunc(value);\n}\n\n/** The boolean in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalBoolean(value: Value | undefined, fallback: boolean): boolean | FormulaError {\n  return value === undefined || value === null ? fallback : toBoolean(value, { text: 'parse' });\n}\n\n/** The text in an optional argument, or `fallback` when it is omitted or empty. */\nexport function optionalText(value: Value | undefined, fallback: string): string | FormulaError {\n  return value === undefined || value === null ? fallback : toText(value);\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\b(optional(?:Number|Integer|Boolean|Text))\\((\\w+), (\\d+), ",
+          "flags": "g",
+          "replace": "$1($2[$3], "
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-optional-arg-value.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { optionalBoolean, optionalInteger, optionalNumber, optionalText } from '../../src/core/args';\n\ndescribe('optional argument helpers take the value', () => {\n  it('fall back for omitted and empty arguments', () => {\n    expect(optionalNumber(undefined, 7)).toBe(7);\n    expect(optionalNumber(null, 7)).toBe(7);\n    expect(optionalText(undefined, 'd')).toBe('d');\n    expect(optionalBoolean(null, true)).toBe(true);\n  });\n\n  it('coerce present arguments', () => {\n    expect(optionalNumber('2.5', 7)).toBe(2.5);\n    expect(optionalInteger(-2.5, 7)).toBe(-2);\n    expect(optionalBoolean(0, true)).toBe(false);\n    expect(optionalText(1.5, '')).toBe('1.5');\n  });\n\n  it('reject the old (args, index, fallback) call', () => {\n    const call = optionalNumber as unknown as (a: unknown, i: unknown, f: unknown) => unknown;\n    expect(() => call([1, 2], 1, 0)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

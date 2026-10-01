@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-BIN2DEC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BIN2DEC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** BIN2DEC(number): the decimal value of a binary number (at most 10 digits, two's complement). */\nconst BIN2DEC: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (typeof value === 'boolean') return err.value;\n    const text = toText(value);\n    if (isError(text)) return text;\n    return parseRadix(text, 2);\n  },\n};\n\nexport default BIN2DEC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BIN2DEC: () => import('../functions/engineering/BIN2DEC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BIN2DEC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** BIN2DEC(number): the decimal value of a binary number (at most 10 digits, two's complement). */\nconst BIN2DEC: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (typeof value === 'boolean') return err.value;\n    const text = toText(value);\n    if (isError(text)) return text;\n    return parseRadix(text, 2);\n  },\n};\n\nexport default BIN2DEC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BIN2DEC: () => import('../functions/engineering/BIN2DEC'),\n"
+        }
+      ]
+    }
+  ]
+}

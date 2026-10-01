@@ -1,0 +1,53 @@
+{
+  "taskId": "co-arity-tuple",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/types.ts",
+          "oldString": " * A spreadsheet function. Arguments arrive already evaluated (errors included, as\n * values); the evaluator checks the argument count against minArgs/maxArgs before\n * calling. Functions return error values, they never throw them.\n */\nexport interface FormulaFunction {\n  /** Minimum number of arguments. */\n  minArgs: number;\n  /** Maximum number of arguments (Infinity for variadic functions). */\n  maxArgs: number;",
+          "newString": " * A spreadsheet function. Arguments arrive already evaluated (errors included, as\n * values); the evaluator checks the argument count against `arity` before calling.\n * Functions return error values, they never throw them.\n */\nexport interface FormulaFunction {\n  /** [minimum, maximum] number of arguments; the maximum is Infinity for variadic functions. */\n  arity: readonly [min: number, max: number];"
+        },
+        {
+          "op": "edit",
+          "path": "src/eval/evaluate.ts",
+          "oldString": "  if (args.length < fn.minArgs || args.length > fn.maxArgs) return err.na;",
+          "newString": "  const [minArgs, maxArgs] = fn.arity;\n  if (args.length < minArgs || args.length > maxArgs) return err.na;"
+        },
+        {
+          "op": "edit",
+          "path": "README.md",
+          "oldString": "     minArgs: 1,\n     maxArgs: 1,",
+          "newString": "     arity: [1, 1],"
+        },
+        {
+          "op": "edit",
+          "path": "README.md",
+          "oldString": "   The evaluator checks the argument count before calling `call`",
+          "newString": "   The evaluator checks the argument count against `arity` before calling `call`"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/functions/**/*.ts",
+          "find": "minArgs: (\\d+),\\n\\s*maxArgs: (\\w+),",
+          "flags": "g",
+          "replace": "arity: [$1, $2],"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "minArgs: (\\d+), maxArgs: (\\w+),",
+          "flags": "g",
+          "replace": "arity: [$1, $2],"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-arity-tuple.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { evaluate } from '../../src/eval/evaluate';\nimport type { FormulaFunction, FunctionLoader } from '../../src/core/types';\n\nconst loader = (fn: FormulaFunction): FunctionLoader => () => Promise.resolve({ default: fn });\n\nconst registry: Record<string, FunctionLoader> = {\n  PAIR: loader({ arity: [1, 2], call: (args) => args.length }),\n  ANY: loader({ arity: [0, Infinity], call: (args) => args.length }),\n};\n\ndescribe('FormulaFunction.arity', () => {\n  it('accepts argument counts inside the arity', async () => {\n    expect(await evaluate('=PAIR(1)', { registry })).toBe(1);\n    expect(await evaluate('=PAIR(1, 2)', { registry })).toBe(2);\n    expect(await evaluate('=ANY()', { registry })).toBe(0);\n    expect(await evaluate('=ANY(1, 2, 3, 4, 5)', { registry })).toBe(5);\n  });\n\n  it('returns #N/A outside the arity', async () => {\n    expect(await evaluate('=PAIR()', { registry })).toMatchObject({ code: '#N/A' });\n    expect(await evaluate('=PAIR(1, 2, 3)', { registry })).toMatchObject({ code: '#N/A' });\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

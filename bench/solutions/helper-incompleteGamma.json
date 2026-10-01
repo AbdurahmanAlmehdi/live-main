@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-incompleteGamma",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/incompleteGamma.ts",
+          "content": "import { gammaLn } from './gamma';\n\n/**\n * Regularized incomplete gamma functions P(a, x) and Q(a, x) = 1 - P(a, x), for a > 0 and\n * x >= 0, by series expansion (x < a + 1) or Lentz's continued fraction (otherwise).\n */\n\nconst EPS = 1e-16;\nconst MAX_ITERATIONS = 1000;\nconst TINY = 1e-300;\n\nfunction series(a: number, x: number): number {\n  let term = 1 / a;\n  let sum = term;\n  for (let n = 1; n < MAX_ITERATIONS; n++) {\n    term *= x / (a + n);\n    sum += term;\n    if (Math.abs(term) < Math.abs(sum) * EPS) break;\n  }\n  return sum * Math.exp(-x + a * Math.log(x) - gammaLn(a));\n}\n\nfunction continuedFraction(a: number, x: number): number {\n  let b = x + 1 - a;\n  let c = 1 / TINY;\n  let d = 1 / b;\n  let h = d;\n  for (let i = 1; i < MAX_ITERATIONS; i++) {\n    const an = -i * (i - a);\n    b += 2;\n    d = an * d + b;\n    if (Math.abs(d) < TINY) d = TINY;\n    c = b + an / c;\n    if (Math.abs(c) < TINY) c = TINY;\n    d = 1 / d;\n    const delta = d * c;\n    h *= delta;\n    if (Math.abs(delta - 1) < EPS) break;\n  }\n  return Math.exp(-x + a * Math.log(x) - gammaLn(a)) * h;\n}\n\n/** P(a, x): the lower regularized incomplete gamma function. */\nexport function regularizedGammaP(a: number, x: number): number {\n  if (x <= 0) return 0;\n  return x < a + 1 ? series(a, x) : 1 - continuedFraction(a, x);\n}\n\n/** Q(a, x) = 1 - P(a, x), accurate even when P is close to 1. */\nexport function regularizedGammaQ(a: number, x: number): number {\n  if (x <= 0) return 1;\n  return x < a + 1 ? 1 - series(a, x) : continuedFraction(a, x);\n}\n"
+        }
+      ]
+    }
+  ]
+}

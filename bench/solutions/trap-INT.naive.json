@@ -1,0 +1,100 @@
+{
+  "taskId": "trap-INT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/INT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** INT(number): a number rounded down to the nearest integer. */\nconst INT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    return n;\n  },\n};\n\nexport default INT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INT: () => import('../functions/math/INT'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "  return n instanceof FormulaError ? n : Math.trunc(n);",
+          "newString": "  return n instanceof FormulaError ? n : Math.floor(n);"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/INT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** INT(number): a number rounded down to the nearest integer. */\nconst INT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    return n;\n  },\n};\n\nexport default INT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INT: () => import('../functions/math/INT'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "  return n instanceof FormulaError ? n : Math.trunc(n);",
+          "newString": "  return n instanceof FormulaError ? n : Math.floor(n);"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/INT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** INT(number): a number rounded down to the nearest integer. */\nconst INT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    return n;\n  },\n};\n\nexport default INT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INT: () => import('../functions/math/INT'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "  return n instanceof FormulaError ? n : Math.trunc(n);",
+          "newString": "  return n instanceof FormulaError ? n : Math.floor(n);"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/INT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** INT(number): a number rounded down to the nearest integer. */\nconst INT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    return n;\n  },\n};\n\nexport default INT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  INT: () => import('../functions/math/INT'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "  return n instanceof FormulaError ? n : Math.trunc(n);",
+          "newString": "  return n instanceof FormulaError ? n : Math.floor(n);"
+        }
+      ]
+    }
+  ]
+}

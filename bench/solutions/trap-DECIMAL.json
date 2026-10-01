@@ -1,0 +1,124 @@
+{
+  "taskId": "trap-DECIMAL",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/DECIMAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** DECIMAL(text, radix): the value of text written in base radix (2..36). */\nconst DECIMAL: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([textValue, radixValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const radix = toInteger(radixValue);\n    if (isError(radix)) return radix;\n    if (radix < 2 || radix > 36) return err.num;\n    return parseRadix(text, radix, { signed: false, maxDigits: 255 });\n  },\n};\n\nexport default DECIMAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DECIMAL: () => import('../functions/math/DECIMAL'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": " *   - \"\" is 0.\n */\nexport function parseRadix(text: string, radix: number): number | FormulaError {\n  const digits = text.trim().toUpperCase();\n  if (digits.length > 10) return err.num;",
+          "newString": " *   - \"\" is 0.\n * DECIMAL-style parsing passes { signed: false, maxDigits: 255 }.\n */\nexport function parseRadix(text: string, radix: number, options: { signed?: boolean; maxDigits?: number } = {}): number | FormulaError {\n  const { signed = true, maxDigits = 10 } = options;\n  const digits = text.trim().toUpperCase();\n  if (digits.length > maxDigits) return err.num;"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": "  if (digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {",
+          "newString": "  if (signed && digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/DECIMAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** DECIMAL(text, radix): the value of text written in base radix (2..36). */\nconst DECIMAL: FormulaFunction = {\n  arity: [2, 2],\n  call([textValue, radixValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const radix = toInteger(radixValue);\n    if (isError(radix)) return radix;\n    if (radix < 2 || radix > 36) return err.num;\n    return parseRadix(text, radix, { signed: false, maxDigits: 255 });\n  },\n};\n\nexport default DECIMAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DECIMAL: () => import('../functions/math/DECIMAL'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": " *   - \"\" is 0.\n */\nexport function parseRadix(text: string, radix: number): number | FormulaError {\n  const digits = text.trim().toUpperCase();\n  if (digits.length > 10) return err.num;",
+          "newString": " *   - \"\" is 0.\n * DECIMAL-style parsing passes { signed: false, maxDigits: 255 }.\n */\nexport function parseRadix(text: string, radix: number, options: { signed?: boolean; maxDigits?: number } = {}): number | FormulaError {\n  const { signed = true, maxDigits = 10 } = options;\n  const digits = text.trim().toUpperCase();\n  if (digits.length > maxDigits) return err.num;"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": "  if (digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {",
+          "newString": "  if (signed && digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/DECIMAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** DECIMAL(text, radix): the value of text written in base radix (2..36). */\nconst DECIMAL: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([textValue, radixValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const radix = toIntTrunc(radixValue);\n    if (isError(radix)) return radix;\n    if (radix < 2 || radix > 36) return err.num;\n    return parseRadix(text, radix, { signed: false, maxDigits: 255 });\n  },\n};\n\nexport default DECIMAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DECIMAL: () => import('../functions/math/DECIMAL'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": " *   - \"\" is 0.\n */\nexport function parseRadix(text: string, radix: number): number | FormulaError {\n  const digits = text.trim().toUpperCase();\n  if (digits.length > 10) return err.num;",
+          "newString": " *   - \"\" is 0.\n * DECIMAL-style parsing passes { signed: false, maxDigits: 255 }.\n */\nexport function parseRadix(text: string, radix: number, options: { signed?: boolean; maxDigits?: number } = {}): number | FormulaError {\n  const { signed = true, maxDigits = 10 } = options;\n  const digits = text.trim().toUpperCase();\n  if (digits.length > maxDigits) return err.num;"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": "  if (digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {",
+          "newString": "  if (signed && digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/DECIMAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** DECIMAL(text, radix): the value of text written in base radix (2..36). */\nconst DECIMAL: FormulaFunction = {\n  arity: [2, 2],\n  call([textValue, radixValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const radix = toIntTrunc(radixValue);\n    if (isError(radix)) return radix;\n    if (radix < 2 || radix > 36) return err.num;\n    return parseRadix(text, radix, { signed: false, maxDigits: 255 });\n  },\n};\n\nexport default DECIMAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DECIMAL: () => import('../functions/math/DECIMAL'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": " *   - \"\" is 0.\n */\nexport function parseRadix(text: string, radix: number): number | FormulaError {\n  const digits = text.trim().toUpperCase();\n  if (digits.length > 10) return err.num;",
+          "newString": " *   - \"\" is 0.\n * DECIMAL-style parsing passes { signed: false, maxDigits: 255 }.\n */\nexport function parseRadix(text: string, radix: number, options: { signed?: boolean; maxDigits?: number } = {}): number | FormulaError {\n  const { signed = true, maxDigits = 10 } = options;\n  const digits = text.trim().toUpperCase();\n  if (digits.length > maxDigits) return err.num;"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixParse.ts",
+          "oldString": "  if (digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {",
+          "newString": "  if (signed && digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {"
+        }
+      ]
+    }
+  ]
+}

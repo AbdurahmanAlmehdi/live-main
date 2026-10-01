@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-OCT2HEX",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/OCT2HEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** OCT2HEX(number, [places]): a octal number written in hexadecimal, zero-padded to places digits (two's complement for negatives). */\nconst OCT2HEX: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 8);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toInteger(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 16, places);\n  },\n};\n\nexport default OCT2HEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  OCT2HEX: () => import('../functions/engineering/OCT2HEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/OCT2HEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** OCT2HEX(number, [places]): a octal number written in hexadecimal, zero-padded to places digits (two's complement for negatives). */\nconst OCT2HEX: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 8);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toInteger(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 16, places);\n  },\n};\n\nexport default OCT2HEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  OCT2HEX: () => import('../functions/engineering/OCT2HEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/OCT2HEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** OCT2HEX(number, [places]): a octal number written in hexadecimal, zero-padded to places digits (two's complement for negatives). */\nconst OCT2HEX: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 8);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toIntTrunc(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 16, places);\n  },\n};\n\nexport default OCT2HEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  OCT2HEX: () => import('../functions/engineering/OCT2HEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/OCT2HEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** OCT2HEX(number, [places]): a octal number written in hexadecimal, zero-padded to places digits (two's complement for negatives). */\nconst OCT2HEX: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const n = parseRadix(text, 8);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toIntTrunc(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 16, places);\n  },\n};\n\nexport default OCT2HEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  OCT2HEX: () => import('../functions/engineering/OCT2HEX'),\n"
+        }
+      ]
+    }
+  ]
+}

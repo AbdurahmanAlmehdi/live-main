@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-HARMEAN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/HARMEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** HARMEAN(number1, ...): the harmonic mean of positive numbers. */\nconst HARMEAN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0 || numbers.some((n) => n <= 0)) return err.num;\n    return numbers.length / numbers.reduce((total, n) => total + 1 / n, 0);\n  },\n};\n\nexport default HARMEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HARMEAN: () => import('../functions/statistical/HARMEAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/HARMEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** HARMEAN(number1, ...): the harmonic mean of positive numbers. */\nconst HARMEAN: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0 || numbers.some((n) => n <= 0)) return err.num;\n    return numbers.length / numbers.reduce((total, n) => total + 1 / n, 0);\n  },\n};\n\nexport default HARMEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HARMEAN: () => import('../functions/statistical/HARMEAN'),\n"
+        }
+      ]
+    }
+  ]
+}

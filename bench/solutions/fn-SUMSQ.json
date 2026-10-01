@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SUMSQ",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMSQ.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUMSQ(number1, ...): the sum of the squares of the numbers in the arguments. */\nconst SUMSQ: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return checkNumber(numbers.reduce((total, n) => total + n * n, 0));\n  },\n};\n\nexport default SUMSQ;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMSQ: () => import('../functions/math/SUMSQ'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMSQ.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUMSQ(number1, ...): the sum of the squares of the numbers in the arguments. */\nconst SUMSQ: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return checkNumber(numbers.reduce((total, n) => total + n * n, 0));\n  },\n};\n\nexport default SUMSQ;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMSQ: () => import('../functions/math/SUMSQ'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMSQ.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUMSQ(number1, ...): the sum of the squares of the numbers in the arguments. */\nconst SUMSQ: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return numberResult(numbers.reduce((total, n) => total + n * n, 0));\n  },\n};\n\nexport default SUMSQ;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMSQ: () => import('../functions/math/SUMSQ'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMSQ.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUMSQ(number1, ...): the sum of the squares of the numbers in the arguments. */\nconst SUMSQ: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return numberResult(numbers.reduce((total, n) => total + n * n, 0));\n  },\n};\n\nexport default SUMSQ;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMSQ: () => import('../functions/math/SUMSQ'),\n"
+        }
+      ]
+    }
+  ]
+}

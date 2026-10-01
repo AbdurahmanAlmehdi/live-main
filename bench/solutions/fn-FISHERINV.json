@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-FISHERINV",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/FISHERINV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** FISHERINV(y): the inverse Fisher transformation, tanh(y). */\nconst FISHERINV: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const y = toNumber(value);\n    if (isError(y)) return y;\n    return Math.tanh(y);\n  },\n};\n\nexport default FISHERINV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FISHERINV: () => import('../functions/statistical/FISHERINV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/FISHERINV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** FISHERINV(y): the inverse Fisher transformation, tanh(y). */\nconst FISHERINV: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const y = toNumber(value);\n    if (isError(y)) return y;\n    return Math.tanh(y);\n  },\n};\n\nexport default FISHERINV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FISHERINV: () => import('../functions/statistical/FISHERINV'),\n"
+        }
+      ]
+    }
+  ]
+}

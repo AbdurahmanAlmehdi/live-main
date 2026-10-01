@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-variance",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/variance.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\nimport { sumOfSquaredDeviations } from './moments';\n\n/** Sample variance (n - 1 denominator); #DIV/0! for fewer than two values. */\nexport function variance(values: readonly number[]): number | FormulaError {\n  if (values.length < 2) return err.div0;\n  return sumOfSquaredDeviations(values) / (values.length - 1);\n}\n"
+        }
+      ]
+    }
+  ]
+}

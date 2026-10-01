@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COUNT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { parseNumber } from '../../core/coerce';\n\n/**\n * COUNT(value1, ...): how many numbers there are. Inside arrays only numbers count;\n * typed directly, numeric text and booleans count too. Errors are skipped.\n */\nconst COUNT: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: Infinity,\n  call(args) {\n    let count = 0;\n    for (const arg of args) {\n      if (isRange(arg)) {\n        count += cellsOf(arg).filter((cell) => typeof cell === 'number').length;\n      } else if (typeof arg === 'number' || typeof arg === 'boolean') {\n        count++;\n      } else if (typeof arg === 'string' && parseNumber(arg) !== null) {\n        count++;\n      }\n    }\n    return count;\n  },\n};\n\nexport default COUNT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNT: () => import('../functions/statistical/COUNT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { parseNumber } from '../../core/coerce';\n\n/**\n * COUNT(value1, ...): how many numbers there are. Inside arrays only numbers count;\n * typed directly, numeric text and booleans count too. Errors are skipped.\n */\nconst COUNT: FormulaFunction = {\n  arity: [0, Infinity],\n  call(args) {\n    let count = 0;\n    for (const arg of args) {\n      if (isRange(arg)) {\n        count += cellsOf(arg).filter((cell) => typeof cell === 'number').length;\n      } else if (typeof arg === 'number' || typeof arg === 'boolean') {\n        count++;\n      } else if (typeof arg === 'string' && parseNumber(arg) !== null) {\n        count++;\n      }\n    }\n    return count;\n  },\n};\n\nexport default COUNT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNT: () => import('../functions/statistical/COUNT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { parseNumber } from '../../core/coerce';\n\n/**\n * COUNT(value1, ...): how many numbers there are. Inside arrays only numbers count;\n * typed directly, numeric text and booleans count too. Errors are skipped.\n */\nconst COUNT: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: Infinity,\n  call(args) {\n    let count = 0;\n    for (const arg of args) {\n      if (isRange(arg)) {\n        count += cellsOf(arg, { order: 'rows' }).filter((cell) => typeof cell === 'number').length;\n      } else if (typeof arg === 'number' || typeof arg === 'boolean') {\n        count++;\n      } else if (typeof arg === 'string' && parseNumber(arg) !== null) {\n        count++;\n      }\n    }\n    return count;\n  },\n};\n\nexport default COUNT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNT: () => import('../functions/statistical/COUNT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { cellsOf } from '../../core/range';\nimport { parseNumber } from '../../core/coerce';\n\n/**\n * COUNT(value1, ...): how many numbers there are. Inside arrays only numbers count;\n * typed directly, numeric text and booleans count too. Errors are skipped.\n */\nconst COUNT: FormulaFunction = {\n  arity: [0, Infinity],\n  call(args) {\n    let count = 0;\n    for (const arg of args) {\n      if (isRange(arg)) {\n        count += cellsOf(arg, { order: 'rows' }).filter((cell) => typeof cell === 'number').length;\n      } else if (typeof arg === 'number' || typeof arg === 'boolean') {\n        count++;\n      } else if (typeof arg === 'string' && parseNumber(arg) !== null) {\n        count++;\n      }\n    }\n    return count;\n  },\n};\n\nexport default COUNT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNT: () => import('../functions/statistical/COUNT'),\n"
+        }
+      ]
+    }
+  ]
+}

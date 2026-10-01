@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COSH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COSH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** COSH(number): the hyperbolic cosine of a number. */\nconst COSH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return checkNumber(Math.cosh(n));\n  },\n};\n\nexport default COSH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COSH: () => import('../functions/math/COSH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COSH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** COSH(number): the hyperbolic cosine of a number. */\nconst COSH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return checkNumber(Math.cosh(n));\n  },\n};\n\nexport default COSH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COSH: () => import('../functions/math/COSH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COSH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** COSH(number): the hyperbolic cosine of a number. */\nconst COSH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return numberResult(Math.cosh(n));\n  },\n};\n\nexport default COSH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COSH: () => import('../functions/math/COSH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COSH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** COSH(number): the hyperbolic cosine of a number. */\nconst COSH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return numberResult(Math.cosh(n));\n  },\n};\n\nexport default COSH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COSH: () => import('../functions/math/COSH'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-NUMBERVALUE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/NUMBERVALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * NUMBERVALUE(text, [decimal_separator], [group_separator]): reads a number written with\n * the given separators (\".\" and \",\" by default). Spaces are ignored, group separators are\n * dropped anywhere before the decimal separator, and trailing \"%\" signs divide by 100.\n */\nconst NUMBERVALUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const decimal = optionalText(args, 1, '.');\n    if (isError(decimal)) return decimal;\n    const group = optionalText(args, 2, ',');\n    if (isError(group)) return group;\n    const decimalSep = decimal[0] ?? '';\n    const groupSep = group[0] ?? '';\n    if (decimalSep === '' || decimalSep === groupSep) return err.value;\n    let s = text.replace(/\\s+/g, '');\n    let percents = 0;\n    while (s.endsWith('%')) {\n      s = s.slice(0, -1);\n      percents++;\n    }\n    if (s === '') return 0;\n    const [whole, fraction, extra] = s.split(decimalSep);\n    if (extra !== undefined || (fraction !== undefined && groupSep !== '' && fraction.includes(groupSep))) return err.value;\n    const digits = (groupSep === '' ? whole : whole.split(groupSep).join('')) + (fraction === undefined ? '' : `.${fraction}`);\n    if (!/^[+-]?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?$/.test(digits)) return err.value;\n    return Number(digits) / Math.pow(100, percents);\n  },\n};\n\nexport default NUMBERVALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NUMBERVALUE: () => import('../functions/text/NUMBERVALUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/NUMBERVALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * NUMBERVALUE(text, [decimal_separator], [group_separator]): reads a number written with\n * the given separators (\".\" and \",\" by default). Spaces are ignored, group separators are\n * dropped anywhere before the decimal separator, and trailing \"%\" signs divide by 100.\n */\nconst NUMBERVALUE: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const decimal = optionalText(args, 1, '.');\n    if (isError(decimal)) return decimal;\n    const group = optionalText(args, 2, ',');\n    if (isError(group)) return group;\n    const decimalSep = decimal[0] ?? '';\n    const groupSep = group[0] ?? '';\n    if (decimalSep === '' || decimalSep === groupSep) return err.value;\n    let s = text.replace(/\\s+/g, '');\n    let percents = 0;\n    while (s.endsWith('%')) {\n      s = s.slice(0, -1);\n      percents++;\n    }\n    if (s === '') return 0;\n    const [whole, fraction, extra] = s.split(decimalSep);\n    if (extra !== undefined || (fraction !== undefined && groupSep !== '' && fraction.includes(groupSep))) return err.value;\n    const digits = (groupSep === '' ? whole : whole.split(groupSep).join('')) + (fraction === undefined ? '' : `.${fraction}`);\n    if (!/^[+-]?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?$/.test(digits)) return err.value;\n    return Number(digits) / Math.pow(100, percents);\n  },\n};\n\nexport default NUMBERVALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NUMBERVALUE: () => import('../functions/text/NUMBERVALUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/NUMBERVALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * NUMBERVALUE(text, [decimal_separator], [group_separator]): reads a number written with\n * the given separators (\".\" and \",\" by default). Spaces are ignored, group separators are\n * dropped anywhere before the decimal separator, and trailing \"%\" signs divide by 100.\n */\nconst NUMBERVALUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const decimal = optionalText(args[1], '.');\n    if (isError(decimal)) return decimal;\n    const group = optionalText(args[2], ',');\n    if (isError(group)) return group;\n    const decimalSep = decimal[0] ?? '';\n    const groupSep = group[0] ?? '';\n    if (decimalSep === '' || decimalSep === groupSep) return err.value;\n    let s = text.replace(/\\s+/g, '');\n    let percents = 0;\n    while (s.endsWith('%')) {\n      s = s.slice(0, -1);\n      percents++;\n    }\n    if (s === '') return 0;\n    const [whole, fraction, extra] = s.split(decimalSep);\n    if (extra !== undefined || (fraction !== undefined && groupSep !== '' && fraction.includes(groupSep))) return err.value;\n    const digits = (groupSep === '' ? whole : whole.split(groupSep).join('')) + (fraction === undefined ? '' : `.${fraction}`);\n    if (!/^[+-]?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?$/.test(digits)) return err.value;\n    return Number(digits) / Math.pow(100, percents);\n  },\n};\n\nexport default NUMBERVALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NUMBERVALUE: () => import('../functions/text/NUMBERVALUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/NUMBERVALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * NUMBERVALUE(text, [decimal_separator], [group_separator]): reads a number written with\n * the given separators (\".\" and \",\" by default). Spaces are ignored, group separators are\n * dropped anywhere before the decimal separator, and trailing \"%\" signs divide by 100.\n */\nconst NUMBERVALUE: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const decimal = optionalText(args[1], '.');\n    if (isError(decimal)) return decimal;\n    const group = optionalText(args[2], ',');\n    if (isError(group)) return group;\n    const decimalSep = decimal[0] ?? '';\n    const groupSep = group[0] ?? '';\n    if (decimalSep === '' || decimalSep === groupSep) return err.value;\n    let s = text.replace(/\\s+/g, '');\n    let percents = 0;\n    while (s.endsWith('%')) {\n      s = s.slice(0, -1);\n      percents++;\n    }\n    if (s === '') return 0;\n    const [whole, fraction, extra] = s.split(decimalSep);\n    if (extra !== undefined || (fraction !== undefined && groupSep !== '' && fraction.includes(groupSep))) return err.value;\n    const digits = (groupSep === '' ? whole : whole.split(groupSep).join('')) + (fraction === undefined ? '' : `.${fraction}`);\n    if (!/^[+-]?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?$/.test(digits)) return err.value;\n    return Number(digits) / Math.pow(100, percents);\n  },\n};\n\nexport default NUMBERVALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NUMBERVALUE: () => import('../functions/text/NUMBERVALUE'),\n"
+        }
+      ]
+    }
+  ]
+}

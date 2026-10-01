@@ -1,0 +1,42 @@
+{
+  "taskId": "co-number-to-text",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "/**\n * Formats a number the way the \"General\" format turns it into text: at most 15\n * significant digits, no trailing zeros, exponent notation for very large or\n * very small magnitudes (\"1E+21\").\n */\nexport function formatGeneral(n: number): string {",
+          "newString": "/**\n * The text of a number in the \"General\" format (what toText uses): at most 15\n * significant digits, no trailing zeros, exponent notation for very large or\n * very small magnitudes (\"1E+21\").\n */\nexport function numberToText(n: number): string {"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "\\bformatGeneral\\b",
+          "flags": "g",
+          "replace": "numberToText"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "\\bformatGeneral\\b",
+          "flags": "g",
+          "replace": "numberToText"
+        },
+        {
+          "op": "codemod",
+          "glob": "README.md",
+          "find": "\\bformatGeneral\\b",
+          "flags": "g",
+          "replace": "numberToText"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-number-to-text.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport * as coerce from '../../src/core/coerce';\n\ndescribe('numberToText', () => {\n  it('formats numbers in the General format', () => {\n    expect(coerce.numberToText(0.1 + 0.2)).toBe('0.3');\n    expect(coerce.numberToText(-12.5)).toBe('-12.5');\n    expect(coerce.numberToText(1e21)).toBe('1E+21');\n  });\n\n  it('replaces formatGeneral', () => {\n    expect('formatGeneral' in coerce).toBe(false);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

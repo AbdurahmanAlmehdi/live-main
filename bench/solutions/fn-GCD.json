@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-GCD",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/GCD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { gcd } from '../../helpers/gcd';\n\n/** GCD(number1, ...): the greatest common divisor of the (truncated) arguments. */\nconst GCD: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let result = 0;\n    for (const n of numbers) {\n      if (n < 0) return err.num;\n      result = gcd(result, Math.trunc(n));\n    }\n    return result;\n  },\n};\n\nexport default GCD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  GCD: () => import('../functions/math/GCD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/GCD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { gcd } from '../../helpers/gcd';\n\n/** GCD(number1, ...): the greatest common divisor of the (truncated) arguments. */\nconst GCD: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let result = 0;\n    for (const n of numbers) {\n      if (n < 0) return err.num;\n      result = gcd(result, Math.trunc(n));\n    }\n    return result;\n  },\n};\n\nexport default GCD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  GCD: () => import('../functions/math/GCD'),\n"
+        }
+      ]
+    }
+  ]
+}

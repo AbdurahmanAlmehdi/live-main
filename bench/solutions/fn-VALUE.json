@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-VALUE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/VALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { parseNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseDateText, parseTimeText } from '../../helpers/dateParse';\n\n/** VALUE(text): the number that text represents; dates and times give their serial numbers. */\nconst VALUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (typeof value !== 'string') return toNumber(value);\n    const n = parseNumber(value);\n    if (n !== null) return n;\n    const time = parseTimeText(value);\n    const date = parseDateText(value);\n    if (!isError(date)) return isError(time) ? date : date + time;\n    if (!isError(time)) return time;\n    return err.value;\n  },\n};\n\nexport default VALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VALUE: () => import('../functions/text/VALUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/VALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { parseNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseDateText, parseTimeText } from '../../helpers/dateParse';\n\n/** VALUE(text): the number that text represents; dates and times give their serial numbers. */\nconst VALUE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (typeof value !== 'string') return toNumber(value);\n    const n = parseNumber(value);\n    if (n !== null) return n;\n    const time = parseTimeText(value);\n    const date = parseDateText(value);\n    if (!isError(date)) return isError(time) ? date : date + time;\n    if (!isError(time)) return time;\n    return err.value;\n  },\n};\n\nexport default VALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VALUE: () => import('../functions/text/VALUE'),\n"
+        }
+      ]
+    }
+  ]
+}

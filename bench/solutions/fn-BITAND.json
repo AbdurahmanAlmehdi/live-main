@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-BITAND",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITAND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { toBitOperand } from '../../helpers/bits';\n\n/** BITAND(number1, number2): the bitwise AND of two integers in 0..2^48-1. */\nconst BITAND: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([aValue, bValue]) {\n    const a = toBitOperand(aValue);\n    if (isError(a)) return a;\n    const b = toBitOperand(bValue);\n    if (isError(b)) return b;\n    return Number(BigInt(a) & BigInt(b));\n  },\n};\n\nexport default BITAND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITAND: () => import('../functions/engineering/BITAND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITAND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { toBitOperand } from '../../helpers/bits';\n\n/** BITAND(number1, number2): the bitwise AND of two integers in 0..2^48-1. */\nconst BITAND: FormulaFunction = {\n  arity: [2, 2],\n  call([aValue, bValue]) {\n    const a = toBitOperand(aValue);\n    if (isError(a)) return a;\n    const b = toBitOperand(bValue);\n    if (isError(b)) return b;\n    return Number(BigInt(a) & BigInt(b));\n  },\n};\n\nexport default BITAND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITAND: () => import('../functions/engineering/BITAND'),\n"
+        }
+      ]
+    }
+  ]
+}

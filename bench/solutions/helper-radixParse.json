@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-radixParse",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/radixParse.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/**\n * Parses a number written in base 2..36, the way the engineering conversion\n * functions (BIN2DEC, HEX2DEC, OCT2DEC, ...) read their input:\n *   - digits are case-insensitive; an invalid digit gives #NUM!;\n *   - at most 10 digits, otherwise #NUM!;\n *   - for bases 2, 8 and 16 a 10-digit value whose top digit has its high bit set is\n *     negative in two's complement (\"FFFFFFFFFF\" in base 16 is -1);\n *   - \"\" is 0.\n */\nexport function parseRadix(text: string, radix: number): number | FormulaError {\n  const digits = text.trim().toUpperCase();\n  if (digits.length > 10) return err.num;\n  let value = 0;\n  for (const ch of digits) {\n    const d = parseInt(ch, 36);\n    if (Number.isNaN(d) || d >= radix) return err.num;\n    value = value * radix + d;\n  }\n  if (digits.length === 10 && (radix === 2 || radix === 8 || radix === 16)) {\n    const top = parseInt(digits[0], radix);\n    if (top >= radix / 2) value -= Math.pow(radix, 10);\n  }\n  return value;\n}\n"
+        }
+      ]
+    }
+  ]
+}

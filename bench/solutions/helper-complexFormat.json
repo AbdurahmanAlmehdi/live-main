@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-complexFormat",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/complexFormat.ts",
+          "content": "import type { Complex } from './complexParse';\n\n/** Formats one component with at most 15 significant digits. */\nfunction component(n: number): string {\n  const rounded = Number(n.toPrecision(15));\n  return String(rounded === 0 ? 0 : rounded).replace('e+', 'E+').replace('e-', 'E-');\n}\n\n/**\n * Text form of a complex number, as the IM* functions return it:\n * \"3+4i\", \"3-4i\", \"4i\", \"i\", \"-i\", \"3\", \"0\". A unit imaginary part is written without\n * the 1. Components use at most 15 significant digits.\n */\nexport function formatComplex(c: Complex): string {\n  const re = Number(c.re.toPrecision(15));\n  const im = Number(c.im.toPrecision(15));\n  if (im === 0) return component(re);\n  const imText = im === 1 ? '' : im === -1 ? '-' : component(im);\n  const imagPart = `${imText}${c.suffix}`;\n  if (re === 0) return imagPart;\n  return `${component(re)}${im > 0 ? '+' : ''}${imagPart}`;\n}\n"
+        }
+      ]
+    }
+  ]
+}

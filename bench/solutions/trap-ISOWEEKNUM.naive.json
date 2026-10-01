@@ -1,0 +1,51 @@
+{
+  "taskId": "trap-ISOWEEKNUM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/ISOWEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { weekOfYear } from '../../helpers/weekday';\n\n/** ISOWEEKNUM(date): the ISO 8601 week number (weeks start on Monday; week 1 holds the year's first Thursday). */\nconst ISOWEEKNUM: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    return weekOfYear(serial, 1);\n  },\n};\n\nexport default ISOWEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISOWEEKNUM: () => import('../functions/date/ISOWEEKNUM'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/weekday.ts",
+          "oldString": "/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */\nexport function weekOfYear(serial: number, weekStart: number): number | FormulaError {\n  const parts = dateFromSerial(serial);\n  if (isError(parts)) return parts;",
+          "newString": "/**\n * Week of the year: the week containing January 1 is week 1, and weeks start on\n * `weekStart` (0 = Sunday .. 6 = Saturday). Weeks starting on Monday follow ISO 8601\n * (week 1 contains the year's first Thursday).\n */\nexport function weekOfYear(serial: number, weekStart: number): number | FormulaError {\n  const parts = dateFromSerial(serial);\n  if (isError(parts)) return parts;\n  if (weekStart === 1) {\n    const day = Math.floor(serial);\n    const thursday = day - ((dayOfWeek(day) + 6) % 7) + 3;\n    const thursdayParts = dateFromSerial(thursday);\n    if (isError(thursdayParts)) return thursdayParts;\n    return Math.floor((thursday - (serialFromDate(thursdayParts.year, 1, 1) as number)) / 7) + 1;\n  }"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/ISOWEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { weekOfYear } from '../../helpers/weekday';\n\n/** ISOWEEKNUM(date): the ISO 8601 week number (weeks start on Monday; week 1 holds the year's first Thursday). */\nconst ISOWEEKNUM: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    return weekOfYear(serial, 1);\n  },\n};\n\nexport default ISOWEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISOWEEKNUM: () => import('../functions/date/ISOWEEKNUM'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/weekday.ts",
+          "oldString": "/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */\nexport function weekOfYear(serial: number, weekStart: number): number | FormulaError {\n  const parts = dateFromSerial(serial);\n  if (isError(parts)) return parts;",
+          "newString": "/**\n * Week of the year: the week containing January 1 is week 1, and weeks start on\n * `weekStart` (0 = Sunday .. 6 = Saturday). Weeks starting on Monday follow ISO 8601\n * (week 1 contains the year's first Thursday).\n */\nexport function weekOfYear(serial: number, weekStart: number): number | FormulaError {\n  const parts = dateFromSerial(serial);\n  if (isError(parts)) return parts;\n  if (weekStart === 1) {\n    const day = Math.floor(serial);\n    const thursday = day - ((dayOfWeek(day) + 6) % 7) + 3;\n    const thursdayParts = dateFromSerial(thursday);\n    if (isError(thursdayParts)) return thursdayParts;\n    return Math.floor((thursday - (serialFromDate(thursdayParts.year, 1, 1) as number)) / 7) + 1;\n  }"
+        }
+      ]
+    }
+  ]
+}

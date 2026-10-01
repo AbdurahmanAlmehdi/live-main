@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ROMAN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROMAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { toRoman } from '../../helpers/roman';\n\n/** ROMAN(number): a number from 0 to 3999 (truncated) as a classic roman numeral. */\nconst ROMAN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < 0 || n > 3999) return err.value;\n    return toRoman(n);\n  },\n};\n\nexport default ROMAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROMAN: () => import('../functions/math/ROMAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROMAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { toRoman } from '../../helpers/roman';\n\n/** ROMAN(number): a number from 0 to 3999 (truncated) as a classic roman numeral. */\nconst ROMAN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < 0 || n > 3999) return err.value;\n    return toRoman(n);\n  },\n};\n\nexport default ROMAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROMAN: () => import('../functions/math/ROMAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROMAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { toRoman } from '../../helpers/roman';\n\n/** ROMAN(number): a number from 0 to 3999 (truncated) as a classic roman numeral. */\nconst ROMAN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < 0 || n > 3999) return err.value;\n    return toRoman(n);\n  },\n};\n\nexport default ROMAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROMAN: () => import('../functions/math/ROMAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROMAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { toRoman } from '../../helpers/roman';\n\n/** ROMAN(number): a number from 0 to 3999 (truncated) as a classic roman numeral. */\nconst ROMAN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < 0 || n > 3999) return err.value;\n    return toRoman(n);\n  },\n};\n\nexport default ROMAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROMAN: () => import('../functions/math/ROMAN'),\n"
+        }
+      ]
+    }
+  ]
+}

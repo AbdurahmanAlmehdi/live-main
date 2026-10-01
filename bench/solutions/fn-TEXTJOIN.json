@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-TEXTJOIN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue);\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts)) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  arity: [3, Infinity],\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue);\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts)) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue);\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts, { blanks: 'keep' })) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  arity: [3, Infinity],\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue);\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts, { blanks: 'keep' })) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue, { text: 'parse' });\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts)) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  arity: [3, Infinity],\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue, { text: 'parse' });\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts)) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-flatten-opts",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue, { text: 'parse' });\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts, { blanks: 'keep' })) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-flatten-opts",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXTJOIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\nimport { toBoolean, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * TEXTJOIN(delimiter, ignore_empty, text1, ...): joins texts and array cells with a\n * delimiter; when ignore_empty is TRUE, empty texts are skipped.\n */\nconst TEXTJOIN: FormulaFunction = {\n  arity: [3, Infinity],\n  call([delimiterValue, ignoreValue, ...texts]) {\n    const delimiter = toText(delimiterValue);\n    if (isError(delimiter)) return delimiter;\n    const ignoreEmpty = toBoolean(ignoreValue, { text: 'parse' });\n    if (isError(ignoreEmpty)) return ignoreEmpty;\n    const parts: string[] = [];\n    for (const cell of flattenArgs(texts, { blanks: 'keep' })) {\n      const text = toText(cell);\n      if (isError(text)) return text;\n      if (ignoreEmpty && text === '') continue;\n      parts.push(text);\n    }\n    const joined = parts.join(delimiter);\n    return joined.length > 32767 ? err.value : joined;\n  },\n};\n\nexport default TEXTJOIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXTJOIN: () => import('../functions/text/TEXTJOIN'),\n"
+        }
+      ]
+    }
+  ]
+}

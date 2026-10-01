@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-NETWORKDAYS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/NETWORKDAYS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectHolidays, isWorkday } from '../../helpers/workdays';\n\n/** NETWORKDAYS(start_date, end_date, [holidays]): working days between the dates, inclusive (negative when end is before start). */\nconst NETWORKDAYS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const holidays = collectHolidays(args[2]);\n    if (isError(holidays)) return holidays;\n    const from = Math.floor(Math.min(start, end));\n    const to = Math.floor(Math.max(start, end));\n    let count = 0;\n    for (let day = from; day <= to; day++) {\n      if (isWorkday(day, holidays)) count++;\n    }\n    return start <= end ? count : -count;\n  },\n};\n\nexport default NETWORKDAYS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NETWORKDAYS: () => import('../functions/date/NETWORKDAYS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/NETWORKDAYS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectHolidays, isWorkday } from '../../helpers/workdays';\n\n/** NETWORKDAYS(start_date, end_date, [holidays]): working days between the dates, inclusive (negative when end is before start). */\nconst NETWORKDAYS: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const holidays = collectHolidays(args[2]);\n    if (isError(holidays)) return holidays;\n    const from = Math.floor(Math.min(start, end));\n    const to = Math.floor(Math.max(start, end));\n    let count = 0;\n    for (let day = from; day <= to; day++) {\n      if (isWorkday(day, holidays)) count++;\n    }\n    return start <= end ? count : -count;\n  },\n};\n\nexport default NETWORKDAYS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NETWORKDAYS: () => import('../functions/date/NETWORKDAYS'),\n"
+        }
+      ]
+    }
+  ]
+}

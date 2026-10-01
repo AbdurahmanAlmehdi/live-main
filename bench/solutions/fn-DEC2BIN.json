@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-DEC2BIN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DEC2BIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** DEC2BIN(number, [places]): a decimal integer (truncated) written in binary, zero-padded to places digits (two's complement for negatives). */\nconst DEC2BIN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const n = toInteger(args[0]);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toInteger(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 2, places);\n  },\n};\n\nexport default DEC2BIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DEC2BIN: () => import('../functions/engineering/DEC2BIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DEC2BIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** DEC2BIN(number, [places]): a decimal integer (truncated) written in binary, zero-padded to places digits (two's complement for negatives). */\nconst DEC2BIN: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const n = toInteger(args[0]);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toInteger(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 2, places);\n  },\n};\n\nexport default DEC2BIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DEC2BIN: () => import('../functions/engineering/DEC2BIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DEC2BIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** DEC2BIN(number, [places]): a decimal integer (truncated) written in binary, zero-padded to places digits (two's complement for negatives). */\nconst DEC2BIN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const n = toIntTrunc(args[0]);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toIntTrunc(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 2, places);\n  },\n};\n\nexport default DEC2BIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DEC2BIN: () => import('../functions/engineering/DEC2BIN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DEC2BIN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { formatRadix } from '../../helpers/radixFormat';\n\n/** DEC2BIN(number, [places]): a decimal integer (truncated) written in binary, zero-padded to places digits (two's complement for negatives). */\nconst DEC2BIN: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    if (typeof args[0] === 'boolean') return err.value;\n    const n = toIntTrunc(args[0]);\n    if (isError(n)) return n;\n    const places = args.length > 1 ? toIntTrunc(args[1]) : undefined;\n    if (isError(places)) return places;\n    return formatRadix(n, 2, places);\n  },\n};\n\nexport default DEC2BIN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DEC2BIN: () => import('../functions/engineering/DEC2BIN'),\n"
+        }
+      ]
+    }
+  ]
+}

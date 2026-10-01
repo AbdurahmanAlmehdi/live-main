@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-incompleteBeta",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/incompleteBeta.ts",
+          "content": "import { gammaLn } from './gamma';\n\n/** The regularized incomplete beta function I_x(a, b), by Lentz's continued fraction. */\n\nconst EPS = 1e-16;\nconst TINY = 1e-300;\nconst MAX_ITERATIONS = 1000;\n\nfunction continuedFraction(x: number, a: number, b: number): number {\n  const qab = a + b;\n  const qap = a + 1;\n  const qam = a - 1;\n  let c = 1;\n  let d = 1 - (qab * x) / qap;\n  if (Math.abs(d) < TINY) d = TINY;\n  d = 1 / d;\n  let h = d;\n  for (let m = 1; m <= MAX_ITERATIONS; m++) {\n    const m2 = 2 * m;\n    let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));\n    d = 1 + aa * d;\n    if (Math.abs(d) < TINY) d = TINY;\n    c = 1 + aa / c;\n    if (Math.abs(c) < TINY) c = TINY;\n    d = 1 / d;\n    h *= d * c;\n    aa = (-(a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));\n    d = 1 + aa * d;\n    if (Math.abs(d) < TINY) d = TINY;\n    c = 1 + aa / c;\n    if (Math.abs(c) < TINY) c = TINY;\n    d = 1 / d;\n    const delta = d * c;\n    h *= delta;\n    if (Math.abs(delta - 1) < EPS) break;\n  }\n  return h;\n}\n\n/** I_x(a, b) for 0 <= x <= 1 and a, b > 0. */\nexport function regularizedBeta(x: number, a: number, b: number): number {\n  if (x <= 0) return 0;\n  if (x >= 1) return 1;\n  const front = Math.exp(gammaLn(a + b) - gammaLn(a) - gammaLn(b) + a * Math.log(x) + b * Math.log(1 - x));\n  if (x < (a + 1) / (a + b + 2)) return (front * continuedFraction(x, a, b)) / a;\n  return 1 - (front * continuedFraction(1 - x, b, a)) / b;\n}\n"
+        }
+      ]
+    }
+  ]
+}

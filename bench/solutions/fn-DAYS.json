@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-DAYS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\n\n/** DAYS(end_date, start_date): whole days from start_date to end_date. */\nconst DAYS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const dates = args.map((arg) => toNumber(arg));\n    const error = firstError(...dates);\n    if (error) return error;\n    const [end, start] = dates as number[];\n    return Math.floor(end) - Math.floor(start);\n  },\n};\n\nexport default DAYS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS: () => import('../functions/date/DAYS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\n\n/** DAYS(end_date, start_date): whole days from start_date to end_date. */\nconst DAYS: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const dates = args.map((arg) => toNumber(arg));\n    const error = firstError(...dates);\n    if (error) return error;\n    const [end, start] = dates as number[];\n    return Math.floor(end) - Math.floor(start);\n  },\n};\n\nexport default DAYS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS: () => import('../functions/date/DAYS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\n\n/** DAYS(end_date, start_date): whole days from start_date to end_date. */\nconst DAYS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const dates = args.map((arg) => toNumber(arg));\n    const error = firstError([...dates]);\n    if (error) return error;\n    const [end, start] = dates as number[];\n    return Math.floor(end) - Math.floor(start);\n  },\n};\n\nexport default DAYS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS: () => import('../functions/date/DAYS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\n\n/** DAYS(end_date, start_date): whole days from start_date to end_date. */\nconst DAYS: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const dates = args.map((arg) => toNumber(arg));\n    const error = firstError([...dates]);\n    if (error) return error;\n    const [end, start] = dates as number[];\n    return Math.floor(end) - Math.floor(start);\n  },\n};\n\nexport default DAYS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS: () => import('../functions/date/DAYS'),\n"
+        }
+      ]
+    }
+  ]
+}

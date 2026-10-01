@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-LARGE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/LARGE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** LARGE(array, k): the k-th largest number. */\nconst LARGE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (k < 1 || k > numbers.length) return err.num;\n    return [...numbers].sort((a, b) => b - a)[k - 1];\n  },\n};\n\nexport default LARGE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LARGE: () => import('../functions/statistical/LARGE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/LARGE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** LARGE(array, k): the k-th largest number. */\nconst LARGE: FormulaFunction = {\n  arity: [2, 2],\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (k < 1 || k > numbers.length) return err.num;\n    return [...numbers].sort((a, b) => b - a)[k - 1];\n  },\n};\n\nexport default LARGE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LARGE: () => import('../functions/statistical/LARGE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/LARGE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** LARGE(array, k): the k-th largest number. */\nconst LARGE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (k < 1 || k > numbers.length) return err.num;\n    return [...numbers].sort((a, b) => b - a)[k - 1];\n  },\n};\n\nexport default LARGE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LARGE: () => import('../functions/statistical/LARGE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/LARGE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** LARGE(array, k): the k-th largest number. */\nconst LARGE: FormulaFunction = {\n  arity: [2, 2],\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (k < 1 || k > numbers.length) return err.num;\n    return [...numbers].sort((a, b) => b - a)[k - 1];\n  },\n};\n\nexport default LARGE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LARGE: () => import('../functions/statistical/LARGE'),\n"
+        }
+      ]
+    }
+  ]
+}

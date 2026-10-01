@@ -1,0 +1,75 @@
+{
+  "taskId": "trap-AVERAGEA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { mean } from '../../helpers/moments';\n\n/**\n * AVERAGEA(value1, ...): the mean of all values; inside arrays text counts as 0 and\n * booleans as 1 or 0. #DIV/0! when there are no values.\n */\nconst AVERAGEA: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args, { rangeValues: 'all' });\n    if (isError(numbers)) return numbers;\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEA: () => import('../functions/statistical/AVERAGEA'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "  /** Empty arguments (e.g. SUM(1,,2)): 'zero' (default) counts them as 0, 'ignore' skips them. */\n  directEmpty?: 'zero' | 'ignore';\n}",
+          "newString": "  /** Empty arguments (e.g. SUM(1,,2)): 'zero' (default) counts them as 0, 'ignore' skips them. */\n  directEmpty?: 'zero' | 'ignore';\n  /**\n   * Values inside arrays/ranges: 'numbers' (default) counts only numbers; 'all' also counts\n   * text as 0 and booleans as 1 / 0, as the A-functions (AVERAGEA, ...) do.\n   */\n  rangeValues?: 'numbers' | 'all';\n}"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "  const { directText = 'coerce', directBooleans = 'coerce', directEmpty = 'zero' } = opts;",
+          "newString": "  const { directText = 'coerce', directBooleans = 'coerce', directEmpty = 'zero', rangeValues = 'numbers' } = opts;"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "          if (typeof cell === 'number') out.push(cell);",
+          "newString": "          if (typeof cell === 'number') out.push(cell);\n          else if (rangeValues === 'all' && typeof cell === 'boolean') out.push(cell ? 1 : 0);\n          else if (rangeValues === 'all' && typeof cell === 'string') out.push(0);"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { mean } from '../../helpers/moments';\n\n/**\n * AVERAGEA(value1, ...): the mean of all values; inside arrays text counts as 0 and\n * booleans as 1 or 0. #DIV/0! when there are no values.\n */\nconst AVERAGEA: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args, { rangeValues: 'all' });\n    if (isError(numbers)) return numbers;\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEA: () => import('../functions/statistical/AVERAGEA'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "  /** Empty arguments (e.g. SUM(1,,2)): 'zero' (default) counts them as 0, 'ignore' skips them. */\n  directEmpty?: 'zero' | 'ignore';\n}",
+          "newString": "  /** Empty arguments (e.g. SUM(1,,2)): 'zero' (default) counts them as 0, 'ignore' skips them. */\n  directEmpty?: 'zero' | 'ignore';\n  /**\n   * Values inside arrays/ranges: 'numbers' (default) counts only numbers; 'all' also counts\n   * text as 0 and booleans as 1 / 0, as the A-functions (AVERAGEA, ...) do.\n   */\n  rangeValues?: 'numbers' | 'all';\n}"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "  const { directText = 'coerce', directBooleans = 'coerce', directEmpty = 'zero' } = opts;",
+          "newString": "  const { directText = 'coerce', directBooleans = 'coerce', directEmpty = 'zero', rangeValues = 'numbers' } = opts;"
+        },
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "          if (typeof cell === 'number') out.push(cell);",
+          "newString": "          if (typeof cell === 'number') out.push(cell);\n          else if (rangeValues === 'all' && typeof cell === 'boolean') out.push(cell ? 1 : 0);\n          else if (rangeValues === 'all' && typeof cell === 'string') out.push(0);"
+        }
+      ]
+    }
+  ]
+}

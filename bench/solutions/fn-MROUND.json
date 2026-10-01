@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-MROUND",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MROUND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { roundToMultiple } from '../../helpers/multiples';\n\n/** MROUND(number, multiple): rounds to the nearest multiple; number and multiple must share a sign. */\nconst MROUND: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, multipleValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const multiple = toNumber(multipleValue);\n    if (isError(multiple)) return multiple;\n    if (n === 0 || multiple === 0) return 0;\n    if (Math.sign(n) !== Math.sign(multiple)) return err.num;\n    return roundToMultiple(n, Math.abs(multiple));\n  },\n};\n\nexport default MROUND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MROUND: () => import('../functions/math/MROUND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MROUND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { roundToMultiple } from '../../helpers/multiples';\n\n/** MROUND(number, multiple): rounds to the nearest multiple; number and multiple must share a sign. */\nconst MROUND: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, multipleValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const multiple = toNumber(multipleValue);\n    if (isError(multiple)) return multiple;\n    if (n === 0 || multiple === 0) return 0;\n    if (Math.sign(n) !== Math.sign(multiple)) return err.num;\n    return roundToMultiple(n, Math.abs(multiple));\n  },\n};\n\nexport default MROUND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MROUND: () => import('../functions/math/MROUND'),\n"
+        }
+      ]
+    }
+  ]
+}

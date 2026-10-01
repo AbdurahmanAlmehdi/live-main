@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-moments",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/moments.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/** Arithmetic mean; #DIV/0! for an empty list. */\nexport function mean(values: readonly number[]): number | FormulaError {\n  if (values.length === 0) return err.div0;\n  let total = 0;\n  for (const v of values) total += v;\n  return total / values.length;\n}\n\n/** Sum of squared deviations from the mean (0 for an empty list). */\nexport function sumOfSquaredDeviations(values: readonly number[]): number {\n  if (values.length === 0) return 0;\n  let total = 0;\n  for (const v of values) total += v;\n  const m = total / values.length;\n  let sq = 0;\n  for (const v of values) sq += (v - m) * (v - m);\n  return sq;\n}\n"
+        }
+      ]
+    }
+  ]
+}

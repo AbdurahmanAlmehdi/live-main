@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-SQRT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SQRT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SQRT(number): the positive square root of a number. */\nconst SQRT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return Math.sqrt(n);\n  },\n};\n\nexport default SQRT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SQRT: () => import('../functions/math/SQRT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SQRT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SQRT(number): the positive square root of a number. */\nconst SQRT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return Math.sqrt(n);\n  },\n};\n\nexport default SQRT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SQRT: () => import('../functions/math/SQRT'),\n"
+        }
+      ]
+    }
+  ]
+}

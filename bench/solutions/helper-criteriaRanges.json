@@ -1,0 +1,52 @@
+{
+  "taskId": "helper-criteriaRanges",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/criteriaRanges.ts",
+          "content": "import type { FormulaError, Scalar, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf, dimensions } from '../core/range';\nimport { parseCriterion, type Criterion } from './criteria';\n\nexport interface CriteriaPair {\n  range: Value;\n  criterion: Value;\n}\n\n/**\n * For COUNTIFS / SUMIFS / AVERAGEIFS / MAXIFS / MINIFS: the row-major cell indices at\n * which every range satisfies its criterion. All ranges must have the same shape\n * (otherwise #VALUE!); a criterion must be a single value and errors in it are returned.\n */\nexport function matchingIndices(pairs: readonly CriteriaPair[]): number[] | FormulaError {\n  if (pairs.length === 0) return err.value;\n  const [height, width] = dimensions(pairs[0].range);\n  const tests: { cells: Scalar[]; matches: Criterion }[] = [];\n  for (const { range, criterion } of pairs) {\n    const [h, w] = dimensions(range);\n    if (h !== height || w !== width) return err.value;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const [crit] = criterionCells;\n    if (isError(crit)) return crit;\n    tests.push({ cells: cellsOf(range), matches: parseCriterion(crit) });\n  }\n  const indices: number[] = [];\n  for (let i = 0; i < height * width; i++) {\n    if (tests.every((t) => t.matches(t.cells[i]))) indices.push(i);\n  }\n  return indices;\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/criteriaRanges.ts",
+          "content": "import type { FormulaError, Scalar, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf, dimensions } from '../core/range';\nimport { parseCriterion, type Criterion } from './criteria';\n\nexport interface CriteriaPair {\n  range: Value;\n  criterion: Value;\n}\n\n/**\n * For COUNTIFS / SUMIFS / AVERAGEIFS / MAXIFS / MINIFS: the row-major cell indices at\n * which every range satisfies its criterion. All ranges must have the same shape\n * (otherwise #VALUE!); a criterion must be a single value and errors in it are returned.\n */\nexport function matchingIndices(pairs: readonly CriteriaPair[]): number[] | FormulaError {\n  if (pairs.length === 0) return err.value;\n  const { height: height, width: width } = dimensions(pairs[0].range);\n  const tests: { cells: Scalar[]; matches: Criterion }[] = [];\n  for (const { range, criterion } of pairs) {\n    const { height: h, width: w } = dimensions(range);\n    if (h !== height || w !== width) return err.value;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const [crit] = criterionCells;\n    if (isError(crit)) return crit;\n    tests.push({ cells: cellsOf(range), matches: parseCriterion(crit) });\n  }\n  const indices: number[] = [];\n  for (let i = 0; i < height * width; i++) {\n    if (tests.every((t) => t.matches(t.cells[i]))) indices.push(i);\n  }\n  return indices;\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/criteriaRanges.ts",
+          "content": "import type { FormulaError, Scalar, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf, dimensions } from '../core/range';\nimport { parseCriterion, type Criterion } from './criteria';\n\nexport interface CriteriaPair {\n  range: Value;\n  criterion: Value;\n}\n\n/**\n * For COUNTIFS / SUMIFS / AVERAGEIFS / MAXIFS / MINIFS: the row-major cell indices at\n * which every range satisfies its criterion. All ranges must have the same shape\n * (otherwise #VALUE!); a criterion must be a single value and errors in it are returned.\n */\nexport function matchingIndices(pairs: readonly CriteriaPair[]): number[] | FormulaError {\n  if (pairs.length === 0) return err.value;\n  const [height, width] = dimensions(pairs[0].range);\n  const tests: { cells: Scalar[]; matches: Criterion }[] = [];\n  for (const { range, criterion } of pairs) {\n    const [h, w] = dimensions(range);\n    if (h !== height || w !== width) return err.value;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const [crit] = criterionCells;\n    if (isError(crit)) return crit;\n    tests.push({ cells: cellsOf(range, { order: 'rows' }), matches: parseCriterion(crit) });\n  }\n  const indices: number[] = [];\n  for (let i = 0; i < height * width; i++) {\n    if (tests.every((t) => t.matches(t.cells[i]))) indices.push(i);\n  }\n  return indices;\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/criteriaRanges.ts",
+          "content": "import type { FormulaError, Scalar, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf, dimensions } from '../core/range';\nimport { parseCriterion, type Criterion } from './criteria';\n\nexport interface CriteriaPair {\n  range: Value;\n  criterion: Value;\n}\n\n/**\n * For COUNTIFS / SUMIFS / AVERAGEIFS / MAXIFS / MINIFS: the row-major cell indices at\n * which every range satisfies its criterion. All ranges must have the same shape\n * (otherwise #VALUE!); a criterion must be a single value and errors in it are returned.\n */\nexport function matchingIndices(pairs: readonly CriteriaPair[]): number[] | FormulaError {\n  if (pairs.length === 0) return err.value;\n  const { height: height, width: width } = dimensions(pairs[0].range);\n  const tests: { cells: Scalar[]; matches: Criterion }[] = [];\n  for (const { range, criterion } of pairs) {\n    const { height: h, width: w } = dimensions(range);\n    if (h !== height || w !== width) return err.value;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const [crit] = criterionCells;\n    if (isError(crit)) return crit;\n    tests.push({ cells: cellsOf(range, { order: 'rows' }), matches: parseCriterion(crit) });\n  }\n  const indices: number[] = [];\n  for (let i = 0; i < height * width; i++) {\n    if (tests.every((t) => t.matches(t.cells[i]))) indices.push(i);\n  }\n  return indices;\n}\n"
+        }
+      ]
+    }
+  ]
+}

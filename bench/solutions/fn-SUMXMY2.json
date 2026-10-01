@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SUMXMY2",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMXMY2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\n\n/** SUMXMY2(array_x, array_y): the sum of (x − y)² over corresponding values (pairs with a non-number are skipped). */\nconst SUMXMY2: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([left, right]) {\n    const pairs = collectPairs(left, right);\n    if (isError(pairs)) return pairs;\n    let total = 0;\n    pairs.xs.forEach((x, i) => {\n      const y = pairs.ys[i];\n      total += (x - y) * (x - y);\n    });\n    return checkNumber(total);\n  },\n};\n\nexport default SUMXMY2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMXMY2: () => import('../functions/math/SUMXMY2'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMXMY2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\n\n/** SUMXMY2(array_x, array_y): the sum of (x − y)² over corresponding values (pairs with a non-number are skipped). */\nconst SUMXMY2: FormulaFunction = {\n  arity: [2, 2],\n  call([left, right]) {\n    const pairs = collectPairs(left, right);\n    if (isError(pairs)) return pairs;\n    let total = 0;\n    pairs.xs.forEach((x, i) => {\n      const y = pairs.ys[i];\n      total += (x - y) * (x - y);\n    });\n    return checkNumber(total);\n  },\n};\n\nexport default SUMXMY2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMXMY2: () => import('../functions/math/SUMXMY2'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMXMY2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\n\n/** SUMXMY2(array_x, array_y): the sum of (x − y)² over corresponding values (pairs with a non-number are skipped). */\nconst SUMXMY2: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([left, right]) {\n    const pairs = collectPairs(left, right);\n    if (isError(pairs)) return pairs;\n    let total = 0;\n    pairs.xs.forEach((x, i) => {\n      const y = pairs.ys[i];\n      total += (x - y) * (x - y);\n    });\n    return numberResult(total);\n  },\n};\n\nexport default SUMXMY2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMXMY2: () => import('../functions/math/SUMXMY2'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMXMY2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\n\n/** SUMXMY2(array_x, array_y): the sum of (x − y)² over corresponding values (pairs with a non-number are skipped). */\nconst SUMXMY2: FormulaFunction = {\n  arity: [2, 2],\n  call([left, right]) {\n    const pairs = collectPairs(left, right);\n    if (isError(pairs)) return pairs;\n    let total = 0;\n    pairs.xs.forEach((x, i) => {\n      const y = pairs.ys[i];\n      total += (x - y) * (x - y);\n    });\n    return numberResult(total);\n  },\n};\n\nexport default SUMXMY2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMXMY2: () => import('../functions/math/SUMXMY2'),\n"
+        }
+      ]
+    }
+  ]
+}

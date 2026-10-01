@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SUBSTITUTE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/SUBSTITUTE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUBSTITUTE(text, old_text, new_text, [instance_num]): replaces every occurrence of\n * old_text, or only the instance_num-th one.\n */\nconst SUBSTITUTE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const search = toText(args[1]);\n    if (isError(search)) return search;\n    const replacement = toText(args[2]);\n    if (isError(replacement)) return replacement;\n    if (args.length < 4 || args[3] === null) {\n      return search === '' ? text : text.split(search).join(replacement);\n    }\n    const instance = toInteger(args[3]);\n    if (isError(instance)) return instance;\n    if (instance < 1) return err.value;\n    if (search === '') return text;\n    let index = -1;\n    for (let i = 0; i < instance; i++) {\n      index = text.indexOf(search, index + 1);\n      if (index < 0) return text;\n    }\n    return text.slice(0, index) + replacement + text.slice(index + search.length);\n  },\n};\n\nexport default SUBSTITUTE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUBSTITUTE: () => import('../functions/text/SUBSTITUTE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/SUBSTITUTE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUBSTITUTE(text, old_text, new_text, [instance_num]): replaces every occurrence of\n * old_text, or only the instance_num-th one.\n */\nconst SUBSTITUTE: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const search = toText(args[1]);\n    if (isError(search)) return search;\n    const replacement = toText(args[2]);\n    if (isError(replacement)) return replacement;\n    if (args.length < 4 || args[3] === null) {\n      return search === '' ? text : text.split(search).join(replacement);\n    }\n    const instance = toInteger(args[3]);\n    if (isError(instance)) return instance;\n    if (instance < 1) return err.value;\n    if (search === '') return text;\n    let index = -1;\n    for (let i = 0; i < instance; i++) {\n      index = text.indexOf(search, index + 1);\n      if (index < 0) return text;\n    }\n    return text.slice(0, index) + replacement + text.slice(index + search.length);\n  },\n};\n\nexport default SUBSTITUTE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUBSTITUTE: () => import('../functions/text/SUBSTITUTE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/SUBSTITUTE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUBSTITUTE(text, old_text, new_text, [instance_num]): replaces every occurrence of\n * old_text, or only the instance_num-th one.\n */\nconst SUBSTITUTE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const search = toText(args[1]);\n    if (isError(search)) return search;\n    const replacement = toText(args[2]);\n    if (isError(replacement)) return replacement;\n    if (args.length < 4 || args[3] === null) {\n      return search === '' ? text : text.split(search).join(replacement);\n    }\n    const instance = toIntTrunc(args[3]);\n    if (isError(instance)) return instance;\n    if (instance < 1) return err.value;\n    if (search === '') return text;\n    let index = -1;\n    for (let i = 0; i < instance; i++) {\n      index = text.indexOf(search, index + 1);\n      if (index < 0) return text;\n    }\n    return text.slice(0, index) + replacement + text.slice(index + search.length);\n  },\n};\n\nexport default SUBSTITUTE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUBSTITUTE: () => import('../functions/text/SUBSTITUTE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/SUBSTITUTE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUBSTITUTE(text, old_text, new_text, [instance_num]): replaces every occurrence of\n * old_text, or only the instance_num-th one.\n */\nconst SUBSTITUTE: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const search = toText(args[1]);\n    if (isError(search)) return search;\n    const replacement = toText(args[2]);\n    if (isError(replacement)) return replacement;\n    if (args.length < 4 || args[3] === null) {\n      return search === '' ? text : text.split(search).join(replacement);\n    }\n    const instance = toIntTrunc(args[3]);\n    if (isError(instance)) return instance;\n    if (instance < 1) return err.value;\n    if (search === '') return text;\n    let index = -1;\n    for (let i = 0; i < instance; i++) {\n      index = text.indexOf(search, index + 1);\n      if (index < 0) return text;\n    }\n    return text.slice(0, index) + replacement + text.slice(index + search.length);\n  },\n};\n\nexport default SUBSTITUTE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUBSTITUTE: () => import('../functions/text/SUBSTITUTE'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IMSUB",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSUB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { FormulaError } from '../../core/value';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex, type Complex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** The suffix shared by the operands that have an imaginary part (\"i\" when none has one); #VALUE! when they mix \"i\" and \"j\". */\nfunction commonSuffix(operands: readonly Complex[]): Complex['suffix'] | FormulaError {\n  const suffixes = new Set(operands.filter((z) => z.im !== 0).map((z) => z.suffix));\n  if (suffixes.size > 1) return err.value;\n  return suffixes.has('j') ? 'j' : 'i';\n}\n\n/** IMSUB(inumber1, inumber2): the difference of two complex numbers. */\nconst IMSUB: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([aValue, bValue]) {\n    const a = parseComplex(aValue);\n    if (isError(a)) return a;\n    const b = parseComplex(bValue);\n    if (isError(b)) return b;\n    const suffix = commonSuffix([a, b]);\n    if (isError(suffix)) return suffix;\n    return formatComplex({ re: a.re - b.re, im: a.im - b.im, suffix });\n  },\n};\n\nexport default IMSUB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSUB: () => import('../functions/engineering/IMSUB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSUB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { FormulaError } from '../../core/value';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex, type Complex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** The suffix shared by the operands that have an imaginary part (\"i\" when none has one); #VALUE! when they mix \"i\" and \"j\". */\nfunction commonSuffix(operands: readonly Complex[]): Complex['suffix'] | FormulaError {\n  const suffixes = new Set(operands.filter((z) => z.im !== 0).map((z) => z.suffix));\n  if (suffixes.size > 1) return err.value;\n  return suffixes.has('j') ? 'j' : 'i';\n}\n\n/** IMSUB(inumber1, inumber2): the difference of two complex numbers. */\nconst IMSUB: FormulaFunction = {\n  arity: [2, 2],\n  call([aValue, bValue]) {\n    const a = parseComplex(aValue);\n    if (isError(a)) return a;\n    const b = parseComplex(bValue);\n    if (isError(b)) return b;\n    const suffix = commonSuffix([a, b]);\n    if (isError(suffix)) return suffix;\n    return formatComplex({ re: a.re - b.re, im: a.im - b.im, suffix });\n  },\n};\n\nexport default IMSUB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSUB: () => import('../functions/engineering/IMSUB'),\n"
+        }
+      ]
+    }
+  ]
+}

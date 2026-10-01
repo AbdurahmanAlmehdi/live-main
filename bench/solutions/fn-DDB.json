@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-DDB",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 5,\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args, 4, 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return checkNumber(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  arity: [4, 5],\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args, 4, 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return checkNumber(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 5,\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args[4], 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return checkNumber(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  arity: [4, 5],\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args[4], 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return checkNumber(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 5,\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args, 4, 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return numberResult(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  arity: [4, 5],\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args, 4, 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return numberResult(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 5,\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args[4], 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return numberResult(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/DDB.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/**\n * DDB(cost, salvage, life, period, [factor]): declining balance depreciation for a period,\n * at factor / life per period (factor 2 by default), never going below salvage.\n */\nconst DDB: FormulaFunction = {\n  arity: [4, 5],\n  call(args) {\n    const cost = toNumber(args[0]);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(args[1]);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(args[2]);\n    if (isError(life)) return life;\n    const period = toNumber(args[3]);\n    if (isError(period)) return period;\n    const factor = optionalNumber(args[4], 2);\n    if (isError(factor)) return factor;\n    if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0 || period > life) return err.num;\n    const rate = Math.min(factor / life, 1);\n    let before: number;\n    if (rate === 1) before = period === 1 ? cost : 0;\n    else before = cost * Math.pow(1 - rate, period - 1);\n    const after = Math.max(cost * Math.pow(1 - rate, period), salvage);\n    return numberResult(Math.max(before - after, 0));\n  },\n};\n\nexport default DDB;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DDB: () => import('../functions/financial/DDB'),\n"
+        }
+      ]
+    }
+  ]
+}

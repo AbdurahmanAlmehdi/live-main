@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-PRODUCT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/PRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** PRODUCT(number1, ...): multiplies the numbers in the arguments (0 when there are none). */\nconst PRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return 0;\n    return checkNumber(numbers.reduce((product, n) => product * n, 1));\n  },\n};\n\nexport default PRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PRODUCT: () => import('../functions/math/PRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/PRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** PRODUCT(number1, ...): multiplies the numbers in the arguments (0 when there are none). */\nconst PRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return 0;\n    return checkNumber(numbers.reduce((product, n) => product * n, 1));\n  },\n};\n\nexport default PRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PRODUCT: () => import('../functions/math/PRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/PRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** PRODUCT(number1, ...): multiplies the numbers in the arguments (0 when there are none). */\nconst PRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return 0;\n    return numberResult(numbers.reduce((product, n) => product * n, 1));\n  },\n};\n\nexport default PRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PRODUCT: () => import('../functions/math/PRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/PRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** PRODUCT(number1, ...): multiplies the numbers in the arguments (0 when there are none). */\nconst PRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return 0;\n    return numberResult(numbers.reduce((product, n) => product * n, 1));\n  },\n};\n\nexport default PRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PRODUCT: () => import('../functions/math/PRODUCT'),\n"
+        }
+      ]
+    }
+  ]
+}

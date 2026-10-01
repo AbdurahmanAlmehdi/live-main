@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ISBLANK",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISBLANK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** ISBLANK(value): TRUE when the value is empty. */\nconst ISBLANK: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    return value === null;\n  },\n};\n\nexport default ISBLANK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISBLANK: () => import('../functions/information/ISBLANK'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISBLANK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** ISBLANK(value): TRUE when the value is empty. */\nconst ISBLANK: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    return value === null;\n  },\n};\n\nexport default ISBLANK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISBLANK: () => import('../functions/information/ISBLANK'),\n"
+        }
+      ]
+    }
+  ]
+}

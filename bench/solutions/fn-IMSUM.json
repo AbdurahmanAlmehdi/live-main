@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-IMSUM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { FormulaError, Value } from '../../core/value';\nimport { flattenArgs } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex, type Complex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** The suffix shared by the operands that have an imaginary part (\"i\" when none has one); #VALUE! when they mix \"i\" and \"j\". */\nfunction commonSuffix(operands: readonly Complex[]): Complex['suffix'] | FormulaError {\n  const suffixes = new Set(operands.filter((z) => z.im !== 0).map((z) => z.suffix));\n  if (suffixes.size > 1) return err.value;\n  return suffixes.has('j') ? 'j' : 'i';\n}\n\n/** IMSUM(inumber1, [inumber2], ...): the sum of complex numbers (arrays contribute every element). */\nconst IMSUM: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args: Value[]) {\n    const operands: Complex[] = [];\n    for (const cell of flattenArgs(args)) {\n      const z = parseComplex(cell);\n      if (isError(z)) return z;\n      operands.push(z);\n    }\n    const suffix = commonSuffix(operands);\n    if (isError(suffix)) return suffix;\n    let re = 0;\n    let im = 0;\n    for (const z of operands) {\n      re += z.re;\n      im += z.im;\n    }\n    return formatComplex({ re, im, suffix });\n  },\n};\n\nexport default IMSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSUM: () => import('../functions/engineering/IMSUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { FormulaError, Value } from '../../core/value';\nimport { flattenArgs } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex, type Complex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** The suffix shared by the operands that have an imaginary part (\"i\" when none has one); #VALUE! when they mix \"i\" and \"j\". */\nfunction commonSuffix(operands: readonly Complex[]): Complex['suffix'] | FormulaError {\n  const suffixes = new Set(operands.filter((z) => z.im !== 0).map((z) => z.suffix));\n  if (suffixes.size > 1) return err.value;\n  return suffixes.has('j') ? 'j' : 'i';\n}\n\n/** IMSUM(inumber1, [inumber2], ...): the sum of complex numbers (arrays contribute every element). */\nconst IMSUM: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args: Value[]) {\n    const operands: Complex[] = [];\n    for (const cell of flattenArgs(args)) {\n      const z = parseComplex(cell);\n      if (isError(z)) return z;\n      operands.push(z);\n    }\n    const suffix = commonSuffix(operands);\n    if (isError(suffix)) return suffix;\n    let re = 0;\n    let im = 0;\n    for (const z of operands) {\n      re += z.re;\n      im += z.im;\n    }\n    return formatComplex({ re, im, suffix });\n  },\n};\n\nexport default IMSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSUM: () => import('../functions/engineering/IMSUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { FormulaError, Value } from '../../core/value';\nimport { flattenArgs } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex, type Complex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** The suffix shared by the operands that have an imaginary part (\"i\" when none has one); #VALUE! when they mix \"i\" and \"j\". */\nfunction commonSuffix(operands: readonly Complex[]): Complex['suffix'] | FormulaError {\n  const suffixes = new Set(operands.filter((z) => z.im !== 0).map((z) => z.suffix));\n  if (suffixes.size > 1) return err.value;\n  return suffixes.has('j') ? 'j' : 'i';\n}\n\n/** IMSUM(inumber1, [inumber2], ...): the sum of complex numbers (arrays contribute every element). */\nconst IMSUM: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args: Value[]) {\n    const operands: Complex[] = [];\n    for (const cell of flattenArgs(args, { blanks: 'keep' })) {\n      const z = parseComplex(cell);\n      if (isError(z)) return z;\n      operands.push(z);\n    }\n    const suffix = commonSuffix(operands);\n    if (isError(suffix)) return suffix;\n    let re = 0;\n    let im = 0;\n    for (const z of operands) {\n      re += z.re;\n      im += z.im;\n    }\n    return formatComplex({ re, im, suffix });\n  },\n};\n\nexport default IMSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSUM: () => import('../functions/engineering/IMSUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { FormulaError, Value } from '../../core/value';\nimport { flattenArgs } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex, type Complex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** The suffix shared by the operands that have an imaginary part (\"i\" when none has one); #VALUE! when they mix \"i\" and \"j\". */\nfunction commonSuffix(operands: readonly Complex[]): Complex['suffix'] | FormulaError {\n  const suffixes = new Set(operands.filter((z) => z.im !== 0).map((z) => z.suffix));\n  if (suffixes.size > 1) return err.value;\n  return suffixes.has('j') ? 'j' : 'i';\n}\n\n/** IMSUM(inumber1, [inumber2], ...): the sum of complex numbers (arrays contribute every element). */\nconst IMSUM: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args: Value[]) {\n    const operands: Complex[] = [];\n    for (const cell of flattenArgs(args, { blanks: 'keep' })) {\n      const z = parseComplex(cell);\n      if (isError(z)) return z;\n      operands.push(z);\n    }\n    const suffix = commonSuffix(operands);\n    if (isError(suffix)) return suffix;\n    let re = 0;\n    let im = 0;\n    for (const z of operands) {\n      re += z.re;\n      im += z.im;\n    }\n    return formatComplex({ re, im, suffix });\n  },\n};\n\nexport default IMSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMSUM: () => import('../functions/engineering/IMSUM'),\n"
+        }
+      ]
+    }
+  ]
+}

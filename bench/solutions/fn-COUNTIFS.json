@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-COUNTIFS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** COUNTIFS(criteria_range1, criteria1, ...): how many positions meet every criterion. */\nconst COUNTIFS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call(args) {\n    if (args.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < args.length; i += 2) pairs.push({ range: args[i], criterion: args[i + 1] });\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    return indices.length;\n  },\n};\n\nexport default COUNTIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTIFS: () => import('../functions/statistical/COUNTIFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTIFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { matchingIndices, type CriteriaPair } from '../../helpers/criteriaRanges';\n\n/** COUNTIFS(criteria_range1, criteria1, ...): how many positions meet every criterion. */\nconst COUNTIFS: FormulaFunction = {\n  arity: [2, Infinity],\n  call(args) {\n    if (args.length % 2 !== 0) return err.value;\n    const pairs: CriteriaPair[] = [];\n    for (let i = 0; i < args.length; i += 2) pairs.push({ range: args[i], criterion: args[i + 1] });\n    const indices = matchingIndices(pairs);\n    if (isError(indices)) return indices;\n    return indices.length;\n  },\n};\n\nexport default COUNTIFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTIFS: () => import('../functions/statistical/COUNTIFS'),\n"
+        }
+      ]
+    }
+  ]
+}

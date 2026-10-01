@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SUM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUM(number1, ...): adds the numbers in the arguments. */\nconst SUM: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    for (const n of numbers) total += n;\n    return checkNumber(total);\n  },\n};\n\nexport default SUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUM: () => import('../functions/math/SUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUM(number1, ...): adds the numbers in the arguments. */\nconst SUM: FormulaFunction = {\n  arity: [0, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    for (const n of numbers) total += n;\n    return checkNumber(total);\n  },\n};\n\nexport default SUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUM: () => import('../functions/math/SUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUM(number1, ...): adds the numbers in the arguments. */\nconst SUM: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    for (const n of numbers) total += n;\n    return numberResult(total);\n  },\n};\n\nexport default SUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUM: () => import('../functions/math/SUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SUM(number1, ...): adds the numbers in the arguments. */\nconst SUM: FormulaFunction = {\n  arity: [0, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    let total = 0;\n    for (const n of numbers) total += n;\n    return numberResult(total);\n  },\n};\n\nexport default SUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUM: () => import('../functions/math/SUM'),\n"
+        }
+      ]
+    }
+  ]
+}

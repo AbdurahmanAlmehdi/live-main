@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ACOTH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ACOTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ACOTH(number): the inverse hyperbolic cotangent of a number with |n| > 1. */\nconst ACOTH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (Math.abs(n) <= 1) return err.num;\n    return 0.5 * Math.log((n + 1) / (n - 1));\n  },\n};\n\nexport default ACOTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ACOTH: () => import('../functions/math/ACOTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ACOTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ACOTH(number): the inverse hyperbolic cotangent of a number with |n| > 1. */\nconst ACOTH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (Math.abs(n) <= 1) return err.num;\n    return 0.5 * Math.log((n + 1) / (n - 1));\n  },\n};\n\nexport default ACOTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ACOTH: () => import('../functions/math/ACOTH'),\n"
+        }
+      ]
+    }
+  ]
+}

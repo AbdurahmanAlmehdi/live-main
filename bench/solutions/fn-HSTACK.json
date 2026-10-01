@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-HSTACK",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/HSTACK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange } from '../../core/range';\nimport { err } from '../../core/errors';\n\n/** HSTACK(array1, ...): the arrays placed side by side; shorter ones are padded with #N/A. */\nconst HSTACK: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const ranges = args.map((arg) => toRange(arg));\n    const height = Math.max(...ranges.map((r) => r.height));\n    const rows: Scalar[][] = [];\n    for (let r = 0; r < height; r++) {\n      const row: Scalar[] = [];\n      for (const range of ranges) {\n        for (let c = 0; c < range.width; c++) row.push(r < range.height ? range.at(r, c) : err.na);\n      }\n      rows.push(row);\n    }\n    return fromRows(rows);\n  },\n};\n\nexport default HSTACK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HSTACK: () => import('../functions/lookup/HSTACK'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/HSTACK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange } from '../../core/range';\nimport { err } from '../../core/errors';\n\n/** HSTACK(array1, ...): the arrays placed side by side; shorter ones are padded with #N/A. */\nconst HSTACK: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const ranges = args.map((arg) => toRange(arg));\n    const height = Math.max(...ranges.map((r) => r.height));\n    const rows: Scalar[][] = [];\n    for (let r = 0; r < height; r++) {\n      const row: Scalar[] = [];\n      for (const range of ranges) {\n        for (let c = 0; c < range.width; c++) row.push(r < range.height ? range.at(r, c) : err.na);\n      }\n      rows.push(row);\n    }\n    return fromRows(rows);\n  },\n};\n\nexport default HSTACK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HSTACK: () => import('../functions/lookup/HSTACK'),\n"
+        }
+      ]
+    }
+  ]
+}

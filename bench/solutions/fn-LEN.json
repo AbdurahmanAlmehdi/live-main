@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-LEN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/LEN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** LEN(text): the number of characters. */\nconst LEN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    return text.length;\n  },\n};\n\nexport default LEN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LEN: () => import('../functions/text/LEN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/LEN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** LEN(text): the number of characters. */\nconst LEN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    return text.length;\n  },\n};\n\nexport default LEN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LEN: () => import('../functions/text/LEN'),\n"
+        }
+      ]
+    }
+  ]
+}

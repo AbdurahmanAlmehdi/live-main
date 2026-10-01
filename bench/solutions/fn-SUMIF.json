@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-SUMIF",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range);\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2]) : tested;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range);\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2]) : tested;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range);\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2]) : tested;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range);\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2]) : tested;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range, { order: 'rows' });\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2], { order: 'rows' }) : tested;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range, { order: 'rows' });\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2], { order: 'rows' }) : tested;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range, { order: 'rows' });\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2], { order: 'rows' }) : tested;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/**\n * SUMIF(range, criteria, [sum_range]): adds the cells of sum_range (or range) whose\n * corresponding range cell meets the criteria. Only numbers are added.\n */\nconst SUMIF: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const tested = cellsOf(range, { order: 'rows' });\n    const summed = args.length > 2 && args[2] !== null ? cellsOf(args[2], { order: 'rows' }) : tested;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    let total = 0;\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = summed[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') total += cell;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMIF: () => import('../functions/math/SUMIF'),\n"
+        }
+      ]
+    }
+  ]
+}

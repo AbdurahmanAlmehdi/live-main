@@ -1,0 +1,308 @@
+{
+  "taskId": "fn-SORT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable",
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable",
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args, 1, 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args, 2, 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args, 3, false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b);\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-compare-opts",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.rows].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable",
+        "co-compare-opts",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 4,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable",
+        "co-compare-opts",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/SORT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { compareScalars } from '../../core/compare';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** Sort key order: numbers, text, booleans, then errors and empty cells last. */\nfunction compareCells(a: Scalar, b: Scalar): number {\n  const aLast = a === null || isError(a);\n  const bLast = b === null || isError(b);\n  if (aLast || bLast) return Number(aLast) - Number(bLast);\n  return compareScalars(a, b, { caseSensitive: false });\n}\n\n/**\n * SORT(array, [sort_index], [sort_order], [by_col]): the rows (or columns, with by_col) of an\n * array sorted by the sort_index-th column (or row); sort_order 1 ascending, -1 descending.\n */\nconst SORT: FormulaFunction = {\n  arity: [1, 4],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const sortIndex = optionalInteger(args[1], 1);\n    if (isError(sortIndex)) return sortIndex;\n    const order = optionalInteger(args[2], 1);\n    if (isError(order)) return order;\n    const byCol = optionalBoolean(args[3], false);\n    if (isError(byCol)) return byCol;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    if (sortIndex < 1 || sortIndex > range.width) return err.value;\n    if (order !== 1 && order !== -1) return err.value;\n    const sorted = [...range.toRows()].sort((a, b) => order * compareCells(a[sortIndex - 1], b[sortIndex - 1]));\n    const result = fromRows(sorted);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default SORT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SORT: () => import('../functions/lookup/SORT'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ROUNDUP",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUNDUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundAwayFromZero } from '../../helpers/rounding';\n\n/** ROUNDUP(number, num_digits): rounds a number away from zero to num_digits digits (num_digits is truncated). */\nconst ROUNDUP: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toInteger(digitsValue);\n    if (isError(digits)) return digits;\n    return roundAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUNDUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUNDUP: () => import('../functions/math/ROUNDUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUNDUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundAwayFromZero } from '../../helpers/rounding';\n\n/** ROUNDUP(number, num_digits): rounds a number away from zero to num_digits digits (num_digits is truncated). */\nconst ROUNDUP: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toInteger(digitsValue);\n    if (isError(digits)) return digits;\n    return roundAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUNDUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUNDUP: () => import('../functions/math/ROUNDUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUNDUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundAwayFromZero } from '../../helpers/rounding';\n\n/** ROUNDUP(number, num_digits): rounds a number away from zero to num_digits digits (num_digits is truncated). */\nconst ROUNDUP: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toIntTrunc(digitsValue);\n    if (isError(digits)) return digits;\n    return roundAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUNDUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUNDUP: () => import('../functions/math/ROUNDUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ROUNDUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { roundAwayFromZero } from '../../helpers/rounding';\n\n/** ROUNDUP(number, num_digits): rounds a number away from zero to num_digits digits (num_digits is truncated). */\nconst ROUNDUP: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, digitsValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const digits = toIntTrunc(digitsValue);\n    if (isError(digits)) return digits;\n    return roundAwayFromZero(n, digits);\n  },\n};\n\nexport default ROUNDUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ROUNDUP: () => import('../functions/math/ROUNDUP'),\n"
+        }
+      ]
+    }
+  ]
+}

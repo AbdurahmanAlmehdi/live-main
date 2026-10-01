@@ -1,0 +1,51 @@
+{
+  "taskId": "trap-SKEW.P",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/SKEW_P.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { skewness } from '../../helpers/shape';\n\n/** SKEW.P(number1, ...): the population skewness of the numbers. */\nconst SKEW_P: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return skewness(numbers, { population: true });\n  },\n};\n\nexport default SKEW_P;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'SKEW.P': () => import('../functions/statistical/SKEW_P'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/shape.ts",
+          "oldString": "/**\n * Sample skewness, n / ((n-1)(n-2)) * Σ((x - mean) / s)^3 with s the sample standard\n * deviation. #DIV/0! for fewer than three values or zero spread.\n */\nexport function skewness(values: readonly number[]): number | FormulaError {\n  const n = values.length;\n  if (n < 3) return err.div0;",
+          "newString": "export interface SkewnessOptions {\n  /** Population skewness, Σ((x - mean) / σ)^3 / n with σ the population standard deviation. */\n  population?: boolean;\n}\n\n/**\n * Sample skewness, n / ((n-1)(n-2)) * Σ((x - mean) / s)^3 with s the sample standard\n * deviation, or the population skewness with { population: true }. #DIV/0! for fewer\n * than three values (one for the population) or zero spread.\n */\nexport function skewness(values: readonly number[], options: SkewnessOptions = {}): number | FormulaError {\n  const n = values.length;\n  if (options.population) {\n    if (n < 1) return err.div0;\n    const sigma = Math.sqrt(sumOfSquaredDeviations(values) / n);\n    if (sigma === 0) return err.div0;\n    return standardizedPowerSum(values, 3, sigma, mean(values) as number) / n;\n  }\n  if (n < 3) return err.div0;"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/SKEW_P.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { skewness } from '../../helpers/shape';\n\n/** SKEW.P(number1, ...): the population skewness of the numbers. */\nconst SKEW_P: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return skewness(numbers, { population: true });\n  },\n};\n\nexport default SKEW_P;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'SKEW.P': () => import('../functions/statistical/SKEW_P'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/shape.ts",
+          "oldString": "/**\n * Sample skewness, n / ((n-1)(n-2)) * Σ((x - mean) / s)^3 with s the sample standard\n * deviation. #DIV/0! for fewer than three values or zero spread.\n */\nexport function skewness(values: readonly number[]): number | FormulaError {\n  const n = values.length;\n  if (n < 3) return err.div0;",
+          "newString": "export interface SkewnessOptions {\n  /** Population skewness, Σ((x - mean) / σ)^3 / n with σ the population standard deviation. */\n  population?: boolean;\n}\n\n/**\n * Sample skewness, n / ((n-1)(n-2)) * Σ((x - mean) / s)^3 with s the sample standard\n * deviation, or the population skewness with { population: true }. #DIV/0! for fewer\n * than three values (one for the population) or zero spread.\n */\nexport function skewness(values: readonly number[], options: SkewnessOptions = {}): number | FormulaError {\n  const n = values.length;\n  if (options.population) {\n    if (n < 1) return err.div0;\n    const sigma = Math.sqrt(sumOfSquaredDeviations(values) / n);\n    if (sigma === 0) return err.div0;\n    return standardizedPowerSum(values, 3, sigma, mean(values) as number) / n;\n  }\n  if (n < 3) return err.div0;"
+        }
+      ]
+    }
+  ]
+}

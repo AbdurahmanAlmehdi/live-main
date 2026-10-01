@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-WORKDAY",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WORKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectHolidays, isWorkday } from '../../helpers/workdays';\n\n/** WORKDAY(start_date, days, [holidays]): the date `days` working days after (or before) start_date. */\nconst WORKDAY: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const days = toInteger(args[1]);\n    if (isError(days)) return days;\n    const holidays = collectHolidays(args[2]);\n    if (isError(holidays)) return holidays;\n    const step = days < 0 ? -1 : 1;\n    let day = Math.floor(start);\n    for (let remaining = Math.abs(days); remaining > 0; ) {\n      day += step;\n      if (isWorkday(day, holidays)) remaining--;\n    }\n    return day;\n  },\n};\n\nexport default WORKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WORKDAY: () => import('../functions/date/WORKDAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WORKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectHolidays, isWorkday } from '../../helpers/workdays';\n\n/** WORKDAY(start_date, days, [holidays]): the date `days` working days after (or before) start_date. */\nconst WORKDAY: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const days = toInteger(args[1]);\n    if (isError(days)) return days;\n    const holidays = collectHolidays(args[2]);\n    if (isError(holidays)) return holidays;\n    const step = days < 0 ? -1 : 1;\n    let day = Math.floor(start);\n    for (let remaining = Math.abs(days); remaining > 0; ) {\n      day += step;\n      if (isWorkday(day, holidays)) remaining--;\n    }\n    return day;\n  },\n};\n\nexport default WORKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WORKDAY: () => import('../functions/date/WORKDAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WORKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectHolidays, isWorkday } from '../../helpers/workdays';\n\n/** WORKDAY(start_date, days, [holidays]): the date `days` working days after (or before) start_date. */\nconst WORKDAY: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const days = toIntTrunc(args[1]);\n    if (isError(days)) return days;\n    const holidays = collectHolidays(args[2]);\n    if (isError(holidays)) return holidays;\n    const step = days < 0 ? -1 : 1;\n    let day = Math.floor(start);\n    for (let remaining = Math.abs(days); remaining > 0; ) {\n      day += step;\n      if (isWorkday(day, holidays)) remaining--;\n    }\n    return day;\n  },\n};\n\nexport default WORKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WORKDAY: () => import('../functions/date/WORKDAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WORKDAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { collectHolidays, isWorkday } from '../../helpers/workdays';\n\n/** WORKDAY(start_date, days, [holidays]): the date `days` working days after (or before) start_date. */\nconst WORKDAY: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const days = toIntTrunc(args[1]);\n    if (isError(days)) return days;\n    const holidays = collectHolidays(args[2]);\n    if (isError(holidays)) return holidays;\n    const step = days < 0 ? -1 : 1;\n    let day = Math.floor(start);\n    for (let remaining = Math.abs(days); remaining > 0; ) {\n      day += step;\n      if (isWorkday(day, holidays)) remaining--;\n    }\n    return day;\n  },\n};\n\nexport default WORKDAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WORKDAY: () => import('../functions/date/WORKDAY'),\n"
+        }
+      ]
+    }
+  ]
+}

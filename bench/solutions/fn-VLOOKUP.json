@@ -1,0 +1,308 @@
+{
+  "taskId": "fn-VLOOKUP",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args, 3, true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toInteger(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 4,\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/VLOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]): finds lookup_value in the\n * first column of the table and returns the cell in the same row, in column col_index_num. range_lookup\n * TRUE (default) is an approximate match on sorted data; FALSE an exact match (wildcards allowed).\n */\nconst VLOOKUP: FormulaFunction = {\n  arity: [3, 4],\n  call(args) {\n    const [needle, tableValue] = args;\n    if (isError(needle)) return needle;\n    if (isError(tableValue)) return tableValue;\n    const offset = toIntTrunc(args[2]);\n    if (isError(offset)) return offset;\n    const approximate = optionalBoolean(args[3], true);\n    if (isError(approximate)) return approximate;\n    const table = toRange(tableValue);\n    if (offset < 1) return err.value;\n    if (offset > table.width) return err.ref;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = Array.from({ length: table.height }, (_, r) => table.at(r, 0));\n    const index = approximate ? findApproximate(lookupValue, keys, 'ascending') : findExact(lookupValue, keys);\n    return index < 0 ? err.na : table.at(index, offset - 1);\n  },\n};\n\nexport default VLOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  VLOOKUP: () => import('../functions/lookup/VLOOKUP'),\n"
+        }
+      ]
+    }
+  ]
+}

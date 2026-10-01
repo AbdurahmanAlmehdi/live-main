@@ -1,0 +1,51 @@
+{
+  "taskId": "trap-PERCENTILE.EXC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERCENTILE_EXC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { percentileExclusive } from '../../helpers/quantile';\n\n/** PERCENTILE.EXC(array, k): the k-th percentile, 0 < k < 1 (exclusive), interpolated. */\nconst PERCENTILE_EXC: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toNumber(kValue);\n    if (isError(k)) return k;\n    return percentileExclusive(numbers, k);\n  },\n};\n\nexport default PERCENTILE_EXC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'PERCENTILE.EXC': () => import('../functions/statistical/PERCENTILE_EXC'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/quantile.ts",
+          "oldString": "  if (fraction === 0) return sorted[lower];\n  return sorted[lower] + fraction * (sorted[lower + 1] - sorted[lower]);\n}",
+          "newString": "  if (fraction === 0) return sorted[lower];\n  return sorted[lower] + fraction * (sorted[lower + 1] - sorted[lower]);\n}\n\n/**\n * Exclusive percentile (PERCENTILE.EXC): interpolates linearly at the 1-based rank\n * k * (n + 1). #NUM! when that rank falls outside [1, n] or the list is empty.\n */\nexport function percentileExclusive(values: readonly number[], k: number): number | FormulaError {\n  const n = values.length;\n  const rank = k * (n + 1);\n  if (n === 0 || k <= 0 || k >= 1 || rank < 1 || rank > n) return err.num;\n  const sorted = [...values].sort((a, b) => a - b);\n  const lower = Math.floor(rank);\n  const fraction = rank - lower;\n  if (fraction === 0) return sorted[lower - 1];\n  return sorted[lower - 1] + fraction * (sorted[lower] - sorted[lower - 1]);\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERCENTILE_EXC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { percentileExclusive } from '../../helpers/quantile';\n\n/** PERCENTILE.EXC(array, k): the k-th percentile, 0 < k < 1 (exclusive), interpolated. */\nconst PERCENTILE_EXC: FormulaFunction = {\n  arity: [2, 2],\n  call([array, kValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const k = toNumber(kValue);\n    if (isError(k)) return k;\n    return percentileExclusive(numbers, k);\n  },\n};\n\nexport default PERCENTILE_EXC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'PERCENTILE.EXC': () => import('../functions/statistical/PERCENTILE_EXC'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/quantile.ts",
+          "oldString": "  if (fraction === 0) return sorted[lower];\n  return sorted[lower] + fraction * (sorted[lower + 1] - sorted[lower]);\n}",
+          "newString": "  if (fraction === 0) return sorted[lower];\n  return sorted[lower] + fraction * (sorted[lower + 1] - sorted[lower]);\n}\n\n/**\n * Exclusive percentile (PERCENTILE.EXC): interpolates linearly at the 1-based rank\n * k * (n + 1). #NUM! when that rank falls outside [1, n] or the list is empty.\n */\nexport function percentileExclusive(values: readonly number[], k: number): number | FormulaError {\n  const n = values.length;\n  const rank = k * (n + 1);\n  if (n === 0 || k <= 0 || k >= 1 || rank < 1 || rank > n) return err.num;\n  const sorted = [...values].sort((a, b) => a - b);\n  const lower = Math.floor(rank);\n  const fraction = rank - lower;\n  if (fraction === 0) return sorted[lower - 1];\n  return sorted[lower - 1] + fraction * (sorted[lower] - sorted[lower - 1]);\n}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "taskId": "trap-NETWORKDAYS.INTL",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/NETWORKDAYS_INTL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectHolidays, isWorkday, weekendFromCode } from '../../helpers/workdays';\n\n/**\n * NETWORKDAYS.INTL(start_date, end_date, [weekend], [holidays]): working days between the\n * dates, inclusive, with a custom weekend (1-7, 11-17, or a \"0000011\" mask starting Monday).\n */\nconst NETWORKDAYS_INTL: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 4,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const weekend = weekendFromCode(args[2] ?? null);\n    if (isError(weekend)) return weekend;\n    const holidays = collectHolidays(args[3]);\n    if (isError(holidays)) return holidays;\n    if (weekend.size === 7) return err.value;\n    const from = Math.floor(Math.min(start, end));\n    const to = Math.floor(Math.max(start, end));\n    let count = 0;\n    for (let day = from; day <= to; day++) {\n      if (isWorkday(day, holidays, weekend)) count++;\n    }\n    return start <= end ? count : -count;\n  },\n};\n\nexport default NETWORKDAYS_INTL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'NETWORKDAYS.INTL': () => import('../functions/date/NETWORKDAYS_INTL'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/workdays.ts",
+          "oldString": "/** True for Monday..Friday serials that are not in `holidays` (whole-day serials). */\nexport function isWorkday(serial: number, holidays: ReadonlySet<number>): boolean {\n  const day = dayOfWeek(serial);\n  return day !== 0 && day !== 6 && !holidays.has(Math.floor(serial));\n}",
+          "newString": "/** The default weekend: Saturday and Sunday (days of week, 0 = Sunday). */\nexport const SATURDAY_SUNDAY: ReadonlySet<number> = new Set([6, 0]);\n\n/**\n * True for serials that are not weekend days and not in `holidays` (whole-day serials).\n * `weekend` holds days of the week (0 = Sunday); Saturday and Sunday by default.\n */\nexport function isWorkday(serial: number, holidays: ReadonlySet<number>, weekend: ReadonlySet<number> = SATURDAY_SUNDAY): boolean {\n  return !weekend.has(dayOfWeek(serial)) && !holidays.has(Math.floor(serial));\n}\n\n/**\n * The weekend argument of NETWORKDAYS.INTL / WORKDAY.INTL as days of the week (0 = Sunday):\n * omitted or 1 is Saturday+Sunday, 2..7 the pairs Sunday+Monday .. Friday+Saturday,\n * 11..17 the single days Sunday .. Saturday, or a 7-character 0/1 mask starting Monday\n * (\"0000011\"). #NUM! for other numbers, #VALUE! for other text.\n */\nexport function weekendFromCode(code: Value): ReadonlySet<number> | FormulaError {\n  if (isError(code)) return code;\n  if (code === null) return SATURDAY_SUNDAY;\n  if (typeof code === 'string') {\n    if (!/^[01]{7}$/.test(code)) return err.value;\n    const days = new Set<number>();\n    for (let i = 0; i < 7; i++) if (code[i] === '1') days.add((i + 1) % 7);\n    return days;\n  }\n  if (typeof code !== 'number') return err.value;\n  if (code >= 1 && code <= 7 && Number.isInteger(code)) return new Set([(code + 5) % 7, (code + 6) % 7]);\n  if (code >= 11 && code <= 17 && Number.isInteger(code)) return new Set([(code - 11) % 7]);\n  return err.num;\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/NETWORKDAYS_INTL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectHolidays, isWorkday, weekendFromCode } from '../../helpers/workdays';\n\n/**\n * NETWORKDAYS.INTL(start_date, end_date, [weekend], [holidays]): working days between the\n * dates, inclusive, with a custom weekend (1-7, 11-17, or a \"0000011\" mask starting Monday).\n */\nconst NETWORKDAYS_INTL: FormulaFunction = {\n  arity: [2, 4],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const weekend = weekendFromCode(args[2] ?? null);\n    if (isError(weekend)) return weekend;\n    const holidays = collectHolidays(args[3]);\n    if (isError(holidays)) return holidays;\n    if (weekend.size === 7) return err.value;\n    const from = Math.floor(Math.min(start, end));\n    const to = Math.floor(Math.max(start, end));\n    let count = 0;\n    for (let day = from; day <= to; day++) {\n      if (isWorkday(day, holidays, weekend)) count++;\n    }\n    return start <= end ? count : -count;\n  },\n};\n\nexport default NETWORKDAYS_INTL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'NETWORKDAYS.INTL': () => import('../functions/date/NETWORKDAYS_INTL'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/workdays.ts",
+          "oldString": "/** True for Monday..Friday serials that are not in `holidays` (whole-day serials). */\nexport function isWorkday(serial: number, holidays: ReadonlySet<number>): boolean {\n  const day = dayOfWeek(serial);\n  return day !== 0 && day !== 6 && !holidays.has(Math.floor(serial));\n}",
+          "newString": "/** The default weekend: Saturday and Sunday (days of week, 0 = Sunday). */\nexport const SATURDAY_SUNDAY: ReadonlySet<number> = new Set([6, 0]);\n\n/**\n * True for serials that are not weekend days and not in `holidays` (whole-day serials).\n * `weekend` holds days of the week (0 = Sunday); Saturday and Sunday by default.\n */\nexport function isWorkday(serial: number, holidays: ReadonlySet<number>, weekend: ReadonlySet<number> = SATURDAY_SUNDAY): boolean {\n  return !weekend.has(dayOfWeek(serial)) && !holidays.has(Math.floor(serial));\n}\n\n/**\n * The weekend argument of NETWORKDAYS.INTL / WORKDAY.INTL as days of the week (0 = Sunday):\n * omitted or 1 is Saturday+Sunday, 2..7 the pairs Sunday+Monday .. Friday+Saturday,\n * 11..17 the single days Sunday .. Saturday, or a 7-character 0/1 mask starting Monday\n * (\"0000011\"). #NUM! for other numbers, #VALUE! for other text.\n */\nexport function weekendFromCode(code: Value): ReadonlySet<number> | FormulaError {\n  if (isError(code)) return code;\n  if (code === null) return SATURDAY_SUNDAY;\n  if (typeof code === 'string') {\n    if (!/^[01]{7}$/.test(code)) return err.value;\n    const days = new Set<number>();\n    for (let i = 0; i < 7; i++) if (code[i] === '1') days.add((i + 1) % 7);\n    return days;\n  }\n  if (typeof code !== 'number') return err.value;\n  if (code >= 1 && code <= 7 && Number.isInteger(code)) return new Set([(code + 5) % 7, (code + 6) % 7]);\n  if (code >= 11 && code <= 17 && Number.isInteger(code)) return new Set([(code - 11) % 7]);\n  return err.num;\n}"
+        }
+      ]
+    }
+  ]
+}

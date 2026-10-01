@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-XIRR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * XIRR(values, dates, [guess]): the internal rate of return of cash flows on the given\n * dates (actual/365 from the first date), solved from guess (10% by default).\n */\nconst XIRR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(args[1]);\n    if (isError(serials)) return serials;\n    const guess = optionalNumber(args, 2, 0.1);\n    if (isError(guess)) return guess;\n    if (flows.length !== serials.length) return err.num;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    const presentValue = (rate: number): number => {\n      if (rate <= -1) return NaN;\n      let total = 0;\n      for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n      return total;\n    };\n    return solveNewton(presentValue, guess);\n  },\n};\n\nexport default XIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XIRR: () => import('../functions/financial/XIRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * XIRR(values, dates, [guess]): the internal rate of return of cash flows on the given\n * dates (actual/365 from the first date), solved from guess (10% by default).\n */\nconst XIRR: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(args[1]);\n    if (isError(serials)) return serials;\n    const guess = optionalNumber(args, 2, 0.1);\n    if (isError(guess)) return guess;\n    if (flows.length !== serials.length) return err.num;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    const presentValue = (rate: number): number => {\n      if (rate <= -1) return NaN;\n      let total = 0;\n      for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n      return total;\n    };\n    return solveNewton(presentValue, guess);\n  },\n};\n\nexport default XIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XIRR: () => import('../functions/financial/XIRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * XIRR(values, dates, [guess]): the internal rate of return of cash flows on the given\n * dates (actual/365 from the first date), solved from guess (10% by default).\n */\nconst XIRR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(args[1]);\n    if (isError(serials)) return serials;\n    const guess = optionalNumber(args[2], 0.1);\n    if (isError(guess)) return guess;\n    if (flows.length !== serials.length) return err.num;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    const presentValue = (rate: number): number => {\n      if (rate <= -1) return NaN;\n      let total = 0;\n      for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n      return total;\n    };\n    return solveNewton(presentValue, guess);\n  },\n};\n\nexport default XIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XIRR: () => import('../functions/financial/XIRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * XIRR(values, dates, [guess]): the internal rate of return of cash flows on the given\n * dates (actual/365 from the first date), solved from guess (10% by default).\n */\nconst XIRR: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(args[1]);\n    if (isError(serials)) return serials;\n    const guess = optionalNumber(args[2], 0.1);\n    if (isError(guess)) return guess;\n    if (flows.length !== serials.length) return err.num;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    const presentValue = (rate: number): number => {\n      if (rate <= -1) return NaN;\n      let total = 0;\n      for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n      return total;\n    };\n    return solveNewton(presentValue, guess);\n  },\n};\n\nexport default XIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XIRR: () => import('../functions/financial/XIRR'),\n"
+        }
+      ]
+    }
+  ]
+}

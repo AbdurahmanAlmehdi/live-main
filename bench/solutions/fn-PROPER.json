@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-PROPER",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/PROPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** PROPER(text): upper-cases the first letter of every word (a word starts after any non-letter), lower-cases the rest. */\nconst PROPER: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    return text.toLowerCase().replace(/(^|[^\\p{L}])(\\p{L})/gu, (_, before: string, letter: string) => before + letter.toUpperCase());\n  },\n};\n\nexport default PROPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PROPER: () => import('../functions/text/PROPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/PROPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** PROPER(text): upper-cases the first letter of every word (a word starts after any non-letter), lower-cases the rest. */\nconst PROPER: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    return text.toLowerCase().replace(/(^|[^\\p{L}])(\\p{L})/gu, (_, before: string, letter: string) => before + letter.toUpperCase());\n  },\n};\n\nexport default PROPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PROPER: () => import('../functions/text/PROPER'),\n"
+        }
+      ]
+    }
+  ]
+}

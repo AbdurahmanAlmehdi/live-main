@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-MIRR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/MIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\n\n/**\n * MIRR(values, finance_rate, reinvest_rate): the modified internal rate of return, with\n * outflows financed at finance_rate and inflows reinvested at reinvest_rate.\n */\nconst MIRR: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([values, financeValue, reinvestValue]) {\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const financeRate = toNumber(financeValue);\n    if (isError(financeRate)) return financeRate;\n    const reinvestRate = toNumber(reinvestValue);\n    if (isError(reinvestRate)) return reinvestRate;\n    const inflows = flows.map((v) => Math.max(v, 0));\n    const outflows = flows.map((v) => Math.min(v, 0));\n    if (!inflows.some((v) => v > 0) || !outflows.some((v) => v < 0)) return err.div0;\n    const n = flows.length;\n    const futureInflows = netPresentValue(reinvestRate, inflows) * Math.pow(1 + reinvestRate, n);\n    const presentOutflows = netPresentValue(financeRate, outflows) * (1 + financeRate);\n    return checkNumber(Math.pow(-futureInflows / presentOutflows, 1 / (n - 1)) - 1);\n  },\n};\n\nexport default MIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MIRR: () => import('../functions/financial/MIRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/MIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\n\n/**\n * MIRR(values, finance_rate, reinvest_rate): the modified internal rate of return, with\n * outflows financed at finance_rate and inflows reinvested at reinvest_rate.\n */\nconst MIRR: FormulaFunction = {\n  arity: [3, 3],\n  call([values, financeValue, reinvestValue]) {\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const financeRate = toNumber(financeValue);\n    if (isError(financeRate)) return financeRate;\n    const reinvestRate = toNumber(reinvestValue);\n    if (isError(reinvestRate)) return reinvestRate;\n    const inflows = flows.map((v) => Math.max(v, 0));\n    const outflows = flows.map((v) => Math.min(v, 0));\n    if (!inflows.some((v) => v > 0) || !outflows.some((v) => v < 0)) return err.div0;\n    const n = flows.length;\n    const futureInflows = netPresentValue(reinvestRate, inflows) * Math.pow(1 + reinvestRate, n);\n    const presentOutflows = netPresentValue(financeRate, outflows) * (1 + financeRate);\n    return checkNumber(Math.pow(-futureInflows / presentOutflows, 1 / (n - 1)) - 1);\n  },\n};\n\nexport default MIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MIRR: () => import('../functions/financial/MIRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/MIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\n\n/**\n * MIRR(values, finance_rate, reinvest_rate): the modified internal rate of return, with\n * outflows financed at finance_rate and inflows reinvested at reinvest_rate.\n */\nconst MIRR: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([values, financeValue, reinvestValue]) {\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const financeRate = toNumber(financeValue);\n    if (isError(financeRate)) return financeRate;\n    const reinvestRate = toNumber(reinvestValue);\n    if (isError(reinvestRate)) return reinvestRate;\n    const inflows = flows.map((v) => Math.max(v, 0));\n    const outflows = flows.map((v) => Math.min(v, 0));\n    if (!inflows.some((v) => v > 0) || !outflows.some((v) => v < 0)) return err.div0;\n    const n = flows.length;\n    const futureInflows = netPresentValue(reinvestRate, inflows) * Math.pow(1 + reinvestRate, n);\n    const presentOutflows = netPresentValue(financeRate, outflows) * (1 + financeRate);\n    return numberResult(Math.pow(-futureInflows / presentOutflows, 1 / (n - 1)) - 1);\n  },\n};\n\nexport default MIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MIRR: () => import('../functions/financial/MIRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/MIRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\n\n/**\n * MIRR(values, finance_rate, reinvest_rate): the modified internal rate of return, with\n * outflows financed at finance_rate and inflows reinvested at reinvest_rate.\n */\nconst MIRR: FormulaFunction = {\n  arity: [3, 3],\n  call([values, financeValue, reinvestValue]) {\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const financeRate = toNumber(financeValue);\n    if (isError(financeRate)) return financeRate;\n    const reinvestRate = toNumber(reinvestValue);\n    if (isError(reinvestRate)) return reinvestRate;\n    const inflows = flows.map((v) => Math.max(v, 0));\n    const outflows = flows.map((v) => Math.min(v, 0));\n    if (!inflows.some((v) => v > 0) || !outflows.some((v) => v < 0)) return err.div0;\n    const n = flows.length;\n    const futureInflows = netPresentValue(reinvestRate, inflows) * Math.pow(1 + reinvestRate, n);\n    const presentOutflows = netPresentValue(financeRate, outflows) * (1 + financeRate);\n    return numberResult(Math.pow(-futureInflows / presentOutflows, 1 / (n - 1)) - 1);\n  },\n};\n\nexport default MIRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MIRR: () => import('../functions/financial/MIRR'),\n"
+        }
+      ]
+    }
+  ]
+}

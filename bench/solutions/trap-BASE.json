@@ -1,0 +1,200 @@
+{
+  "taskId": "trap-BASE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const n = toInteger(args[0]);\n    if (isError(n)) return n;\n    const radix = toInteger(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args, 2, 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const n = toInteger(args[0]);\n    if (isError(n)) return n;\n    const radix = toInteger(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args, 2, 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const n = toIntTrunc(args[0]);\n    if (isError(n)) return n;\n    const radix = toIntTrunc(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args, 2, 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const n = toIntTrunc(args[0]);\n    if (isError(n)) return n;\n    const radix = toIntTrunc(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args, 2, 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const n = toInteger(args[0]);\n    if (isError(n)) return n;\n    const radix = toInteger(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args[2], 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const n = toInteger(args[0]);\n    if (isError(n)) return n;\n    const radix = toInteger(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args[2], 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const n = toIntTrunc(args[0]);\n    if (isError(n)) return n;\n    const radix = toIntTrunc(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args[2], 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/BASE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatUnsigned } from '../../helpers/radixFormat';\n\n/** BASE(number, radix, [min_length]): a non-negative integer written in base radix (2..36), zero-padded to min_length. */\nconst BASE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const n = toIntTrunc(args[0]);\n    if (isError(n)) return n;\n    const radix = toIntTrunc(args[1]);\n    if (isError(radix)) return radix;\n    const minLength = optionalInteger(args[2], 0);\n    if (isError(minLength)) return minLength;\n    if (n < 0 || n >= 2 ** 53 || radix < 2 || radix > 36 || minLength < 0 || minLength > 255) return err.num;\n    return formatUnsigned(n, radix, minLength);\n  },\n};\n\nexport default BASE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BASE: () => import('../functions/math/BASE'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/radixFormat.ts",
+          "oldString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}",
+          "newString": "  if (places < 1 || places > 10 || digits.length > places) return err.num;\n  return digits.padStart(places, '0');\n}\n\n/**\n * A non-negative integer in base 2..36 (upper-case digits), zero-padded to at least\n * `minLength` characters; never fails for long results (BASE).\n */\nexport function formatUnsigned(n: number, radix: number, minLength = 0): string {\n  return n.toString(radix).toUpperCase().padStart(minLength, '0');\n}"
+        }
+      ]
+    }
+  ]
+}

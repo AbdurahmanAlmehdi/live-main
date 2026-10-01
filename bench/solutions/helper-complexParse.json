@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-complexParse",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/complexParse.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { toText } from '../core/coerce';\n\n/** A complex number as the IM* functions see it, remembering its \"i\" / \"j\" suffix. */\nexport interface Complex {\n  re: number;\n  im: number;\n  suffix: 'i' | 'j';\n}\n\nconst REAL = /^[+-]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eE][+-]?\\d+)?$/;\n\nfunction parseReal(text: string): number | undefined {\n  return REAL.test(text) ? Number(text) : undefined;\n}\n\n/** Coefficient of the imaginary part: \"\" or \"+\" is 1, \"-\" is -1. */\nfunction parseImaginary(text: string): number | undefined {\n  if (text === '' || text === '+') return 1;\n  if (text === '-') return -1;\n  return parseReal(text);\n}\n\n/** Index of the sign that starts the imaginary part, ignoring a leading sign and exponent signs. */\nfunction splitIndex(body: string): number {\n  for (let i = body.length - 1; i > 0; i--) {\n    if ((body[i] === '+' || body[i] === '-') && !/[eE]/.test(body[i - 1])) return i;\n  }\n  return -1;\n}\n\n/**\n * Reads a complex number from a value: a number is a real number; text must look like\n * \"3+4i\", \"3-4j\", \"-2.5i\", \"i\", \"-j\", \"1e3+2i\" or \"7\" (\"\" is 0). Booleans give\n * #VALUE!, malformed text gives #NUM!, errors pass through.\n */\nexport function parseComplex(value: Value): Complex | FormulaError {\n  if (typeof value === 'number') return { re: value, im: 0, suffix: 'i' };\n  if (typeof value === 'boolean') return err.value;\n  const text = toText(value);\n  if (isError(text)) return text;\n  const s = text.trim();\n  if (s === '') return { re: 0, im: 0, suffix: 'i' };\n  const last = s[s.length - 1];\n  if (last !== 'i' && last !== 'j') {\n    const re = parseReal(s);\n    return re === undefined ? err.num : { re, im: 0, suffix: 'i' };\n  }\n  const body = s.slice(0, -1);\n  const split = splitIndex(body);\n  const re = split < 0 ? 0 : parseReal(body.slice(0, split));\n  const im = parseImaginary(split < 0 ? body : body.slice(split));\n  if (re === undefined || im === undefined) return err.num;\n  return { re, im, suffix: last };\n}\n"
+        }
+      ]
+    }
+  ]
+}

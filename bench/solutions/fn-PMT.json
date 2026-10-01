@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-PMT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return checkNumber(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return checkNumber(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return checkNumber(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return checkNumber(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return numberResult(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return numberResult(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return numberResult(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { payment } from '../../helpers/annuity';\n\n/** PMT(rate, nper, pv, [fv], [type]): the constant periodic payment of a loan or investment. */\nconst PMT: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const nper = toNumber(args[1]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (nper === 0) return err.num;\n    return numberResult(payment(rate, nper, pv, fv, type === 0 ? 0 : 1));\n  },\n};\n\nexport default PMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PMT: () => import('../functions/financial/PMT'),\n"
+        }
+      ]
+    }
+  ]
+}

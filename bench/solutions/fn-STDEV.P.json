@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-STDEV.P",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/STDEV_P.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { sumOfSquaredDeviations } from '../../helpers/moments';\n\n/** STDEV.P(number1, ...): the population standard deviation; #DIV/0! when there are no numbers. */\nconst STDEV_P: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return err.div0;\n    return Math.sqrt(sumOfSquaredDeviations(numbers) / numbers.length);\n  },\n};\n\nexport default STDEV_P;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'STDEV.P': () => import('../functions/statistical/STDEV_P'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/STDEV_P.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { sumOfSquaredDeviations } from '../../helpers/moments';\n\n/** STDEV.P(number1, ...): the population standard deviation; #DIV/0! when there are no numbers. */\nconst STDEV_P: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return err.div0;\n    return Math.sqrt(sumOfSquaredDeviations(numbers) / numbers.length);\n  },\n};\n\nexport default STDEV_P;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'STDEV.P': () => import('../functions/statistical/STDEV_P'),\n"
+        }
+      ]
+    }
+  ]
+}

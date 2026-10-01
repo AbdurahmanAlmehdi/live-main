@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-MOD",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError(...numbers);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return checkNumber(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError(...numbers);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return checkNumber(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError([...numbers]);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return checkNumber(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError([...numbers]);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return checkNumber(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError(...numbers);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return numberResult(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError(...numbers);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return numberResult(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError([...numbers]);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return numberResult(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MOD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** MOD(number, divisor): the remainder of a division, with the sign of the divisor. */\nconst MOD: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const numbers = args.map((arg) => toNumber(arg));\n    const error = firstError([...numbers]);\n    if (error) return error;\n    const [n, d] = numbers as number[];\n    if (d === 0) return err.div0;\n    return numberResult(n - d * Math.floor(n / d));\n  },\n};\n\nexport default MOD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MOD: () => import('../functions/math/MOD'),\n"
+        }
+      ]
+    }
+  ]
+}

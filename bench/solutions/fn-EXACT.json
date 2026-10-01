@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-EXACT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/EXACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** EXACT(text1, text2): TRUE when both texts are identical, case included. */\nconst EXACT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([left, right]) {\n    const a = toText(left);\n    if (isError(a)) return a;\n    const b = toText(right);\n    if (isError(b)) return b;\n    return a === b;\n  },\n};\n\nexport default EXACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EXACT: () => import('../functions/text/EXACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/EXACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** EXACT(text1, text2): TRUE when both texts are identical, case included. */\nconst EXACT: FormulaFunction = {\n  arity: [2, 2],\n  call([left, right]) {\n    const a = toText(left);\n    if (isError(a)) return a;\n    const b = toText(right);\n    if (isError(b)) return b;\n    return a === b;\n  },\n};\n\nexport default EXACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EXACT: () => import('../functions/text/EXACT'),\n"
+        }
+      ]
+    }
+  ]
+}

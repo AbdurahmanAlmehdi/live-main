@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-CEILING.MATH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CEILING_MATH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { ceilToMultiple, floorToMultiple } from '../../helpers/multiples';\n\n/**\n * CEILING.MATH(number, [significance], [mode]): rounds up to a multiple of |significance|\n * (1 by default). Negative numbers round toward zero, or away from zero when mode is\n * non-zero.\n */\nconst CEILING_MATH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const significance = optionalNumber(args, 1, 1);\n    if (isError(significance)) return significance;\n    const mode = optionalNumber(args, 2, 0);\n    if (isError(mode)) return mode;\n    const step = Math.abs(significance);\n    if (n === 0 || step === 0) return 0;\n    if (n < 0 && mode !== 0) return floorToMultiple(n, step);\n    return ceilToMultiple(n, step);\n  },\n};\n\nexport default CEILING_MATH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CEILING.MATH': () => import('../functions/math/CEILING_MATH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CEILING_MATH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { ceilToMultiple, floorToMultiple } from '../../helpers/multiples';\n\n/**\n * CEILING.MATH(number, [significance], [mode]): rounds up to a multiple of |significance|\n * (1 by default). Negative numbers round toward zero, or away from zero when mode is\n * non-zero.\n */\nconst CEILING_MATH: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const significance = optionalNumber(args, 1, 1);\n    if (isError(significance)) return significance;\n    const mode = optionalNumber(args, 2, 0);\n    if (isError(mode)) return mode;\n    const step = Math.abs(significance);\n    if (n === 0 || step === 0) return 0;\n    if (n < 0 && mode !== 0) return floorToMultiple(n, step);\n    return ceilToMultiple(n, step);\n  },\n};\n\nexport default CEILING_MATH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CEILING.MATH': () => import('../functions/math/CEILING_MATH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CEILING_MATH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { ceilToMultiple, floorToMultiple } from '../../helpers/multiples';\n\n/**\n * CEILING.MATH(number, [significance], [mode]): rounds up to a multiple of |significance|\n * (1 by default). Negative numbers round toward zero, or away from zero when mode is\n * non-zero.\n */\nconst CEILING_MATH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const significance = optionalNumber(args[1], 1);\n    if (isError(significance)) return significance;\n    const mode = optionalNumber(args[2], 0);\n    if (isError(mode)) return mode;\n    const step = Math.abs(significance);\n    if (n === 0 || step === 0) return 0;\n    if (n < 0 && mode !== 0) return floorToMultiple(n, step);\n    return ceilToMultiple(n, step);\n  },\n};\n\nexport default CEILING_MATH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CEILING.MATH': () => import('../functions/math/CEILING_MATH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CEILING_MATH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { ceilToMultiple, floorToMultiple } from '../../helpers/multiples';\n\n/**\n * CEILING.MATH(number, [significance], [mode]): rounds up to a multiple of |significance|\n * (1 by default). Negative numbers round toward zero, or away from zero when mode is\n * non-zero.\n */\nconst CEILING_MATH: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const significance = optionalNumber(args[1], 1);\n    if (isError(significance)) return significance;\n    const mode = optionalNumber(args[2], 0);\n    if (isError(mode)) return mode;\n    const step = Math.abs(significance);\n    if (n === 0 || step === 0) return 0;\n    if (n < 0 && mode !== 0) return floorToMultiple(n, step);\n    return ceilToMultiple(n, step);\n  },\n};\n\nexport default CEILING_MATH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'CEILING.MATH': () => import('../functions/math/CEILING_MATH'),\n"
+        }
+      ]
+    }
+  ]
+}

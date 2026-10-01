@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-REPT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/REPT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** REPT(text, number_times): text repeated number_times (truncated) times; at most 32767 characters. */\nconst REPT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([textValue, timesValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const times = toInteger(timesValue);\n    if (isError(times)) return times;\n    if (times < 0 || text.length * times > 32767) return err.value;\n    return text.repeat(times);\n  },\n};\n\nexport default REPT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  REPT: () => import('../functions/text/REPT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/REPT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** REPT(text, number_times): text repeated number_times (truncated) times; at most 32767 characters. */\nconst REPT: FormulaFunction = {\n  arity: [2, 2],\n  call([textValue, timesValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const times = toInteger(timesValue);\n    if (isError(times)) return times;\n    if (times < 0 || text.length * times > 32767) return err.value;\n    return text.repeat(times);\n  },\n};\n\nexport default REPT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  REPT: () => import('../functions/text/REPT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/REPT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** REPT(text, number_times): text repeated number_times (truncated) times; at most 32767 characters. */\nconst REPT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([textValue, timesValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const times = toIntTrunc(timesValue);\n    if (isError(times)) return times;\n    if (times < 0 || text.length * times > 32767) return err.value;\n    return text.repeat(times);\n  },\n};\n\nexport default REPT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  REPT: () => import('../functions/text/REPT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/REPT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** REPT(text, number_times): text repeated number_times (truncated) times; at most 32767 characters. */\nconst REPT: FormulaFunction = {\n  arity: [2, 2],\n  call([textValue, timesValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const times = toIntTrunc(timesValue);\n    if (isError(times)) return times;\n    if (times < 0 || text.length * times > 32767) return err.value;\n    return text.repeat(times);\n  },\n};\n\nexport default REPT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  REPT: () => import('../functions/text/REPT'),\n"
+        }
+      ]
+    }
+  ]
+}

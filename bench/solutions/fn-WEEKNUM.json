@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-WEEKNUM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { weekOfYear } from '../../helpers/weekday';\n\n/** First day of the week (0 = Sunday) for each return_type. */\nconst WEEK_STARTS: Record<number, number> = { 1: 0, 2: 1, 11: 1, 12: 2, 13: 3, 14: 4, 15: 5, 16: 6, 17: 0 };\n\n/** WEEKNUM(serial_number, [return_type]): the week of the year; the week containing January 1 is week 1. */\nconst WEEKNUM: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args, 1, 1);\n    if (isError(returnType)) return returnType;\n    const weekStart = WEEK_STARTS[returnType];\n    if (weekStart === undefined) return err.num;\n    return weekOfYear(serial, weekStart);\n  },\n};\n\nexport default WEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKNUM: () => import('../functions/date/WEEKNUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { weekOfYear } from '../../helpers/weekday';\n\n/** First day of the week (0 = Sunday) for each return_type. */\nconst WEEK_STARTS: Record<number, number> = { 1: 0, 2: 1, 11: 1, 12: 2, 13: 3, 14: 4, 15: 5, 16: 6, 17: 0 };\n\n/** WEEKNUM(serial_number, [return_type]): the week of the year; the week containing January 1 is week 1. */\nconst WEEKNUM: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args, 1, 1);\n    if (isError(returnType)) return returnType;\n    const weekStart = WEEK_STARTS[returnType];\n    if (weekStart === undefined) return err.num;\n    return weekOfYear(serial, weekStart);\n  },\n};\n\nexport default WEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKNUM: () => import('../functions/date/WEEKNUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { weekOfYear } from '../../helpers/weekday';\n\n/** First day of the week (0 = Sunday) for each return_type. */\nconst WEEK_STARTS: Record<number, number> = { 1: 0, 2: 1, 11: 1, 12: 2, 13: 3, 14: 4, 15: 5, 16: 6, 17: 0 };\n\n/** WEEKNUM(serial_number, [return_type]): the week of the year; the week containing January 1 is week 1. */\nconst WEEKNUM: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args[1], 1);\n    if (isError(returnType)) return returnType;\n    const weekStart = WEEK_STARTS[returnType];\n    if (weekStart === undefined) return err.num;\n    return weekOfYear(serial, weekStart);\n  },\n};\n\nexport default WEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKNUM: () => import('../functions/date/WEEKNUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/WEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { weekOfYear } from '../../helpers/weekday';\n\n/** First day of the week (0 = Sunday) for each return_type. */\nconst WEEK_STARTS: Record<number, number> = { 1: 0, 2: 1, 11: 1, 12: 2, 13: 3, 14: 4, 15: 5, 16: 6, 17: 0 };\n\n/** WEEKNUM(serial_number, [return_type]): the week of the year; the week containing January 1 is week 1. */\nconst WEEKNUM: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const serial = toNumber(args[0]);\n    if (isError(serial)) return serial;\n    const returnType = optionalInteger(args[1], 1);\n    if (isError(returnType)) return returnType;\n    const weekStart = WEEK_STARTS[returnType];\n    if (weekStart === undefined) return err.num;\n    return weekOfYear(serial, weekStart);\n  },\n};\n\nexport default WEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  WEEKNUM: () => import('../functions/date/WEEKNUM'),\n"
+        }
+      ]
+    }
+  ]
+}

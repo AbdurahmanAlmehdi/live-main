@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-COMBINA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return checkNumber(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return checkNumber(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return checkNumber(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return checkNumber(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return numberResult(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return numberResult(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return numberResult(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COMBINA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** COMBINA(number, number_chosen): combinations with repetition, C(n + k - 1, k). */\nconst COMBINA: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0) return err.num;\n    if (k === 0) return 1;\n    return numberResult(combinations(n + k - 1, k));\n  },\n};\n\nexport default COMBINA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMBINA: () => import('../functions/math/COMBINA'),\n"
+        }
+      ]
+    }
+  ]
+}

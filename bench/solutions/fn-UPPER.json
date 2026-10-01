@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-UPPER",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/UPPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** UPPER(text): the text in upper case. */\nconst UPPER: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    return text.toUpperCase();\n  },\n};\n\nexport default UPPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UPPER: () => import('../functions/text/UPPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/UPPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** UPPER(text): the text in upper case. */\nconst UPPER: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    return text.toUpperCase();\n  },\n};\n\nexport default UPPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UPPER: () => import('../functions/text/UPPER'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-MID",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/MID.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MID(text, start_num, num_chars): num_chars characters from 1-based position start_num. */\nconst MID: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([textValue, startValue, countValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const start = toInteger(startValue);\n    if (isError(start)) return start;\n    const count = toInteger(countValue);\n    if (isError(count)) return count;\n    if (start < 1 || count < 0) return err.value;\n    return text.slice(start - 1, start - 1 + count);\n  },\n};\n\nexport default MID;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MID: () => import('../functions/text/MID'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/MID.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MID(text, start_num, num_chars): num_chars characters from 1-based position start_num. */\nconst MID: FormulaFunction = {\n  arity: [3, 3],\n  call([textValue, startValue, countValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const start = toInteger(startValue);\n    if (isError(start)) return start;\n    const count = toInteger(countValue);\n    if (isError(count)) return count;\n    if (start < 1 || count < 0) return err.value;\n    return text.slice(start - 1, start - 1 + count);\n  },\n};\n\nexport default MID;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MID: () => import('../functions/text/MID'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/MID.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MID(text, start_num, num_chars): num_chars characters from 1-based position start_num. */\nconst MID: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([textValue, startValue, countValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const start = toIntTrunc(startValue);\n    if (isError(start)) return start;\n    const count = toIntTrunc(countValue);\n    if (isError(count)) return count;\n    if (start < 1 || count < 0) return err.value;\n    return text.slice(start - 1, start - 1 + count);\n  },\n};\n\nexport default MID;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MID: () => import('../functions/text/MID'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/MID.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MID(text, start_num, num_chars): num_chars characters from 1-based position start_num. */\nconst MID: FormulaFunction = {\n  arity: [3, 3],\n  call([textValue, startValue, countValue]) {\n    const text = toText(textValue);\n    if (isError(text)) return text;\n    const start = toIntTrunc(startValue);\n    if (isError(start)) return start;\n    const count = toIntTrunc(countValue);\n    if (isError(count)) return count;\n    if (start < 1 || count < 0) return err.value;\n    return text.slice(start - 1, start - 1 + count);\n  },\n};\n\nexport default MID;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MID: () => import('../functions/text/MID'),\n"
+        }
+      ]
+    }
+  ]
+}

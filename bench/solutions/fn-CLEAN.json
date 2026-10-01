@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-CLEAN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CLEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** CLEAN(text): removes the non-printable characters (codes 0-31). */\nconst CLEAN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    // eslint-disable-next-line no-control-regex\n    return text.replace(/[\\x00-\\x1f]/g, '');\n  },\n};\n\nexport default CLEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CLEAN: () => import('../functions/text/CLEAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CLEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** CLEAN(text): removes the non-printable characters (codes 0-31). */\nconst CLEAN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const text = toText(value);\n    if (isError(text)) return text;\n    // eslint-disable-next-line no-control-regex\n    return text.replace(/[\\x00-\\x1f]/g, '');\n  },\n};\n\nexport default CLEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CLEAN: () => import('../functions/text/CLEAN'),\n"
+        }
+      ]
+    }
+  ]
+}

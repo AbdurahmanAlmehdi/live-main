@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COUNTIF",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/** COUNTIF(range, criteria): how many cells meet the criteria. */\nconst COUNTIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([range, criterion]) {\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    return cellsOf(range).filter((cell) => matches(cell)).length;\n  },\n};\n\nexport default COUNTIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTIF: () => import('../functions/statistical/COUNTIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/** COUNTIF(range, criteria): how many cells meet the criteria. */\nconst COUNTIF: FormulaFunction = {\n  arity: [2, 2],\n  call([range, criterion]) {\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    return cellsOf(range).filter((cell) => matches(cell)).length;\n  },\n};\n\nexport default COUNTIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTIF: () => import('../functions/statistical/COUNTIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/** COUNTIF(range, criteria): how many cells meet the criteria. */\nconst COUNTIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([range, criterion]) {\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    return cellsOf(range, { order: 'rows' }).filter((cell) => matches(cell)).length;\n  },\n};\n\nexport default COUNTIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTIF: () => import('../functions/statistical/COUNTIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\n\n/** COUNTIF(range, criteria): how many cells meet the criteria. */\nconst COUNTIF: FormulaFunction = {\n  arity: [2, 2],\n  call([range, criterion]) {\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    return cellsOf(range, { order: 'rows' }).filter((cell) => matches(cell)).length;\n  },\n};\n\nexport default COUNTIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTIF: () => import('../functions/statistical/COUNTIF'),\n"
+        }
+      ]
+    }
+  ]
+}

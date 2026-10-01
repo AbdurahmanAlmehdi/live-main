@@ -1,0 +1,35 @@
+{
+  "taskId": "co-to-boolean-opts",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "/** Boolean coercion: numbers are TRUE when non-zero, empty → FALSE, \"true\"/\"false\" text (any case), other text → #VALUE!. */\nexport function toBoolean(value: Value): boolean | FormulaError {\n  const cell = toCell(value);\n  if (typeof cell === 'boolean') return cell;\n  if (typeof cell === 'number') return cell !== 0;\n  if (cell === null) return false;\n  if (typeof cell === 'string') {\n    const upper",
+          "newString": "export interface BooleanOptions {\n  /** Text: 'parse' reads \"true\"/\"false\" (any case; other text is #VALUE!), 'reject' gives #VALUE! for all text. */\n  text: 'parse' | 'reject';\n}\n\n/** Boolean coercion: numbers are TRUE when non-zero, empty → FALSE, text per `opts.text`. */\nexport function toBoolean(value: Value, opts: BooleanOptions): boolean | FormulaError {\n  const { text } = opts;\n  const cell = toCell(value);\n  if (typeof cell === 'boolean') return cell;\n  if (typeof cell === 'number') return cell !== 0;\n  if (cell === null) return false;\n  if (typeof cell === 'string') {\n    if (text === 'reject') return err.value;\n    const upper"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\btoBoolean\\(((?:(?!\\{ text)[^()])*)\\)",
+          "flags": "g",
+          "replace": "toBoolean($1, { text: 'parse' })"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\btoBoolean\\(((?:(?!\\{ text)[^()])*)\\)",
+          "flags": "g",
+          "replace": "toBoolean($1, { text: 'parse' })"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-to-boolean-opts.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { toBoolean } from '../../src/core/coerce';\n\ndescribe('toBoolean options', () => {\n  it('parses TRUE/FALSE text when asked', () => {\n    expect(toBoolean('true', { text: 'parse' })).toBe(true);\n    expect(toBoolean('FALSE', { text: 'parse' })).toBe(false);\n    expect(toBoolean('maybe', { text: 'parse' })).toMatchObject({ code: '#VALUE!' });\n  });\n\n  it('rejects text when asked', () => {\n    expect(toBoolean('TRUE', { text: 'reject' })).toMatchObject({ code: '#VALUE!' });\n    expect(toBoolean(1, { text: 'reject' })).toBe(true);\n  });\n\n  it('requires the options', () => {\n    const call = toBoolean as unknown as (v: unknown) => unknown;\n    expect(() => call(1)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

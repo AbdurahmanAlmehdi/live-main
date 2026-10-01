@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ACOSH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ACOSH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ACOSH(number): the inverse hyperbolic cosine of a number >= 1. */\nconst ACOSH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < 1) return err.num;\n    return Math.acosh(n);\n  },\n};\n\nexport default ACOSH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ACOSH: () => import('../functions/math/ACOSH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ACOSH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ACOSH(number): the inverse hyperbolic cosine of a number >= 1. */\nconst ACOSH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < 1) return err.num;\n    return Math.acosh(n);\n  },\n};\n\nexport default ACOSH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ACOSH: () => import('../functions/math/ACOSH'),\n"
+        }
+      ]
+    }
+  ]
+}

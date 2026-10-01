@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-timeOfDay",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/timeOfDay.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/** Times of day are fractions of a day: 0.5 is 12:00:00. */\n\nexport interface TimeParts {\n  hour: number;\n  minute: number;\n  second: number;\n}\n\n/**\n * Hour, minute and second of a serial's fractional part, rounded to the nearest second\n * (so 0.99999999 is 00:00:00 of the next day, i.e. 0:0:0). #NUM! for negative serials.\n */\nexport function timeFromSerial(serial: number): TimeParts | FormulaError {\n  if (serial < 0) return err.num;\n  const seconds = Math.round((serial - Math.floor(serial)) * 86400) % 86400;\n  return { hour: Math.floor(seconds / 3600), minute: Math.floor((seconds % 3600) / 60), second: seconds % 60 };\n}\n\n/**\n * Fraction of a day for a time, as TIME computes it: components may overflow\n * (TIME(0, 90, 0) is 1:30) and whole days are dropped (TIME(25, 0, 0) is 1:00).\n * #NUM! when the total is negative or a component is 32768 or more.\n */\nexport function serialFromTime(hour: number, minute: number, second: number): number | FormulaError {\n  if (hour >= 32768 || minute >= 32768 || second >= 32768) return err.num;\n  const total = hour * 3600 + minute * 60 + second;\n  if (total < 0) return err.num;\n  return (total % 86400) / 86400;\n}\n"
+        }
+      ]
+    }
+  ]
+}

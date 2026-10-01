@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-MATCH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args, 2, 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle)[0];\n    const cells = cellsOf(array);\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args, 2, 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle)[0];\n    const cells = cellsOf(array);\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args[2], 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle)[0];\n    const cells = cellsOf(array);\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args[2], 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle)[0];\n    const cells = cellsOf(array);\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args, 2, 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const cells = cellsOf(array, { order: 'rows' });\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args, 2, 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const cells = cellsOf(array, { order: 'rows' });\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args[2], 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const cells = cellsOf(array, { order: 'rows' });\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/MATCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, isVector } from '../../core/range';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { findExact } from '../../helpers/lookupExact';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * MATCH(lookup_value, lookup_array, [match_type]): the 1-based position of a value in a row\n * or column. match_type 0: exact (wildcards allowed); 1 (default): largest value <= lookup\n * in ascending data; -1: smallest value >= lookup in descending data.\n */\nconst MATCH: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [needle, array] = args;\n    if (isError(needle)) return needle;\n    if (isError(array)) return array;\n    const matchType = optionalInteger(args[2], 1);\n    if (isError(matchType)) return matchType;\n    if (!isVector(array)) return err.na;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const cells = cellsOf(array, { order: 'rows' });\n    let index: number;\n    if (matchType === 0) index = findExact(lookupValue, cells);\n    else index = findApproximate(lookupValue, cells, matchType > 0 ? 'ascending' : 'descending');\n    return index < 0 ? err.na : index + 1;\n  },\n};\n\nexport default MATCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MATCH: () => import('../functions/lookup/MATCH'),\n"
+        }
+      ]
+    }
+  ]
+}

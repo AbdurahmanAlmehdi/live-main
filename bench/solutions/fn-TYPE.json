@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-TYPE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/TYPE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { isError } from '../../core/errors';\n\n/** TYPE(value): 1 number, 2 text, 4 logical, 16 error, 64 array. */\nconst TYPE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (isRange(value)) return 64;\n    if (isError(value)) return 16;\n    if (typeof value === 'string') return 2;\n    if (typeof value === 'boolean') return 4;\n    return 1;\n  },\n};\n\nexport default TYPE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TYPE: () => import('../functions/information/TYPE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/TYPE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { isError } from '../../core/errors';\n\n/** TYPE(value): 1 number, 2 text, 4 logical, 16 error, 64 array. */\nconst TYPE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (isRange(value)) return 64;\n    if (isError(value)) return 16;\n    if (typeof value === 'string') return 2;\n    if (typeof value === 'boolean') return 4;\n    return 1;\n  },\n};\n\nexport default TYPE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TYPE: () => import('../functions/information/TYPE'),\n"
+        }
+      ]
+    }
+  ]
+}

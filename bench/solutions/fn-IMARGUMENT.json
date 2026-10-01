@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IMARGUMENT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMARGUMENT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMARGUMENT(inumber): the argument of a complex number, in radians in (-pi, pi]; #DIV/0! for 0. */\nconst IMARGUMENT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    if (z.re === 0 && z.im === 0) return err.div0;\n    return Math.atan2(z.im, z.re);\n  },\n};\n\nexport default IMARGUMENT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMARGUMENT: () => import('../functions/engineering/IMARGUMENT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMARGUMENT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMARGUMENT(inumber): the argument of a complex number, in radians in (-pi, pi]; #DIV/0! for 0. */\nconst IMARGUMENT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    if (z.re === 0 && z.im === 0) return err.div0;\n    return Math.atan2(z.im, z.re);\n  },\n};\n\nexport default IMARGUMENT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMARGUMENT: () => import('../functions/engineering/IMARGUMENT'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ERF",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/ERF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { erf } from '../../helpers/erf';\n\n/** ERF(lower_limit, [upper_limit]): the error function integrated from 0 to lower_limit, or from lower_limit to upper_limit. */\nconst ERF: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const lower = toNumber(args[0]);\n    if (isError(lower)) return lower;\n    if (args.length < 2) return erf(lower);\n    const upper = toNumber(args[1]);\n    if (isError(upper)) return upper;\n    return erf(upper) - erf(lower);\n  },\n};\n\nexport default ERF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ERF: () => import('../functions/engineering/ERF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/ERF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { erf } from '../../helpers/erf';\n\n/** ERF(lower_limit, [upper_limit]): the error function integrated from 0 to lower_limit, or from lower_limit to upper_limit. */\nconst ERF: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const lower = toNumber(args[0]);\n    if (isError(lower)) return lower;\n    if (args.length < 2) return erf(lower);\n    const upper = toNumber(args[1]);\n    if (isError(upper)) return upper;\n    return erf(upper) - erf(lower);\n  },\n};\n\nexport default ERF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ERF: () => import('../functions/engineering/ERF'),\n"
+        }
+      ]
+    }
+  ]
+}

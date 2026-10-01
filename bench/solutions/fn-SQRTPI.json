@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-SQRTPI",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SQRTPI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SQRTPI(number): the square root of number * pi. */\nconst SQRTPI: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return Math.sqrt(n * Math.PI);\n  },\n};\n\nexport default SQRTPI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SQRTPI: () => import('../functions/math/SQRTPI'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SQRTPI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SQRTPI(number): the square root of number * pi. */\nconst SQRTPI: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return Math.sqrt(n * Math.PI);\n  },\n};\n\nexport default SQRTPI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SQRTPI: () => import('../functions/math/SQRTPI'),\n"
+        }
+      ]
+    }
+  ]
+}

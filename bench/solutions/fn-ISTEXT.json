@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ISTEXT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISTEXT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** ISTEXT(value): TRUE when the value is text. */\nconst ISTEXT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    return typeof value === 'string';\n  },\n};\n\nexport default ISTEXT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISTEXT: () => import('../functions/information/ISTEXT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISTEXT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** ISTEXT(value): TRUE when the value is text. */\nconst ISTEXT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    return typeof value === 'string';\n  },\n};\n\nexport default ISTEXT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISTEXT: () => import('../functions/information/ISTEXT'),\n"
+        }
+      ]
+    }
+  ]
+}

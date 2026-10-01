@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-CSCH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CSCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CSCH(number): the hyperbolic cosecant of a number. */\nconst CSCH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return checkNumber(1 / Math.sinh(n));\n  },\n};\n\nexport default CSCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CSCH: () => import('../functions/math/CSCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CSCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CSCH(number): the hyperbolic cosecant of a number. */\nconst CSCH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return checkNumber(1 / Math.sinh(n));\n  },\n};\n\nexport default CSCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CSCH: () => import('../functions/math/CSCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CSCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CSCH(number): the hyperbolic cosecant of a number. */\nconst CSCH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return numberResult(1 / Math.sinh(n));\n  },\n};\n\nexport default CSCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CSCH: () => import('../functions/math/CSCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/CSCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CSCH(number): the hyperbolic cosecant of a number. */\nconst CSCH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return numberResult(1 / Math.sinh(n));\n  },\n};\n\nexport default CSCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CSCH: () => import('../functions/math/CSCH'),\n"
+        }
+      ]
+    }
+  ]
+}

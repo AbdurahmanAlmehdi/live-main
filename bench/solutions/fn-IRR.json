@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-IRR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/IRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/** IRR(values, [guess]): the internal rate of return of periodic cash flows, solved from guess (10% by default). */\nconst IRR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const guess = optionalNumber(args, 1, 0.1);\n    if (isError(guess)) return guess;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    // Discount from period 0 (the first flow is not discounted), which keeps Newton stable for low rates.\n    return solveNewton((rate) => (rate <= -1 ? NaN : (1 + rate) * netPresentValue(rate, flows)), guess);\n  },\n};\n\nexport default IRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IRR: () => import('../functions/financial/IRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/IRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/** IRR(values, [guess]): the internal rate of return of periodic cash flows, solved from guess (10% by default). */\nconst IRR: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const guess = optionalNumber(args, 1, 0.1);\n    if (isError(guess)) return guess;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    // Discount from period 0 (the first flow is not discounted), which keeps Newton stable for low rates.\n    return solveNewton((rate) => (rate <= -1 ? NaN : (1 + rate) * netPresentValue(rate, flows)), guess);\n  },\n};\n\nexport default IRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IRR: () => import('../functions/financial/IRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/IRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/** IRR(values, [guess]): the internal rate of return of periodic cash flows, solved from guess (10% by default). */\nconst IRR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const guess = optionalNumber(args[1], 0.1);\n    if (isError(guess)) return guess;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    // Discount from period 0 (the first flow is not discounted), which keeps Newton stable for low rates.\n    return solveNewton((rate) => (rate <= -1 ? NaN : (1 + rate) * netPresentValue(rate, flows)), guess);\n  },\n};\n\nexport default IRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IRR: () => import('../functions/financial/IRR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/IRR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows, netPresentValue } from '../../helpers/cashflows';\nimport { solveNewton } from '../../helpers/solver';\n\n/** IRR(values, [guess]): the internal rate of return of periodic cash flows, solved from guess (10% by default). */\nconst IRR: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const flows = collectCashflows(args[0]);\n    if (isError(flows)) return flows;\n    const guess = optionalNumber(args[1], 0.1);\n    if (isError(guess)) return guess;\n    if (!flows.some((v) => v > 0) || !flows.some((v) => v < 0)) return err.num;\n    // Discount from period 0 (the first flow is not discounted), which keeps Newton stable for low rates.\n    return solveNewton((rate) => (rate <= -1 ? NaN : (1 + rate) * netPresentValue(rate, flows)), guess);\n  },\n};\n\nexport default IRR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IRR: () => import('../functions/financial/IRR'),\n"
+        }
+      ]
+    }
+  ]
+}

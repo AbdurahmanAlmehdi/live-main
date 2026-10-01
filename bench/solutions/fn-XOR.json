@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-XOR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg)) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg);\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg)) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg);\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg)) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg, { text: 'parse' });\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg)) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg, { text: 'parse' });\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg, { order: 'rows' })) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg);\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg, { order: 'rows' })) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg);\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg, { order: 'rows' })) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg, { text: 'parse' });\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/XOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange, type FormulaError, type Value } from '../../core/value';\nimport { toBoolean } from '../../core/coerce';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\n\n/**\n * The logical values in the arguments: inside arrays only booleans and numbers count\n * (text and empty cells are ignored); direct arguments are coerced to booleans.\n */\nfunction logicalValues(args: readonly Value[]): boolean[] | FormulaError {\n  const out: boolean[] = [];\n  for (const arg of args) {\n    if (isRange(arg)) {\n      for (const cell of cellsOf(arg, { order: 'rows' })) {\n        if (isError(cell)) return cell;\n        if (typeof cell === 'boolean') out.push(cell);\n        else if (typeof cell === 'number') out.push(cell !== 0);\n      }\n    } else if (arg !== null) {\n      const b = toBoolean(arg, { text: 'parse' });\n      if (isError(b)) return b;\n      out.push(b);\n    }\n  }\n  return out;\n}\n\n/** XOR(logical1, ...): TRUE when an odd number of logical values are TRUE; #VALUE! when there are none. */\nconst XOR: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const values = logicalValues(args);\n    if (isError(values)) return values;\n    if (values.length === 0) return err.value;\n    return values.filter(Boolean).length % 2 === 1;\n  },\n};\n\nexport default XOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XOR: () => import('../functions/logical/XOR'),\n"
+        }
+      ]
+    }
+  ]
+}

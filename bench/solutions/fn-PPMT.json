@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-PPMT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 6,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 4, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 5, 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return checkNumber(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  arity: [4, 6],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 4, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 5, 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return checkNumber(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 6,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[4], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[5], 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return checkNumber(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  arity: [4, 6],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[4], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[5], 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return checkNumber(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 6,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 4, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 5, 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return numberResult(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  arity: [4, 6],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 4, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 5, 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return numberResult(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 6,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[4], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[5], 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return numberResult(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { interestPayment, payment } from '../../helpers/annuity';\n\n/** PPMT(rate, per, nper, pv, [fv], [type]): the principal portion of the payment in period per (1..nper). */\nconst PPMT: FormulaFunction = {\n  arity: [4, 6],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const per = toNumber(args[1]);\n    if (isError(per)) return per;\n    const nper = toNumber(args[2]);\n    if (isError(nper)) return nper;\n    const pv = toNumber(args[3]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[4], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[5], 0);\n    if (isError(type)) return type;\n    if (per < 1 || per > nper) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return numberResult(payment(rate, nper, pv, fv, due) - interestPayment(rate, per, nper, pv, fv, due));\n  },\n};\n\nexport default PPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PPMT: () => import('../functions/financial/PPMT'),\n"
+        }
+      ]
+    }
+  ]
+}

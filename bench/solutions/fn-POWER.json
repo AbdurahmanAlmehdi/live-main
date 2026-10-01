@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-POWER",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/POWER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** POWER(number, power): number raised to a power. */\nconst POWER: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([baseValue, exponentValue]) {\n    const base = toNumber(baseValue);\n    if (isError(base)) return base;\n    const exponent = toNumber(exponentValue);\n    if (isError(exponent)) return exponent;\n    if (base === 0 && exponent === 0) return err.num;\n    if (base === 0 && exponent < 0) return err.div0;\n    return checkNumber(Math.pow(base, exponent));\n  },\n};\n\nexport default POWER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  POWER: () => import('../functions/math/POWER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/POWER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** POWER(number, power): number raised to a power. */\nconst POWER: FormulaFunction = {\n  arity: [2, 2],\n  call([baseValue, exponentValue]) {\n    const base = toNumber(baseValue);\n    if (isError(base)) return base;\n    const exponent = toNumber(exponentValue);\n    if (isError(exponent)) return exponent;\n    if (base === 0 && exponent === 0) return err.num;\n    if (base === 0 && exponent < 0) return err.div0;\n    return checkNumber(Math.pow(base, exponent));\n  },\n};\n\nexport default POWER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  POWER: () => import('../functions/math/POWER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/POWER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** POWER(number, power): number raised to a power. */\nconst POWER: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([baseValue, exponentValue]) {\n    const base = toNumber(baseValue);\n    if (isError(base)) return base;\n    const exponent = toNumber(exponentValue);\n    if (isError(exponent)) return exponent;\n    if (base === 0 && exponent === 0) return err.num;\n    if (base === 0 && exponent < 0) return err.div0;\n    return numberResult(Math.pow(base, exponent));\n  },\n};\n\nexport default POWER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  POWER: () => import('../functions/math/POWER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/POWER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** POWER(number, power): number raised to a power. */\nconst POWER: FormulaFunction = {\n  arity: [2, 2],\n  call([baseValue, exponentValue]) {\n    const base = toNumber(baseValue);\n    if (isError(base)) return base;\n    const exponent = toNumber(exponentValue);\n    if (isError(exponent)) return exponent;\n    if (base === 0 && exponent === 0) return err.num;\n    if (base === 0 && exponent < 0) return err.div0;\n    return numberResult(Math.pow(base, exponent));\n  },\n};\n\nexport default POWER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  POWER: () => import('../functions/math/POWER'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ATAN2",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ATAN2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** ATAN2(x_num, y_num): the angle of the point (x, y), in (-pi, pi]. */\nconst ATAN2: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const coordinates = args.map((arg) => toNumber(arg));\n    const error = firstError(...coordinates);\n    if (error) return error;\n    const [x, y] = coordinates as number[];\n    if (x === 0 && y === 0) return err.div0;\n    return Math.atan2(y, x);\n  },\n};\n\nexport default ATAN2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ATAN2: () => import('../functions/math/ATAN2'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ATAN2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** ATAN2(x_num, y_num): the angle of the point (x, y), in (-pi, pi]. */\nconst ATAN2: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const coordinates = args.map((arg) => toNumber(arg));\n    const error = firstError(...coordinates);\n    if (error) return error;\n    const [x, y] = coordinates as number[];\n    if (x === 0 && y === 0) return err.div0;\n    return Math.atan2(y, x);\n  },\n};\n\nexport default ATAN2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ATAN2: () => import('../functions/math/ATAN2'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ATAN2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** ATAN2(x_num, y_num): the angle of the point (x, y), in (-pi, pi]. */\nconst ATAN2: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call(args) {\n    const coordinates = args.map((arg) => toNumber(arg));\n    const error = firstError([...coordinates]);\n    if (error) return error;\n    const [x, y] = coordinates as number[];\n    if (x === 0 && y === 0) return err.div0;\n    return Math.atan2(y, x);\n  },\n};\n\nexport default ATAN2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ATAN2: () => import('../functions/math/ATAN2'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ATAN2.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, firstError } from '../../core/errors';\n\n/** ATAN2(x_num, y_num): the angle of the point (x, y), in (-pi, pi]. */\nconst ATAN2: FormulaFunction = {\n  arity: [2, 2],\n  call(args) {\n    const coordinates = args.map((arg) => toNumber(arg));\n    const error = firstError([...coordinates]);\n    if (error) return error;\n    const [x, y] = coordinates as number[];\n    if (x === 0 && y === 0) return err.div0;\n    return Math.atan2(y, x);\n  },\n};\n\nexport default ATAN2;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ATAN2: () => import('../functions/math/ATAN2'),\n"
+        }
+      ]
+    }
+  ]
+}

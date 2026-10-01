@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-CHOOSEROWS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toInteger(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.rows[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  arity: [2, Infinity],\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toInteger(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.rows[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toInteger(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.toRows()[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  arity: [2, Infinity],\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toInteger(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.toRows()[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toIntTrunc(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.rows[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  arity: [2, Infinity],\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toIntTrunc(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.rows[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toIntTrunc(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.toRows()[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/CHOOSEROWS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHOOSEROWS(array, num1, ...): the given rows of an array (1-based; negative numbers count from the end). */\nconst CHOOSEROWS: FormulaFunction = {\n  arity: [2, Infinity],\n  call([array, ...numbers]) {\n    if (isError(array)) return array;\n    const range = toRange(array);\n    const count = range.height;\n    const picked: number[] = [];\n    for (const value of numbers) {\n      const n = toIntTrunc(value);\n      if (isError(n)) return n;\n      if (n === 0 || Math.abs(n) > count) return err.value;\n      picked.push(n > 0 ? n - 1 : count + n);\n    }\n    return fromRows(picked.map((r) => range.toRows()[r]));\n  },\n};\n\nexport default CHOOSEROWS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHOOSEROWS: () => import('../functions/lookup/CHOOSEROWS'),\n"
+        }
+      ]
+    }
+  ]
+}

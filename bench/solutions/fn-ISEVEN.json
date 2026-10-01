@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ISEVEN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISEVEN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISEVEN(number): TRUE when the number, truncated to an integer, is even. */\nconst ISEVEN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 0;\n  },\n};\n\nexport default ISEVEN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISEVEN: () => import('../functions/information/ISEVEN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISEVEN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISEVEN(number): TRUE when the number, truncated to an integer, is even. */\nconst ISEVEN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 0;\n  },\n};\n\nexport default ISEVEN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISEVEN: () => import('../functions/information/ISEVEN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISEVEN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISEVEN(number): TRUE when the number, truncated to an integer, is even. */\nconst ISEVEN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 0;\n  },\n};\n\nexport default ISEVEN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISEVEN: () => import('../functions/information/ISEVEN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISEVEN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISEVEN(number): TRUE when the number, truncated to an integer, is even. */\nconst ISEVEN: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 0;\n  },\n};\n\nexport default ISEVEN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISEVEN: () => import('../functions/information/ISEVEN'),\n"
+        }
+      ]
+    }
+  ]
+}

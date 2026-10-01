@@ -1,0 +1,97 @@
+{
+  "trap-INT": [
+    "co-optional-arg-value",
+    "co-to-int-explicit",
+    "fn-EDATE",
+    "fn-ROUND",
+    "fn-ROUNDDOWN",
+    "fn-ROUNDUP",
+    "fn-TRUNC"
+  ],
+  "trap-DECIMAL": [
+    "fn-BIN2DEC",
+    "fn-BIN2HEX",
+    "fn-BIN2OCT",
+    "fn-HEX2BIN",
+    "fn-HEX2DEC",
+    "fn-HEX2OCT",
+    "fn-OCT2BIN",
+    "fn-OCT2DEC",
+    "fn-OCT2HEX",
+    "helper-radixParse"
+  ],
+  "trap-BASE": [
+    "fn-BIN2HEX",
+    "fn-BIN2OCT",
+    "fn-DEC2BIN",
+    "fn-DEC2HEX",
+    "fn-DEC2OCT",
+    "fn-HEX2BIN",
+    "fn-HEX2OCT",
+    "fn-OCT2BIN",
+    "fn-OCT2HEX",
+    "helper-radixFormat"
+  ],
+  "trap-AVERAGEA": [
+    "fn-AVEDEV",
+    "fn-AVERAGE",
+    "fn-DEVSQ",
+    "fn-GEOMEAN",
+    "fn-HARMEAN",
+    "fn-KURT",
+    "fn-MEDIAN",
+    "fn-MIN",
+    "fn-MODE.SNGL",
+    "fn-NPV",
+    "fn-PERCENTILE.INC",
+    "fn-PRODUCT",
+    "fn-SKEW",
+    "fn-SMALL",
+    "fn-STDEV.P",
+    "fn-STDEV.S",
+    "fn-SUM",
+    "fn-SUMSQ",
+    "fn-VAR.S",
+    "trap-PERCENTILE.EXC",
+    "trap-SKEW.P",
+    "trap-VAR.P"
+  ],
+  "trap-VAR.P": [
+    "fn-STDEV.S",
+    "fn-VAR.S",
+    "helper-variance"
+  ],
+  "trap-SKEW.P": [
+    "fn-SKEW",
+    "helper-shape"
+  ],
+  "trap-PERCENTILE.EXC": [
+    "fn-PERCENTILE.INC",
+    "fn-QUARTILE.INC",
+    "helper-quantile"
+  ],
+  "trap-RANK.AVG": [
+    "fn-RANK.EQ",
+    "helper-rank"
+  ],
+  "trap-SEARCH": [
+    "fn-COUNTIF",
+    "fn-SUMIF",
+    "helper-criteria",
+    "helper-wildcard"
+  ],
+  "trap-ISOWEEKNUM": [
+    "fn-WEEKNUM"
+  ],
+  "trap-NETWORKDAYS.INTL": [
+    "fn-NETWORKDAYS",
+    "fn-WORKDAY",
+    "helper-workdays"
+  ],
+  "trap-XLOOKUP": [
+    "fn-HLOOKUP",
+    "fn-MATCH",
+    "fn-VLOOKUP",
+    "helper-lookupExact"
+  ]
+}

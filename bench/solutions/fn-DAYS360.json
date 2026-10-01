@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-DAYS360",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS360.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { days360 } from '../../helpers/dayCount';\n\n/** DAYS360(start_date, end_date, [method]): days between two dates on a 360-day year (US method unless method is TRUE). */\nconst DAYS360: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const european = optionalBoolean(args, 2, false);\n    if (isError(european)) return european;\n    return days360(start, end, european);\n  },\n};\n\nexport default DAYS360;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS360: () => import('../functions/date/DAYS360'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS360.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { days360 } from '../../helpers/dayCount';\n\n/** DAYS360(start_date, end_date, [method]): days between two dates on a 360-day year (US method unless method is TRUE). */\nconst DAYS360: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const european = optionalBoolean(args, 2, false);\n    if (isError(european)) return european;\n    return days360(start, end, european);\n  },\n};\n\nexport default DAYS360;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS360: () => import('../functions/date/DAYS360'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS360.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { days360 } from '../../helpers/dayCount';\n\n/** DAYS360(start_date, end_date, [method]): days between two dates on a 360-day year (US method unless method is TRUE). */\nconst DAYS360: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const european = optionalBoolean(args[2], false);\n    if (isError(european)) return european;\n    return days360(start, end, european);\n  },\n};\n\nexport default DAYS360;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS360: () => import('../functions/date/DAYS360'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAYS360.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { days360 } from '../../helpers/dayCount';\n\n/** DAYS360(start_date, end_date, [method]): days between two dates on a 360-day year (US method unless method is TRUE). */\nconst DAYS360: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const european = optionalBoolean(args[2], false);\n    if (isError(european)) return european;\n    return days360(start, end, european);\n  },\n};\n\nexport default DAYS360;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAYS360: () => import('../functions/date/DAYS360'),\n"
+        }
+      ]
+    }
+  ]
+}

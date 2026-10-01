@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COTH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** COTH(number): the hyperbolic cotangent of a number. */\nconst COTH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return checkNumber(1 / Math.tanh(n));\n  },\n};\n\nexport default COTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COTH: () => import('../functions/math/COTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** COTH(number): the hyperbolic cotangent of a number. */\nconst COTH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return checkNumber(1 / Math.tanh(n));\n  },\n};\n\nexport default COTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COTH: () => import('../functions/math/COTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** COTH(number): the hyperbolic cotangent of a number. */\nconst COTH: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return numberResult(1 / Math.tanh(n));\n  },\n};\n\nexport default COTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COTH: () => import('../functions/math/COTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/COTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** COTH(number): the hyperbolic cotangent of a number. */\nconst COTH: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n === 0) return err.div0;\n    return numberResult(1 / Math.tanh(n));\n  },\n};\n\nexport default COTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COTH: () => import('../functions/math/COTH'),\n"
+        }
+      ]
+    }
+  ]
+}

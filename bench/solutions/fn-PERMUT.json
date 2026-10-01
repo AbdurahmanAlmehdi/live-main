@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-PERMUT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return checkNumber(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return checkNumber(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return checkNumber(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return checkNumber(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return numberResult(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toInteger(nValue);\n    if (isError(n)) return n;\n    const k = toInteger(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return numberResult(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return numberResult(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/PERMUT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { permutations } from '../../helpers/combinatorics';\n\n/** PERMUT(number, number_chosen): ordered arrangements of number_chosen items out of number (both truncated). */\nconst PERMUT: FormulaFunction = {\n  arity: [2, 2],\n  call([nValue, kValue]) {\n    const n = toIntTrunc(nValue);\n    if (isError(n)) return n;\n    const k = toIntTrunc(kValue);\n    if (isError(k)) return k;\n    if (n < 0 || k < 0 || k > n) return err.num;\n    return numberResult(permutations(n, k));\n  },\n};\n\nexport default PERMUT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PERMUT: () => import('../functions/statistical/PERMUT'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COUNTBLANK",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTBLANK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\n\n/** COUNTBLANK(range): how many cells are empty or empty text. */\nconst COUNTBLANK: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([range]) {\n    return cellsOf(range).filter((cell) => cell === null || cell === '').length;\n  },\n};\n\nexport default COUNTBLANK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTBLANK: () => import('../functions/statistical/COUNTBLANK'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTBLANK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\n\n/** COUNTBLANK(range): how many cells are empty or empty text. */\nconst COUNTBLANK: FormulaFunction = {\n  arity: [1, 1],\n  call([range]) {\n    return cellsOf(range).filter((cell) => cell === null || cell === '').length;\n  },\n};\n\nexport default COUNTBLANK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTBLANK: () => import('../functions/statistical/COUNTBLANK'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTBLANK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\n\n/** COUNTBLANK(range): how many cells are empty or empty text. */\nconst COUNTBLANK: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([range]) {\n    return cellsOf(range, { order: 'rows' }).filter((cell) => cell === null || cell === '').length;\n  },\n};\n\nexport default COUNTBLANK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTBLANK: () => import('../functions/statistical/COUNTBLANK'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTBLANK.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\n\n/** COUNTBLANK(range): how many cells are empty or empty text. */\nconst COUNTBLANK: FormulaFunction = {\n  arity: [1, 1],\n  call([range]) {\n    return cellsOf(range, { order: 'rows' }).filter((cell) => cell === null || cell === '').length;\n  },\n};\n\nexport default COUNTBLANK;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTBLANK: () => import('../functions/statistical/COUNTBLANK'),\n"
+        }
+      ]
+    }
+  ]
+}

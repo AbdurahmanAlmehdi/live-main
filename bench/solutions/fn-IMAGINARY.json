@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IMAGINARY",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMAGINARY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMAGINARY(inumber): the imaginary coefficient of a complex number. */\nconst IMAGINARY: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return z.im;\n  },\n};\n\nexport default IMAGINARY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMAGINARY: () => import('../functions/engineering/IMAGINARY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMAGINARY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMAGINARY(inumber): the imaginary coefficient of a complex number. */\nconst IMAGINARY: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return z.im;\n  },\n};\n\nexport default IMAGINARY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMAGINARY: () => import('../functions/engineering/IMAGINARY'),\n"
+        }
+      ]
+    }
+  ]
+}

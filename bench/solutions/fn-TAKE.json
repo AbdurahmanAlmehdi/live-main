@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-TAKE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toInteger(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toInteger(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.rows.slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toInteger(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toInteger(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.rows.slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toInteger(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toInteger(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.toRows().slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toInteger(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toInteger(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.toRows().slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toIntTrunc(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toIntTrunc(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.rows.slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toIntTrunc(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toIntTrunc(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.rows.slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toIntTrunc(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toIntTrunc(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.toRows().slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/TAKE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { fromRows, toRange } from '../../core/range';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** Index range kept by taking `n` items from the start (n > 0) or the end (n < 0) of `size` items. */\nfunction takeSpan(n: number, size: number): [number, number] {\n  const k = Math.min(Math.abs(n), size);\n  return n >= 0 ? [0, k] : [size - k, size];\n}\n\n/** TAKE(array, rows, [columns]): rows (and columns) from the start of the array, or from the end when negative. */\nconst TAKE: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const range = toRange(args[0]);\n    const rows = toIntTrunc(args[1]);\n    if (isError(rows)) return rows;\n    const cols = args.length > 2 && args[2] !== null ? toIntTrunc(args[2]) : range.width;\n    if (isError(cols)) return cols;\n    if (rows === 0 || cols === 0) return err.value;\n    const [r0, r1] = takeSpan(rows, range.height);\n    const [c0, c1] = takeSpan(cols, range.width);\n    return fromRows(range.toRows().slice(r0, r1).map((row) => row.slice(c0, c1)));\n  },\n};\n\nexport default TAKE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TAKE: () => import('../functions/lookup/TAKE'),\n"
+        }
+      ]
+    }
+  ]
+}

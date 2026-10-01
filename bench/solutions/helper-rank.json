@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-rank",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/rank.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/**\n * Rank of `value` within `values` (RANK.EQ): 1 for the largest when descending, 1 for the\n * smallest when ascending. Ties share the best rank. #N/A when `value` is not in the list.\n */\nexport function rankOf(value: number, values: readonly number[], ascending: boolean): number | FormulaError {\n  if (!values.includes(value)) return err.na;\n  let better = 0;\n  for (const v of values) {\n    if (ascending ? v < value : v > value) better++;\n  }\n  return better + 1;\n}\n"
+        }
+      ]
+    }
+  ]
+}

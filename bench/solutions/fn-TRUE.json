@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-TRUE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/TRUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** TRUE(): the logical value TRUE. */\nconst TRUE: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: 0,\n  call() {\n    return true;\n  },\n};\n\nexport default TRUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRUE: () => import('../functions/logical/TRUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/TRUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** TRUE(): the logical value TRUE. */\nconst TRUE: FormulaFunction = {\n  arity: [0, 0],\n  call() {\n    return true;\n  },\n};\n\nexport default TRUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRUE: () => import('../functions/logical/TRUE'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-FIXED",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIXED.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** FIXED(number, [decimals], [no_commas]): the number as text with decimals (2 by default). */\nconst FIXED: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args, 1, 2);\n    if (isError(decimals)) return decimals;\n    const noCommas = optionalBoolean(args, 2, false);\n    if (isError(noCommas)) return noCommas;\n    if (decimals > 127) return err.value;\n    return formatFixed(n, decimals, !noCommas);\n  },\n};\n\nexport default FIXED;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIXED: () => import('../functions/text/FIXED'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIXED.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** FIXED(number, [decimals], [no_commas]): the number as text with decimals (2 by default). */\nconst FIXED: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args, 1, 2);\n    if (isError(decimals)) return decimals;\n    const noCommas = optionalBoolean(args, 2, false);\n    if (isError(noCommas)) return noCommas;\n    if (decimals > 127) return err.value;\n    return formatFixed(n, decimals, !noCommas);\n  },\n};\n\nexport default FIXED;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIXED: () => import('../functions/text/FIXED'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIXED.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** FIXED(number, [decimals], [no_commas]): the number as text with decimals (2 by default). */\nconst FIXED: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args[1], 2);\n    if (isError(decimals)) return decimals;\n    const noCommas = optionalBoolean(args[2], false);\n    if (isError(noCommas)) return noCommas;\n    if (decimals > 127) return err.value;\n    return formatFixed(n, decimals, !noCommas);\n  },\n};\n\nexport default FIXED;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIXED: () => import('../functions/text/FIXED'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIXED.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalBoolean, optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** FIXED(number, [decimals], [no_commas]): the number as text with decimals (2 by default). */\nconst FIXED: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args[1], 2);\n    if (isError(decimals)) return decimals;\n    const noCommas = optionalBoolean(args[2], false);\n    if (isError(noCommas)) return noCommas;\n    if (decimals > 127) return err.value;\n    return formatFixed(n, decimals, !noCommas);\n  },\n};\n\nexport default FIXED;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIXED: () => import('../functions/text/FIXED'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-GAMMA.DIST",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return checkNumber(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return checkNumber(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return checkNumber(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return checkNumber(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return numberResult(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return numberResult(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return numberResult(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GAMMA_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaP } from '../../helpers/incompleteGamma';\n\n/** GAMMA.DIST(x, alpha, beta, cumulative): the gamma distribution with shape alpha and scale beta (cumulative, or the density). */\nconst GAMMA_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, alphaValue, betaValue, cumulativeValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const alpha = toNumber(alphaValue);\n    if (isError(alpha)) return alpha;\n    const beta = toNumber(betaValue);\n    if (isError(beta)) return beta;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || alpha <= 0 || beta <= 0) return err.num;\n    if (cumulative) return regularizedGammaP(alpha, x / beta);\n    if (x === 0) return alpha === 1 ? 1 / beta : alpha > 1 ? 0 : err.num;\n    return numberResult(Math.exp((alpha - 1) * Math.log(x) - x / beta - alpha * Math.log(beta) - gammaLn(alpha)));\n  },\n};\n\nexport default GAMMA_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'GAMMA.DIST': () => import('../functions/statistical/GAMMA_DIST'),\n"
+        }
+      ]
+    }
+  ]
+}

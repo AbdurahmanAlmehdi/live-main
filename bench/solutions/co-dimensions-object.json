@@ -1,0 +1,75 @@
+{
+  "taskId": "co-dimensions-object",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/range.ts",
+          "oldString": "/** [height, width] of a value (a scalar is 1x1). */\nexport function dimensions(value: Value): [number, number] {\n  return value instanceof RangeValue ? [value.height, value.width] : [1, 1];\n}",
+          "newString": "/** Size of a value (a scalar is 1x1). */\nexport function dimensions(value: Value): { height: number; width: number } {\n  return value instanceof RangeValue ? { height: value.height, width: value.width } : { height: 1, width: 1 };\n}"
+        },
+        {
+          "op": "edit",
+          "path": "tests/core/range.test.ts",
+          "oldString": "    expect(dimensions(5)).toEqual([1, 1]);",
+          "newString": "    expect(dimensions(5)).toEqual({ height: 1, width: 1 });"
+        },
+        {
+          "op": "edit",
+          "path": "tests/core/range.test.ts",
+          "oldString": "    expect(dimensions(fromRows([[1, 2], [3, 4], [5, 6]]))).toEqual([3, 2]);",
+          "newString": "    expect(dimensions(fromRows([[1, 2], [3, 4], [5, 6]]))).toEqual({ height: 3, width: 2 });"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "const \\[(\\w+), (\\w+)\\] = dimensions\\(",
+          "flags": "g",
+          "replace": "const { height: $1, width: $2 } = dimensions("
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "const \\[(\\w+), (\\w+)\\] = dimensions\\(",
+          "flags": "g",
+          "replace": "const { height: $1, width: $2 } = dimensions("
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "const \\[, (\\w+)\\] = dimensions\\(",
+          "flags": "g",
+          "replace": "const { width: $1 } = dimensions("
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "const \\[, (\\w+)\\] = dimensions\\(",
+          "flags": "g",
+          "replace": "const { width: $1 } = dimensions("
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "const \\[(\\w+)\\] = dimensions\\(",
+          "flags": "g",
+          "replace": "const { height: $1 } = dimensions("
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "const \\[(\\w+)\\] = dimensions\\(",
+          "flags": "g",
+          "replace": "const { height: $1 } = dimensions("
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-dimensions-object.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { dimensions } from '../../src/core/range';\nimport { evaluate } from '../../src/eval/evaluate';\n\ndescribe('dimensions', () => {\n  it('returns height and width', async () => {\n    expect(dimensions(await evaluate('={1, 2, 3; 4, 5, 6}'))).toEqual({ height: 2, width: 3 });\n    expect(dimensions('x')).toEqual({ height: 1, width: 1 });\n  });\n\n  it('is not a tuple any more', () => {\n    expect(Array.isArray(dimensions(1))).toBe(false);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

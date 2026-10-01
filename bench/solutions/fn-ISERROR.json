@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ISERROR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISERROR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** ISERROR(value): TRUE when the value is an error. */\nconst ISERROR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    return isError(value);\n  },\n};\n\nexport default ISERROR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISERROR: () => import('../functions/information/ISERROR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISERROR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** ISERROR(value): TRUE when the value is an error. */\nconst ISERROR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    return isError(value);\n  },\n};\n\nexport default ISERROR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISERROR: () => import('../functions/information/ISERROR'),\n"
+        }
+      ]
+    }
+  ]
+}

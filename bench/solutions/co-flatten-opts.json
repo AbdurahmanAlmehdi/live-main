@@ -1,0 +1,79 @@
+{
+  "taskId": "co-flatten-opts",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "/** Flattens arguments into scalars, expanding ranges row by row. */\nexport function flattenArgs(args: readonly Value[]): Scalar[] {\n  const out: Scalar[] = [];\n  for (const arg of args) {\n    if (arg instanceof RangeValue) {\n      for (const row of arg.rows) out.push(...row);\n    } else {\n      out.push(arg);\n    }\n  }\n  return out;\n}",
+          "newString": "export interface FlattenOptions {\n  /** Empty values (missing arguments, empty cells): 'keep' them as null, or 'skip' them. */\n  blanks: 'keep' | 'skip';\n}\n\n/** Flattens arguments into scalars, expanding ranges row by row. */\nexport function flattenArgs(args: readonly Value[], opts: FlattenOptions): Scalar[] {\n  const { blanks } = opts;\n  const out: Scalar[] = [];\n  for (const arg of args) {\n    const cells = arg instanceof RangeValue ? arg.rows.flat() : [arg];\n    for (const cell of cells) {\n      if (cell === null && blanks === 'skip') continue;\n      out.push(cell);\n    }\n  }\n  return out;\n}"
+        },
+        {
+          "op": "edit",
+          "path": "tests/core/args.test.ts",
+          "oldString": "    expect(flattenArgs([1, new RangeValue([[2, 'a'], [true, null]]), 'b'])).toEqual([1, 2, 'a', true, null, 'b']);",
+          "newString": "    expect(flattenArgs([1, new RangeValue([[2, 'a'], [true, null]]), 'b'], { blanks: 'keep' })).toEqual([1, 2, 'a', true, null, 'b']);"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\bflattenArgs\\(([\\w.\\[\\]]+)\\)",
+          "flags": "g",
+          "replace": "flattenArgs($1, { blanks: 'keep' })"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\bflattenArgs\\(([\\w.\\[\\]]+)\\)",
+          "flags": "g",
+          "replace": "flattenArgs($1, { blanks: 'keep' })"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-flatten-opts.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { flattenArgs } from '../../src/core/args';\nimport { evaluate } from '../../src/eval/evaluate';\nimport type { Value } from '../../src/core/value';\n\nconst args = async (): Promise<Value[]> => [1, null, await evaluate('={2, \"a\"; TRUE, 3}'), 'b'];\n\ndescribe('flattenArgs options', () => {\n  it('keeps blanks when asked', async () => {\n    expect(flattenArgs(await args(), { blanks: 'keep' })).toEqual([1, null, 2, 'a', true, 3, 'b']);\n  });\n\n  it('skips blanks when asked', async () => {\n    expect(flattenArgs(await args(), { blanks: 'skip' })).toEqual([1, 2, 'a', true, 3, 'b']);\n  });\n\n  it('requires the options', async () => {\n    const call = flattenArgs as unknown as (a: Value[]) => unknown;\n    expect(() => call(['x'])).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/args.ts",
+          "oldString": "/** Flattens arguments into scalars, expanding ranges row by row. */\nexport function flattenArgs(args: readonly Value[]): Scalar[] {\n  const out: Scalar[] = [];\n  for (const arg of args) {\n    if (arg instanceof RangeValue) {\n      for (const row of arg.toRows()) out.push(...row);\n    } else {\n      out.push(arg);\n    }\n  }\n  return out;\n}",
+          "newString": "export interface FlattenOptions {\n  /** Empty values (missing arguments, empty cells): 'keep' them as null, or 'skip' them. */\n  blanks: 'keep' | 'skip';\n}\n\n/** Flattens arguments into scalars, expanding ranges row by row. */\nexport function flattenArgs(args: readonly Value[], opts: FlattenOptions): Scalar[] {\n  const { blanks } = opts;\n  const out: Scalar[] = [];\n  for (const arg of args) {\n    const cells = arg instanceof RangeValue ? arg.toRows().flat() : [arg];\n    for (const cell of cells) {\n      if (cell === null && blanks === 'skip') continue;\n      out.push(cell);\n    }\n  }\n  return out;\n}"
+        },
+        {
+          "op": "edit",
+          "path": "tests/core/args.test.ts",
+          "oldString": "    expect(flattenArgs([1, RangeValue.fromRows([[2, 'a'], [true, null]]), 'b'])).toEqual([1, 2, 'a', true, null, 'b']);",
+          "newString": "    expect(flattenArgs([1, RangeValue.fromRows([[2, 'a'], [true, null]]), 'b'], { blanks: 'keep' })).toEqual([1, 2, 'a', true, null, 'b']);"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\bflattenArgs\\(([\\w.\\[\\]]+)\\)",
+          "flags": "g",
+          "replace": "flattenArgs($1, { blanks: 'keep' })"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\bflattenArgs\\(([\\w.\\[\\]]+)\\)",
+          "flags": "g",
+          "replace": "flattenArgs($1, { blanks: 'keep' })"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-flatten-opts.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { flattenArgs } from '../../src/core/args';\nimport { evaluate } from '../../src/eval/evaluate';\nimport type { Value } from '../../src/core/value';\n\nconst args = async (): Promise<Value[]> => [1, null, await evaluate('={2, \"a\"; TRUE, 3}'), 'b'];\n\ndescribe('flattenArgs options', () => {\n  it('keeps blanks when asked', async () => {\n    expect(flattenArgs(await args(), { blanks: 'keep' })).toEqual([1, null, 2, 'a', true, 3, 'b']);\n  });\n\n  it('skips blanks when asked', async () => {\n    expect(flattenArgs(await args(), { blanks: 'skip' })).toEqual([1, 2, 'a', true, 3, 'b']);\n  });\n\n  it('requires the options', async () => {\n    const call = flattenArgs as unknown as (a: Value[]) => unknown;\n    expect(() => call(['x'])).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

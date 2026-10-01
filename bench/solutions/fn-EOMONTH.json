@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-EOMONTH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/EOMONTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { endOfMonth } from '../../helpers/addMonths';\n\n/** EOMONTH(start_date, months): the last day of the month months before or after start_date; months is truncated. */\nconst EOMONTH: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([startValue, monthsValue]) {\n    const start = toNumber(startValue);\n    if (isError(start)) return start;\n    const months = toInteger(monthsValue);\n    if (isError(months)) return months;\n    return endOfMonth(start, months);\n  },\n};\n\nexport default EOMONTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EOMONTH: () => import('../functions/date/EOMONTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/EOMONTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { endOfMonth } from '../../helpers/addMonths';\n\n/** EOMONTH(start_date, months): the last day of the month months before or after start_date; months is truncated. */\nconst EOMONTH: FormulaFunction = {\n  arity: [2, 2],\n  call([startValue, monthsValue]) {\n    const start = toNumber(startValue);\n    if (isError(start)) return start;\n    const months = toInteger(monthsValue);\n    if (isError(months)) return months;\n    return endOfMonth(start, months);\n  },\n};\n\nexport default EOMONTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EOMONTH: () => import('../functions/date/EOMONTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/EOMONTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { endOfMonth } from '../../helpers/addMonths';\n\n/** EOMONTH(start_date, months): the last day of the month months before or after start_date; months is truncated. */\nconst EOMONTH: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([startValue, monthsValue]) {\n    const start = toNumber(startValue);\n    if (isError(start)) return start;\n    const months = toIntTrunc(monthsValue);\n    if (isError(months)) return months;\n    return endOfMonth(start, months);\n  },\n};\n\nexport default EOMONTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EOMONTH: () => import('../functions/date/EOMONTH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/EOMONTH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { endOfMonth } from '../../helpers/addMonths';\n\n/** EOMONTH(start_date, months): the last day of the month months before or after start_date; months is truncated. */\nconst EOMONTH: FormulaFunction = {\n  arity: [2, 2],\n  call([startValue, monthsValue]) {\n    const start = toNumber(startValue);\n    if (isError(start)) return start;\n    const months = toIntTrunc(monthsValue);\n    if (isError(months)) return months;\n    return endOfMonth(start, months);\n  },\n};\n\nexport default EOMONTH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EOMONTH: () => import('../functions/date/EOMONTH'),\n"
+        }
+      ]
+    }
+  ]
+}

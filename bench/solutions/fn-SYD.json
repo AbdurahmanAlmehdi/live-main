@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SYD",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SYD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SYD(cost, salvage, life, per): the sum-of-years' digits depreciation of an asset for period per (1..life). */\nconst SYD: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([costValue, salvageValue, lifeValue, perValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    if (life <= 0 || per <= 0 || per > life) return err.num;\n    return checkNumber(((cost - salvage) * (life - per + 1) * 2) / (life * (life + 1)));\n  },\n};\n\nexport default SYD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SYD: () => import('../functions/financial/SYD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SYD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SYD(cost, salvage, life, per): the sum-of-years' digits depreciation of an asset for period per (1..life). */\nconst SYD: FormulaFunction = {\n  arity: [4, 4],\n  call([costValue, salvageValue, lifeValue, perValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    if (life <= 0 || per <= 0 || per > life) return err.num;\n    return checkNumber(((cost - salvage) * (life - per + 1) * 2) / (life * (life + 1)));\n  },\n};\n\nexport default SYD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SYD: () => import('../functions/financial/SYD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SYD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SYD(cost, salvage, life, per): the sum-of-years' digits depreciation of an asset for period per (1..life). */\nconst SYD: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([costValue, salvageValue, lifeValue, perValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    if (life <= 0 || per <= 0 || per > life) return err.num;\n    return numberResult(((cost - salvage) * (life - per + 1) * 2) / (life * (life + 1)));\n  },\n};\n\nexport default SYD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SYD: () => import('../functions/financial/SYD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/SYD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** SYD(cost, salvage, life, per): the sum-of-years' digits depreciation of an asset for period per (1..life). */\nconst SYD: FormulaFunction = {\n  arity: [4, 4],\n  call([costValue, salvageValue, lifeValue, perValue]) {\n    const cost = toNumber(costValue);\n    if (isError(cost)) return cost;\n    const salvage = toNumber(salvageValue);\n    if (isError(salvage)) return salvage;\n    const life = toNumber(lifeValue);\n    if (isError(life)) return life;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    if (life <= 0 || per <= 0 || per > life) return err.num;\n    return numberResult(((cost - salvage) * (life - per + 1) * 2) / (life * (life + 1)));\n  },\n};\n\nexport default SYD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SYD: () => import('../functions/financial/SYD'),\n"
+        }
+      ]
+    }
+  ]
+}

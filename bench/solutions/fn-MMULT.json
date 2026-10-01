@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-MMULT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MMULT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MMULT(array1, array2): the matrix product; every cell must be a number. */\nconst MMULT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([left, right]) {\n    if (isError(left)) return left;\n    if (isError(right)) return right;\n    const a = toRange(left);\n    const b = toRange(right);\n    if (a.width !== b.height) return err.value;\n    const rows: Scalar[][] = [];\n    for (let r = 0; r < a.height; r++) {\n      const row: Scalar[] = [];\n      for (let c = 0; c < b.width; c++) {\n        let total = 0;\n        for (let k = 0; k < a.width; k++) {\n          const x = a.at(r, k);\n          const y = b.at(k, c);\n          if (isError(x)) return x;\n          if (isError(y)) return y;\n          if (typeof x !== 'number' || typeof y !== 'number') return err.value;\n          total += x * y;\n        }\n        row.push(checkNumber(total));\n      }\n      rows.push(row);\n    }\n    return fromRows(rows);\n  },\n};\n\nexport default MMULT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MMULT: () => import('../functions/math/MMULT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MMULT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MMULT(array1, array2): the matrix product; every cell must be a number. */\nconst MMULT: FormulaFunction = {\n  arity: [2, 2],\n  call([left, right]) {\n    if (isError(left)) return left;\n    if (isError(right)) return right;\n    const a = toRange(left);\n    const b = toRange(right);\n    if (a.width !== b.height) return err.value;\n    const rows: Scalar[][] = [];\n    for (let r = 0; r < a.height; r++) {\n      const row: Scalar[] = [];\n      for (let c = 0; c < b.width; c++) {\n        let total = 0;\n        for (let k = 0; k < a.width; k++) {\n          const x = a.at(r, k);\n          const y = b.at(k, c);\n          if (isError(x)) return x;\n          if (isError(y)) return y;\n          if (typeof x !== 'number' || typeof y !== 'number') return err.value;\n          total += x * y;\n        }\n        row.push(checkNumber(total));\n      }\n      rows.push(row);\n    }\n    return fromRows(rows);\n  },\n};\n\nexport default MMULT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MMULT: () => import('../functions/math/MMULT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MMULT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MMULT(array1, array2): the matrix product; every cell must be a number. */\nconst MMULT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([left, right]) {\n    if (isError(left)) return left;\n    if (isError(right)) return right;\n    const a = toRange(left);\n    const b = toRange(right);\n    if (a.width !== b.height) return err.value;\n    const rows: Scalar[][] = [];\n    for (let r = 0; r < a.height; r++) {\n      const row: Scalar[] = [];\n      for (let c = 0; c < b.width; c++) {\n        let total = 0;\n        for (let k = 0; k < a.width; k++) {\n          const x = a.at(r, k);\n          const y = b.at(k, c);\n          if (isError(x)) return x;\n          if (isError(y)) return y;\n          if (typeof x !== 'number' || typeof y !== 'number') return err.value;\n          total += x * y;\n        }\n        row.push(numberResult(total));\n      }\n      rows.push(row);\n    }\n    return fromRows(rows);\n  },\n};\n\nexport default MMULT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MMULT: () => import('../functions/math/MMULT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/MMULT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** MMULT(array1, array2): the matrix product; every cell must be a number. */\nconst MMULT: FormulaFunction = {\n  arity: [2, 2],\n  call([left, right]) {\n    if (isError(left)) return left;\n    if (isError(right)) return right;\n    const a = toRange(left);\n    const b = toRange(right);\n    if (a.width !== b.height) return err.value;\n    const rows: Scalar[][] = [];\n    for (let r = 0; r < a.height; r++) {\n      const row: Scalar[] = [];\n      for (let c = 0; c < b.width; c++) {\n        let total = 0;\n        for (let k = 0; k < a.width; k++) {\n          const x = a.at(r, k);\n          const y = b.at(k, c);\n          if (isError(x)) return x;\n          if (isError(y)) return y;\n          if (typeof x !== 'number' || typeof y !== 'number') return err.value;\n          total += x * y;\n        }\n        row.push(numberResult(total));\n      }\n      rows.push(row);\n    }\n    return fromRows(rows);\n  },\n};\n\nexport default MMULT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  MMULT: () => import('../functions/math/MMULT'),\n"
+        }
+      ]
+    }
+  ]
+}

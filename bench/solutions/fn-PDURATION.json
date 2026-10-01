@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-PDURATION",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PDURATION.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** PDURATION(rate, pv, fv): the number of periods for pv to grow to fv at rate per period. */\nconst PDURATION: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([rateValue, pvValue, fvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (rate <= 0 || pv <= 0 || fv <= 0) return err.num;\n    return checkNumber((Math.log(fv) - Math.log(pv)) / Math.log(1 + rate));\n  },\n};\n\nexport default PDURATION;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PDURATION: () => import('../functions/financial/PDURATION'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PDURATION.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** PDURATION(rate, pv, fv): the number of periods for pv to grow to fv at rate per period. */\nconst PDURATION: FormulaFunction = {\n  arity: [3, 3],\n  call([rateValue, pvValue, fvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (rate <= 0 || pv <= 0 || fv <= 0) return err.num;\n    return checkNumber((Math.log(fv) - Math.log(pv)) / Math.log(1 + rate));\n  },\n};\n\nexport default PDURATION;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PDURATION: () => import('../functions/financial/PDURATION'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PDURATION.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** PDURATION(rate, pv, fv): the number of periods for pv to grow to fv at rate per period. */\nconst PDURATION: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([rateValue, pvValue, fvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (rate <= 0 || pv <= 0 || fv <= 0) return err.num;\n    return numberResult((Math.log(fv) - Math.log(pv)) / Math.log(1 + rate));\n  },\n};\n\nexport default PDURATION;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PDURATION: () => import('../functions/financial/PDURATION'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/PDURATION.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** PDURATION(rate, pv, fv): the number of periods for pv to grow to fv at rate per period. */\nconst PDURATION: FormulaFunction = {\n  arity: [3, 3],\n  call([rateValue, pvValue, fvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (rate <= 0 || pv <= 0 || fv <= 0) return err.num;\n    return numberResult((Math.log(fv) - Math.log(pv)) / Math.log(1 + rate));\n  },\n};\n\nexport default PDURATION;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PDURATION: () => import('../functions/financial/PDURATION'),\n"
+        }
+      ]
+    }
+  ]
+}

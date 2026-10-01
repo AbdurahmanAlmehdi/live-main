@@ -1,0 +1,51 @@
+{
+  "taskId": "trap-ISOWEEKNUM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/ISOWEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { isoWeekOfYear } from '../../helpers/weekday';\n\n/** ISOWEEKNUM(date): the ISO 8601 week number (weeks start on Monday; week 1 holds the year's first Thursday). */\nconst ISOWEEKNUM: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    return isoWeekOfYear(serial);\n  },\n};\n\nexport default ISOWEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISOWEEKNUM: () => import('../functions/date/ISOWEEKNUM'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/weekday.ts",
+          "oldString": "/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */",
+          "newString": "/**\n * ISO 8601 week number (\"system 2\"): weeks start on Monday and week 1 is the week that\n * contains the year's first Thursday, so early January can belong to the previous year's\n * week 52/53 and late December to week 1.\n */\nexport function isoWeekOfYear(serial: number): number | FormulaError {\n  const day = Math.floor(serial);\n  const thursday = day - ((dayOfWeek(day) + 6) % 7) + 3;\n  const parts = dateFromSerial(thursday);\n  if (isError(parts)) return parts;\n  const jan1 = serialFromDate(parts.year, 1, 1) as number;\n  return Math.floor((thursday - jan1) / 7) + 1;\n}\n\n/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/ISOWEEKNUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { isoWeekOfYear } from '../../helpers/weekday';\n\n/** ISOWEEKNUM(date): the ISO 8601 week number (weeks start on Monday; week 1 holds the year's first Thursday). */\nconst ISOWEEKNUM: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    return isoWeekOfYear(serial);\n  },\n};\n\nexport default ISOWEEKNUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISOWEEKNUM: () => import('../functions/date/ISOWEEKNUM'),\n"
+        },
+        {
+          "op": "edit",
+          "path": "src/helpers/weekday.ts",
+          "oldString": "/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */",
+          "newString": "/**\n * ISO 8601 week number (\"system 2\"): weeks start on Monday and week 1 is the week that\n * contains the year's first Thursday, so early January can belong to the previous year's\n * week 52/53 and late December to week 1.\n */\nexport function isoWeekOfYear(serial: number): number | FormulaError {\n  const day = Math.floor(serial);\n  const thursday = day - ((dayOfWeek(day) + 6) % 7) + 3;\n  const parts = dateFromSerial(thursday);\n  if (isError(parts)) return parts;\n  const jan1 = serialFromDate(parts.year, 1, 1) as number;\n  return Math.floor((thursday - jan1) / 7) + 1;\n}\n\n/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */"
+        }
+      ]
+    }
+  ]
+}

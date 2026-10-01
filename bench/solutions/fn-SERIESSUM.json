@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-SERIESSUM",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SERIESSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SERIESSUM(x, n, m, coefficients): a1·x^n + a2·x^(n+m) + a3·x^(n+2m) + ... */\nconst SERIESSUM: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, nValue, mValue, coefficientsValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const n = toNumber(nValue);\n    if (isError(n)) return n;\n    const m = toNumber(mValue);\n    if (isError(m)) return m;\n    const coefficients = collectNumbers([coefficientsValue]);\n    if (isError(coefficients)) return coefficients;\n    let total = 0;\n    coefficients.forEach((a, i) => {\n      total += a * Math.pow(x, n + i * m);\n    });\n    return checkNumber(total);\n  },\n};\n\nexport default SERIESSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SERIESSUM: () => import('../functions/math/SERIESSUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SERIESSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SERIESSUM(x, n, m, coefficients): a1·x^n + a2·x^(n+m) + a3·x^(n+2m) + ... */\nconst SERIESSUM: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, nValue, mValue, coefficientsValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const n = toNumber(nValue);\n    if (isError(n)) return n;\n    const m = toNumber(mValue);\n    if (isError(m)) return m;\n    const coefficients = collectNumbers([coefficientsValue]);\n    if (isError(coefficients)) return coefficients;\n    let total = 0;\n    coefficients.forEach((a, i) => {\n      total += a * Math.pow(x, n + i * m);\n    });\n    return checkNumber(total);\n  },\n};\n\nexport default SERIESSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SERIESSUM: () => import('../functions/math/SERIESSUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SERIESSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SERIESSUM(x, n, m, coefficients): a1·x^n + a2·x^(n+m) + a3·x^(n+2m) + ... */\nconst SERIESSUM: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([xValue, nValue, mValue, coefficientsValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const n = toNumber(nValue);\n    if (isError(n)) return n;\n    const m = toNumber(mValue);\n    if (isError(m)) return m;\n    const coefficients = collectNumbers([coefficientsValue]);\n    if (isError(coefficients)) return coefficients;\n    let total = 0;\n    coefficients.forEach((a, i) => {\n      total += a * Math.pow(x, n + i * m);\n    });\n    return numberResult(total);\n  },\n};\n\nexport default SERIESSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SERIESSUM: () => import('../functions/math/SERIESSUM'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SERIESSUM.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** SERIESSUM(x, n, m, coefficients): a1·x^n + a2·x^(n+m) + a3·x^(n+2m) + ... */\nconst SERIESSUM: FormulaFunction = {\n  arity: [4, 4],\n  call([xValue, nValue, mValue, coefficientsValue]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const n = toNumber(nValue);\n    if (isError(n)) return n;\n    const m = toNumber(mValue);\n    if (isError(m)) return m;\n    const coefficients = collectNumbers([coefficientsValue]);\n    if (isError(coefficients)) return coefficients;\n    let total = 0;\n    coefficients.forEach((a, i) => {\n      total += a * Math.pow(x, n + i * m);\n    });\n    return numberResult(total);\n  },\n};\n\nexport default SERIESSUM;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SERIESSUM: () => import('../functions/math/SERIESSUM'),\n"
+        }
+      ]
+    }
+  ]
+}

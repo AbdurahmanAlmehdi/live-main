@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-dateSerial",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/dateSerial.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/**\n * Date serial numbers (the 1900 date system).\n *\n * Serial 1 is 1900-01-01. Like the spreadsheet it imitates, the system treats 1900 as a\n * leap year: serial 60 is the fictional 1900-02-29 and serial 61 is 1900-03-01. Serial 0\n * displays as 1900-01-00. The last supported date is 9999-12-31 (serial 2958465).\n */\n\nexport interface DateParts {\n  year: number;\n  /** 1..12 */\n  month: number;\n  /** 1..31 (0 only for serial 0) */\n  day: number;\n}\n\nconst DAY_MS = 86_400_000;\nconst EPOCH = Date.UTC(1899, 11, 31);\nexport const MAX_SERIAL = 2958465;\n\n/**\n * Serial number for a calendar date, normalising out-of-range months and days the way\n * DATE does: month 13 is January of the next year, day 0 is the last day of the previous\n * month, negative values count backwards. Years 0..1899 are taken as 1900..3799.\n * #NUM! when the year is outside 0..9999 or the result is before serial 0 or after 9999-12-31.\n */\nexport function serialFromDate(year: number, month: number, day: number): number | FormulaError {\n  const y = year < 1900 ? year + 1900 : year;\n  if (year < 0 || y > 9999) return err.num;\n  const ms = Date.UTC(y, month - 1, 1) + (day - 1) * DAY_MS;\n  let serial = Math.round((ms - EPOCH) / DAY_MS);\n  // Dates from 1900-03-01 on are one higher because of the fictional 1900-02-29.\n  if (serial >= 60) serial += 1;\n  if (serial < 0 || serial > MAX_SERIAL) return err.num;\n  return serial;\n}\n\n/** Calendar date of a serial (the fraction, i.e. the time of day, is ignored). #NUM! when out of range. */\nexport function dateFromSerial(serial: number): DateParts | FormulaError {\n  const whole = Math.floor(serial);\n  if (whole < 0 || whole > MAX_SERIAL) return err.num;\n  if (whole === 0) return { year: 1900, month: 1, day: 0 };\n  if (whole === 60) return { year: 1900, month: 2, day: 29 };\n  const date = new Date(EPOCH + (whole < 60 ? whole : whole - 1) * DAY_MS);\n  return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };\n}\n\n/** Number of days in a month of a year (proleptic Gregorian; February 1900 has 29). */\nexport function daysInMonth(year: number, month: number): number {\n  if (year === 1900 && month === 2) return 29;\n  return new Date(Date.UTC(year, month, 0)).getUTCDate();\n}\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-multiples",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/multiples.ts",
+          "content": "/**\n * Rounding to a multiple of a positive step, robust to binary noise\n * (FLOOR(0.3, 0.1) must be 0.3, not 0.2).\n */\n\n/** n / step, snapped to the nearest integer when it is within rounding noise of one. */\nfunction quotient(n: number, step: number): number {\n  const q = n / step;\n  const nearest = Math.round(q);\n  return Math.abs(q - nearest) <= 1e-12 * Math.max(1, Math.abs(q)) ? nearest : q;\n}\n\nfunction clean(x: number): number {\n  return x === 0 ? 0 : Number(x.toPrecision(15));\n}\n\n/** Largest multiple of `step` that is <= n (rounds toward -infinity). `step` must be > 0. */\nexport function floorToMultiple(n: number, step: number): number {\n  return clean(Math.floor(quotient(n, step)) * step);\n}\n\n/** Smallest multiple of `step` that is >= n (rounds toward +infinity). `step` must be > 0. */\nexport function ceilToMultiple(n: number, step: number): number {\n  return clean(Math.ceil(quotient(n, step)) * step);\n}\n\n/** Nearest multiple of `step`, halves away from zero (MROUND). `step` must be > 0. */\nexport function roundToMultiple(n: number, step: number): number {\n  const q = quotient(Math.abs(n), step);\n  const result = clean(Math.floor(q + 0.5) * step);\n  return n < 0 ? -result : result;\n}\n"
+        }
+      ]
+    }
+  ]
+}

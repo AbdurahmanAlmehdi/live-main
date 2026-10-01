@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ACOS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ACOS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ACOS(number): the arccosine of a number in [-1, 1], in radians. */\nconst ACOS: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < -1 || n > 1) return err.num;\n    return Math.acos(n);\n  },\n};\n\nexport default ACOS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ACOS: () => import('../functions/math/ACOS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ACOS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ACOS(number): the arccosine of a number in [-1, 1], in radians. */\nconst ACOS: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    if (n < -1 || n > 1) return err.num;\n    return Math.acos(n);\n  },\n};\n\nexport default ACOS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ACOS: () => import('../functions/math/ACOS'),\n"
+        }
+      ]
+    }
+  ]
+}

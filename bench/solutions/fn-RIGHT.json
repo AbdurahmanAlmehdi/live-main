@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-RIGHT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/RIGHT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** RIGHT(text, [num_chars]): the last num_chars characters (1 by default). */\nconst RIGHT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const count = optionalInteger(args, 1, 1);\n    if (isError(count)) return count;\n    if (count < 0) return err.value;\n    return count === 0 ? '' : text.slice(-count);\n  },\n};\n\nexport default RIGHT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RIGHT: () => import('../functions/text/RIGHT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/RIGHT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** RIGHT(text, [num_chars]): the last num_chars characters (1 by default). */\nconst RIGHT: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const count = optionalInteger(args, 1, 1);\n    if (isError(count)) return count;\n    if (count < 0) return err.value;\n    return count === 0 ? '' : text.slice(-count);\n  },\n};\n\nexport default RIGHT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RIGHT: () => import('../functions/text/RIGHT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/RIGHT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** RIGHT(text, [num_chars]): the last num_chars characters (1 by default). */\nconst RIGHT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const count = optionalInteger(args[1], 1);\n    if (isError(count)) return count;\n    if (count < 0) return err.value;\n    return count === 0 ? '' : text.slice(-count);\n  },\n};\n\nexport default RIGHT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RIGHT: () => import('../functions/text/RIGHT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/RIGHT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** RIGHT(text, [num_chars]): the last num_chars characters (1 by default). */\nconst RIGHT: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const text = toText(args[0]);\n    if (isError(text)) return text;\n    const count = optionalInteger(args[1], 1);\n    if (isError(count)) return count;\n    if (count < 0) return err.value;\n    return count === 0 ? '' : text.slice(-count);\n  },\n};\n\nexport default RIGHT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RIGHT: () => import('../functions/text/RIGHT'),\n"
+        }
+      ]
+    }
+  ]
+}

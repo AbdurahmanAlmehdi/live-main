@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-FORECAST",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/FORECAST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\nimport { mean } from '../../helpers/moments';\n\n/** FORECAST(x, known_ys, known_xs): the y predicted for x by the least-squares line through the known pairs. */\nconst FORECAST: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([xValue, knownYs, knownXs]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const pairs = collectPairs(knownXs, knownYs);\n    if (isError(pairs)) return pairs;\n    const { xs, ys } = pairs;\n    if (xs.length < 1) return err.div0;\n    const mx = mean(xs) as number;\n    const my = mean(ys) as number;\n    let sxy = 0;\n    let sxx = 0;\n    for (let i = 0; i < xs.length; i++) {\n      sxy += (xs[i] - mx) * (ys[i] - my);\n      sxx += (xs[i] - mx) ** 2;\n    }\n    if (sxx === 0) return err.div0;\n    return my + (sxy / sxx) * (x - mx);\n  },\n};\n\nexport default FORECAST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FORECAST: () => import('../functions/statistical/FORECAST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/FORECAST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\nimport { mean } from '../../helpers/moments';\n\n/** FORECAST(x, known_ys, known_xs): the y predicted for x by the least-squares line through the known pairs. */\nconst FORECAST: FormulaFunction = {\n  arity: [3, 3],\n  call([xValue, knownYs, knownXs]) {\n    const x = toNumber(xValue);\n    if (isError(x)) return x;\n    const pairs = collectPairs(knownXs, knownYs);\n    if (isError(pairs)) return pairs;\n    const { xs, ys } = pairs;\n    if (xs.length < 1) return err.div0;\n    const mx = mean(xs) as number;\n    const my = mean(ys) as number;\n    let sxy = 0;\n    let sxx = 0;\n    for (let i = 0; i < xs.length; i++) {\n      sxy += (xs[i] - mx) * (ys[i] - my);\n      sxx += (xs[i] - mx) ** 2;\n    }\n    if (sxx === 0) return err.div0;\n    return my + (sxy / sxx) * (x - mx);\n  },\n};\n\nexport default FORECAST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FORECAST: () => import('../functions/statistical/FORECAST'),\n"
+        }
+      ]
+    }
+  ]
+}

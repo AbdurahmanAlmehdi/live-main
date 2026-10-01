@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-DAY",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { dateFromSerial } from '../../helpers/dateSerial';\n\n/** DAY(serial_number): the day of the month (1-31) of a date serial. */\nconst DAY: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    const date = dateFromSerial(serial);\n    return isError(date) ? date : date.day;\n  },\n};\n\nexport default DAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAY: () => import('../functions/date/DAY'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DAY.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { dateFromSerial } from '../../helpers/dateSerial';\n\n/** DAY(serial_number): the day of the month (1-31) of a date serial. */\nconst DAY: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const serial = toNumber(value);\n    if (isError(serial)) return serial;\n    const date = dateFromSerial(serial);\n    return isError(date) ? date : date.day;\n  },\n};\n\nexport default DAY;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DAY: () => import('../functions/date/DAY'),\n"
+        }
+      ]
+    }
+  ]
+}

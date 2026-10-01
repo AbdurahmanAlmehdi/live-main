@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COLUMNS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/COLUMNS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { dimensions } from '../../core/range';\nimport { isError } from '../../core/errors';\n\n/** COLUMNS(array): the number of columns in an array (1 for a single value). */\nconst COLUMNS: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([array]) {\n    if (isError(array)) return array;\n    const [, width] = dimensions(array);\n    return width;\n  },\n};\n\nexport default COLUMNS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COLUMNS: () => import('../functions/lookup/COLUMNS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/COLUMNS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { dimensions } from '../../core/range';\nimport { isError } from '../../core/errors';\n\n/** COLUMNS(array): the number of columns in an array (1 for a single value). */\nconst COLUMNS: FormulaFunction = {\n  arity: [1, 1],\n  call([array]) {\n    if (isError(array)) return array;\n    const [, width] = dimensions(array);\n    return width;\n  },\n};\n\nexport default COLUMNS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COLUMNS: () => import('../functions/lookup/COLUMNS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/COLUMNS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { dimensions } from '../../core/range';\nimport { isError } from '../../core/errors';\n\n/** COLUMNS(array): the number of columns in an array (1 for a single value). */\nconst COLUMNS: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([array]) {\n    if (isError(array)) return array;\n    const { width: width } = dimensions(array);\n    return width;\n  },\n};\n\nexport default COLUMNS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COLUMNS: () => import('../functions/lookup/COLUMNS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/COLUMNS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { dimensions } from '../../core/range';\nimport { isError } from '../../core/errors';\n\n/** COLUMNS(array): the number of columns in an array (1 for a single value). */\nconst COLUMNS: FormulaFunction = {\n  arity: [1, 1],\n  call([array]) {\n    if (isError(array)) return array;\n    const { width: width } = dimensions(array);\n    return width;\n  },\n};\n\nexport default COLUMNS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COLUMNS: () => import('../functions/lookup/COLUMNS'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-shape",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/shape.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\nimport { mean, sumOfSquaredDeviations } from './moments';\n\nfunction standardizedPowerSum(values: readonly number[], power: number, sd: number, m: number): number {\n  let total = 0;\n  for (const v of values) total += Math.pow((v - m) / sd, power);\n  return total;\n}\n\n/**\n * Sample skewness, n / ((n-1)(n-2)) * Σ((x - mean) / s)^3 with s the sample standard\n * deviation. #DIV/0! for fewer than three values or zero spread.\n */\nexport function skewness(values: readonly number[]): number | FormulaError {\n  const n = values.length;\n  if (n < 3) return err.div0;\n  const sd = Math.sqrt(sumOfSquaredDeviations(values) / (n - 1));\n  if (sd === 0) return err.div0;\n  const m = mean(values) as number;\n  return (n / ((n - 1) * (n - 2))) * standardizedPowerSum(values, 3, sd, m);\n}\n\n/**\n * Sample excess kurtosis:\n * n(n+1) / ((n-1)(n-2)(n-3)) * Σ((x - mean) / s)^4 - 3(n-1)^2 / ((n-2)(n-3)).\n * #DIV/0! for fewer than four values or zero spread.\n */\nexport function kurtosis(values: readonly number[]): number | FormulaError {\n  const n = values.length;\n  if (n < 4) return err.div0;\n  const sd = Math.sqrt(sumOfSquaredDeviations(values) / (n - 1));\n  if (sd === 0) return err.div0;\n  const m = mean(values) as number;\n  const sum4 = standardizedPowerSum(values, 4, sd, m);\n  return ((n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))) * sum4 - (3 * (n - 1) * (n - 1)) / ((n - 2) * (n - 3));\n}\n"
+        }
+      ]
+    }
+  ]
+}

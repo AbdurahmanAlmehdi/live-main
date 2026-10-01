@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-erf",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/erf.ts",
+          "content": "import { regularizedGammaP, regularizedGammaQ } from './incompleteGamma';\n\n/** The error function and its complement, via the incomplete gamma function. */\n\n/** erf(x) = P(1/2, x²) with the sign of x. */\nexport function erf(x: number): number {\n  if (x === 0) return 0;\n  const p = regularizedGammaP(0.5, x * x);\n  return x < 0 ? -p : p;\n}\n\n/** erfc(x) = 1 - erf(x), accurate in the tails. */\nexport function erfc(x: number): number {\n  if (x < 0) return 1 + regularizedGammaP(0.5, x * x);\n  return regularizedGammaQ(0.5, x * x);\n}\n"
+        }
+      ]
+    }
+  ]
+}

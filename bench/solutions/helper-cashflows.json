@@ -1,0 +1,27 @@
+{
+  "taskId": "helper-cashflows",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/cashflows.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { isError } from '../core/errors';\nimport { cellsOf } from '../core/range';\n\n/**\n * The numbers in a cash-flow argument (NPV, IRR, MIRR, XNPV, ...), in order. Text,\n * booleans and empty cells are skipped; the first error is returned.\n */\nexport function collectCashflows(values: Value): number[] | FormulaError {\n  const flows: number[] = [];\n  for (const cell of cellsOf(values)) {\n    if (isError(cell)) return cell;\n    if (typeof cell === 'number') flows.push(cell);\n  }\n  return flows;\n}\n\n/** Net present value of flows at the end of periods 1, 2, 3, ... */\nexport function netPresentValue(rate: number, flows: readonly number[]): number {\n  let total = 0;\n  for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, i + 1);\n  return total;\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/cashflows.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { isError } from '../core/errors';\nimport { cellsOf } from '../core/range';\n\n/**\n * The numbers in a cash-flow argument (NPV, IRR, MIRR, XNPV, ...), in order. Text,\n * booleans and empty cells are skipped; the first error is returned.\n */\nexport function collectCashflows(values: Value): number[] | FormulaError {\n  const flows: number[] = [];\n  for (const cell of cellsOf(values, { order: 'rows' })) {\n    if (isError(cell)) return cell;\n    if (typeof cell === 'number') flows.push(cell);\n  }\n  return flows;\n}\n\n/** Net present value of flows at the end of periods 1, 2, 3, ... */\nexport function netPresentValue(rate: number, flows: readonly number[]): number {\n  let total = 0;\n  for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, i + 1);\n  return total;\n}\n"
+        }
+      ]
+    }
+  ]
+}

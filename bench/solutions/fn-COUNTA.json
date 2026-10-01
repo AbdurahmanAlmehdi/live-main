@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COUNTA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\n\n/** COUNTA(value1, ...): how many values are not empty (empty text and errors count). */\nconst COUNTA: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    return flattenArgs(args).filter((cell) => cell !== null).length;\n  },\n};\n\nexport default COUNTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTA: () => import('../functions/statistical/COUNTA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\n\n/** COUNTA(value1, ...): how many values are not empty (empty text and errors count). */\nconst COUNTA: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    return flattenArgs(args).filter((cell) => cell !== null).length;\n  },\n};\n\nexport default COUNTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTA: () => import('../functions/statistical/COUNTA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\n\n/** COUNTA(value1, ...): how many values are not empty (empty text and errors count). */\nconst COUNTA: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    return flattenArgs(args, { blanks: 'keep' }).filter((cell) => cell !== null).length;\n  },\n};\n\nexport default COUNTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTA: () => import('../functions/statistical/COUNTA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-flatten-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COUNTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { flattenArgs } from '../../core/args';\n\n/** COUNTA(value1, ...): how many values are not empty (empty text and errors count). */\nconst COUNTA: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    return flattenArgs(args, { blanks: 'keep' }).filter((cell) => cell !== null).length;\n  },\n};\n\nexport default COUNTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COUNTA: () => import('../functions/statistical/COUNTA'),\n"
+        }
+      ]
+    }
+  ]
+}

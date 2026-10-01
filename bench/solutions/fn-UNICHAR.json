@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-UNICHAR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/UNICHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** UNICHAR(number): the character for a Unicode code point (1..0x10FFFF). */\nconst UNICHAR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const code = toInteger(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)) return err.value;\n    return String.fromCodePoint(code);\n  },\n};\n\nexport default UNICHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNICHAR: () => import('../functions/text/UNICHAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/UNICHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** UNICHAR(number): the character for a Unicode code point (1..0x10FFFF). */\nconst UNICHAR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const code = toInteger(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)) return err.value;\n    return String.fromCodePoint(code);\n  },\n};\n\nexport default UNICHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNICHAR: () => import('../functions/text/UNICHAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/UNICHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** UNICHAR(number): the character for a Unicode code point (1..0x10FFFF). */\nconst UNICHAR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const code = toIntTrunc(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)) return err.value;\n    return String.fromCodePoint(code);\n  },\n};\n\nexport default UNICHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNICHAR: () => import('../functions/text/UNICHAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/UNICHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** UNICHAR(number): the character for a Unicode code point (1..0x10FFFF). */\nconst UNICHAR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const code = toIntTrunc(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)) return err.value;\n    return String.fromCodePoint(code);\n  },\n};\n\nexport default UNICHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNICHAR: () => import('../functions/text/UNICHAR'),\n"
+        }
+      ]
+    }
+  ]
+}

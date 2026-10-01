@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-quantile",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/quantile.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/**\n * Inclusive percentile (PERCENTILE.INC): sorts the values and interpolates linearly at\n * rank k * (n - 1). k must be in [0, 1] and the list non-empty, otherwise #NUM!.\n */\nexport function percentileInclusive(values: readonly number[], k: number): number | FormulaError {\n  if (values.length === 0 || k < 0 || k > 1) return err.num;\n  const sorted = [...values].sort((a, b) => a - b);\n  const rank = k * (sorted.length - 1);\n  const lower = Math.floor(rank);\n  const fraction = rank - lower;\n  if (fraction === 0) return sorted[lower];\n  return sorted[lower] + fraction * (sorted[lower + 1] - sorted[lower]);\n}\n"
+        }
+      ]
+    }
+  ]
+}

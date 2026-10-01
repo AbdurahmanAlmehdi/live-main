@@ -1,0 +1,42 @@
+{
+  "taskId": "co-to-int-explicit",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/coerce.ts",
+          "oldString": "/** Like toNumber, then truncated toward zero (2.7 → 2, -2.7 → -2). */\nexport function toInteger(value: Value): number | FormulaError {\n  const n = toNumber(value);\n  return n instanceof FormulaError ? n : Math.trunc(n);\n}",
+          "newString": "/** Like toNumber, then truncated toward zero (2.7 → 2, -2.7 → -2). */\nexport function toIntTrunc(value: Value): number | FormulaError {\n  const n = toNumber(value);\n  return n instanceof FormulaError ? n : Math.trunc(n);\n}\n\n/** Like toNumber, then rounded down (2.7 → 2, -2.7 → -3). */\nexport function toIntFloor(value: Value): number | FormulaError {\n  const n = toNumber(value);\n  return n instanceof FormulaError ? n : Math.floor(n);\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "\\btoInteger\\b",
+          "flags": "g",
+          "replace": "toIntTrunc"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "\\btoInteger\\b",
+          "flags": "g",
+          "replace": "toIntTrunc"
+        },
+        {
+          "op": "codemod",
+          "glob": "README.md",
+          "find": "\\btoInteger\\b",
+          "flags": "g",
+          "replace": "toIntTrunc, toIntFloor"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-to-int-explicit.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport * as coerce from '../../src/core/coerce';\n\ndescribe('explicit integer coercion', () => {\n  it('truncates toward zero', () => {\n    expect(coerce.toIntTrunc(2.7)).toBe(2);\n    expect(coerce.toIntTrunc(-2.7)).toBe(-2);\n    expect(coerce.toIntTrunc('x')).toMatchObject({ code: '#VALUE!' });\n  });\n\n  it('rounds down', () => {\n    expect(coerce.toIntFloor(2.7)).toBe(2);\n    expect(coerce.toIntFloor(-2.7)).toBe(-3);\n    expect(coerce.toIntFloor('-0.5')).toBe(-1);\n  });\n\n  it('removes toInteger', () => {\n    expect('toInteger' in coerce).toBe(false);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

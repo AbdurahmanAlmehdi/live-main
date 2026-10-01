@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-T",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/T.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** T(value): the value when it is text, otherwise \"\" (errors pass through). */\nconst T: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (isError(value)) return value;\n    return typeof value === 'string' ? value : '';\n  },\n};\n\nexport default T;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  T: () => import('../functions/text/T'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/T.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** T(value): the value when it is text, otherwise \"\" (errors pass through). */\nconst T: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (isError(value)) return value;\n    return typeof value === 'string' ? value : '';\n  },\n};\n\nexport default T;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  T: () => import('../functions/text/T'),\n"
+        }
+      ]
+    }
+  ]
+}

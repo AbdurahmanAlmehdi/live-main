@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ISPMT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/ISPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ISPMT(rate, per, nper, pv): the interest paid in period per (from 0) of a loan repaid in even principal installments. */\nconst ISPMT: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([rateValue, perValue, nperValue, pvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    if (nper === 0) return err.div0;\n    return checkNumber(pv * rate * (per / nper - 1));\n  },\n};\n\nexport default ISPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISPMT: () => import('../functions/financial/ISPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/ISPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ISPMT(rate, per, nper, pv): the interest paid in period per (from 0) of a loan repaid in even principal installments. */\nconst ISPMT: FormulaFunction = {\n  arity: [4, 4],\n  call([rateValue, perValue, nperValue, pvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    if (nper === 0) return err.div0;\n    return checkNumber(pv * rate * (per / nper - 1));\n  },\n};\n\nexport default ISPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISPMT: () => import('../functions/financial/ISPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/ISPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ISPMT(rate, per, nper, pv): the interest paid in period per (from 0) of a loan repaid in even principal installments. */\nconst ISPMT: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([rateValue, perValue, nperValue, pvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    if (nper === 0) return err.div0;\n    return numberResult(pv * rate * (per / nper - 1));\n  },\n};\n\nexport default ISPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISPMT: () => import('../functions/financial/ISPMT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/ISPMT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** ISPMT(rate, per, nper, pv): the interest paid in period per (from 0) of a loan repaid in even principal installments. */\nconst ISPMT: FormulaFunction = {\n  arity: [4, 4],\n  call([rateValue, perValue, nperValue, pvValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const per = toNumber(perValue);\n    if (isError(per)) return per;\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    if (nper === 0) return err.div0;\n    return numberResult(pv * rate * (per / nper - 1));\n  },\n};\n\nexport default ISPMT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISPMT: () => import('../functions/financial/ISPMT'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IFNA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFNA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isErrorCode } from '../../core/errors';\n\n/** IFNA(value, value_if_na): value_if_na when value is #N/A, otherwise value. */\nconst IFNA: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([value, fallback]) {\n    return isErrorCode(value, '#N/A') ? fallback : value;\n  },\n};\n\nexport default IFNA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFNA: () => import('../functions/logical/IFNA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFNA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isErrorCode } from '../../core/errors';\n\n/** IFNA(value, value_if_na): value_if_na when value is #N/A, otherwise value. */\nconst IFNA: FormulaFunction = {\n  arity: [2, 2],\n  call([value, fallback]) {\n    return isErrorCode(value, '#N/A') ? fallback : value;\n  },\n};\n\nexport default IFNA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFNA: () => import('../functions/logical/IFNA'),\n"
+        }
+      ]
+    }
+  ]
+}

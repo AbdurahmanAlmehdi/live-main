@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-rounding",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/rounding.ts",
+          "content": "/**\n * Decimal rounding with spreadsheet semantics.\n *\n * Numbers are rounded on their decimal representation (at most 15 significant digits),\n * so ROUND(2.675, 2) is 2.68 even though 2.675 is stored as 2.67499999... in binary.\n * `digits` may be negative to round to tens, hundreds, ... and must be an integer.\n */\n\n/** Moves the decimal point of `n` by `digits` places without binary noise. */\nfunction shift(n: number, digits: number): number {\n  const [mantissa, exponent = '0'] = String(n).split('e');\n  return Number(`${mantissa}e${Number(exponent) + digits}`);\n}\n\nfunction roundWith(n: number, digits: number, mode: (x: number) => number): number {\n  if (n === 0 || !Number.isFinite(n)) return n;\n  const abs = Number(Math.abs(n).toPrecision(15));\n  const result = shift(mode(shift(abs, digits)), -digits);\n  return n < 0 ? -result : result;\n}\n\n/** ROUND: halves go away from zero (2.5 → 3, -2.5 → -3). */\nexport function roundHalfAwayFromZero(n: number, digits: number): number {\n  return roundWith(n, digits, Math.round);\n}\n\n/** ROUNDUP: always away from zero (3.21 → 3.3 at 1 digit, -3.21 → -3.3). */\nexport function roundAwayFromZero(n: number, digits: number): number {\n  return roundWith(n, digits, Math.ceil);\n}\n\n/** ROUNDDOWN / TRUNC: always toward zero (3.29 → 3.2 at 1 digit, -3.29 → -3.2). */\nexport function roundTowardZero(n: number, digits: number): number {\n  return roundWith(n, digits, Math.floor);\n}\n"
+        }
+      ]
+    }
+  ]
+}

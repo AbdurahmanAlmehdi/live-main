@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-TIME",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toInteger(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError(...parts);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-first-error-array",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-first-error-array",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/TIME.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { firstError } from '../../core/errors';\nimport { serialFromTime } from '../../helpers/timeOfDay';\n\n/** TIME(hour, minute, second): the fraction of a day for a time (components truncated, overflow rolls over). */\nconst TIME: FormulaFunction = {\n  arity: [3, 3],\n  call(args) {\n    const parts = args.map((arg) => toIntTrunc(arg));\n    const error = firstError([...parts]);\n    if (error) return error;\n    const [hour, minute, second] = parts as number[];\n    return serialFromTime(hour, minute, second);\n  },\n};\n\nexport default TIME;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TIME: () => import('../functions/date/TIME'),\n"
+        }
+      ]
+    }
+  ]
+}

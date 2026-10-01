@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-DATEVALUE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATEVALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { parseDateText } from '../../helpers/dateParse';\n\n/** DATEVALUE(date_text): the serial number of a date written as text. */\nconst DATEVALUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (isError(value)) return value;\n    if (typeof value !== 'string') return err.value;\n    return parseDateText(value);\n  },\n};\n\nexport default DATEVALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATEVALUE: () => import('../functions/date/DATEVALUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATEVALUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { parseDateText } from '../../helpers/dateParse';\n\n/** DATEVALUE(date_text): the serial number of a date written as text. */\nconst DATEVALUE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (isError(value)) return value;\n    if (typeof value !== 'string') return err.value;\n    return parseDateText(value);\n  },\n};\n\nexport default DATEVALUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATEVALUE: () => import('../functions/date/DATEVALUE'),\n"
+        }
+      ]
+    }
+  ]
+}

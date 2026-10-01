@@ -1,0 +1,308 @@
+{
+  "taskId": "fn-BINOM.DIST",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return checkNumber(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return checkNumber(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toInteger(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toInteger(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  minArgs: 4,\n  maxArgs: 4,\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-to-boolean-opts",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/BINOM_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { combinations } from '../../helpers/combinatorics';\n\n/** Probability of exactly k successes in n trials with success probability p. */\nfunction binomialMass(k: number, n: number, p: number): number {\n  return combinations(n, k) * p ** k * (1 - p) ** (n - k);\n}\n\n/** BINOM.DIST(number_s, trials, probability_s, cumulative): the binomial distribution (number_s and trials are truncated). */\nconst BINOM_DIST: FormulaFunction = {\n  arity: [4, 4],\n  call([successesValue, trialsValue, pValue, cumulativeValue]) {\n    const successes = toIntTrunc(successesValue);\n    if (isError(successes)) return successes;\n    const trials = toIntTrunc(trialsValue);\n    if (isError(trials)) return trials;\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (successes < 0 || successes > trials || p < 0 || p > 1) return err.num;\n    if (!cumulative) return numberResult(binomialMass(successes, trials, p));\n    let sum = 0;\n    for (let k = 0; k <= successes; k++) sum += binomialMass(k, trials, p);\n    return numberResult(sum);\n  },\n};\n\nexport default BINOM_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'BINOM.DIST': () => import('../functions/statistical/BINOM_DIST'),\n"
+        }
+      ]
+    }
+  ]
+}

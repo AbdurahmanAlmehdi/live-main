@@ -1,0 +1,308 @@
+{
+  "taskId": "fn-SUMPRODUCT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { checkNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return checkNumber(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const [height, width] = dimensions(args[0]);\n    for (const arg of args) {\n      const [h, w] = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-dimensions-object",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-dimensions-object",
+        "co-check-number-rename",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/SUMPRODUCT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf, dimensions } from '../../core/range';\nimport { numberResult } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SUMPRODUCT(array1, ...): multiplies corresponding cells of equally shaped arrays and\n * adds the products. Cells that are not numbers count as 0.\n */\nconst SUMPRODUCT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const { height: height, width: width } = dimensions(args[0]);\n    for (const arg of args) {\n      const { height: h, width: w } = dimensions(arg);\n      if (h !== height || w !== width) return err.value;\n    }\n    const arrays = args.map((arg) => cellsOf(arg, { order: 'rows' }));\n    let total = 0;\n    for (let i = 0; i < height * width; i++) {\n      let product = 1;\n      for (const cells of arrays) {\n        const cell = cells[i];\n        if (isError(cell)) return cell;\n        product *= typeof cell === 'number' ? cell : 0;\n      }\n      total += product;\n    }\n    return numberResult(total);\n  },\n};\n\nexport default SUMPRODUCT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SUMPRODUCT: () => import('../functions/math/SUMPRODUCT'),\n"
+        }
+      ]
+    }
+  ]
+}

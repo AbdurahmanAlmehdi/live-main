@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-NORM.S.INV",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/NORM_S_INV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { normalInv } from '../../helpers/normal';\n\n/** NORM.S.INV(probability): the inverse of the standard normal cumulative distribution. */\nconst NORM_S_INV: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([pValue]) {\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    if (p <= 0 || p >= 1) return err.num;\n    return normalInv(p);\n  },\n};\n\nexport default NORM_S_INV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'NORM.S.INV': () => import('../functions/statistical/NORM_S_INV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/NORM_S_INV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { normalInv } from '../../helpers/normal';\n\n/** NORM.S.INV(probability): the inverse of the standard normal cumulative distribution. */\nconst NORM_S_INV: FormulaFunction = {\n  arity: [1, 1],\n  call([pValue]) {\n    const p = toNumber(pValue);\n    if (isError(p)) return p;\n    if (p <= 0 || p >= 1) return err.num;\n    return normalInv(p);\n  },\n};\n\nexport default NORM_S_INV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'NORM.S.INV': () => import('../functions/statistical/NORM_S_INV'),\n"
+        }
+      ]
+    }
+  ]
+}

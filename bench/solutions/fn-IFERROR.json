@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IFERROR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFERROR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** IFERROR(value, value_if_error): value_if_error when value is any error, otherwise value. */\nconst IFERROR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([value, fallback]) {\n    return isError(value) ? fallback : value;\n  },\n};\n\nexport default IFERROR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFERROR: () => import('../functions/logical/IFERROR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFERROR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** IFERROR(value, value_if_error): value_if_error when value is any error, otherwise value. */\nconst IFERROR: FormulaFunction = {\n  arity: [2, 2],\n  call([value, fallback]) {\n    return isError(value) ? fallback : value;\n  },\n};\n\nexport default IFERROR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFERROR: () => import('../functions/logical/IFERROR'),\n"
+        }
+      ]
+    }
+  ]
+}

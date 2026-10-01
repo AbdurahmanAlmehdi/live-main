@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-roman",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/roman.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err } from '../core/errors';\n\n/** Classic roman numerals (MCMXCIX style). */\n\nconst NUMERALS: readonly [string, number][] = [\n  ['M', 1000], ['CM', 900], ['D', 500], ['CD', 400],\n  ['C', 100], ['XC', 90], ['L', 50], ['XL', 40],\n  ['X', 10], ['IX', 9], ['V', 5], ['IV', 4], ['I', 1],\n];\n\nconst LETTER_VALUES: Record<string, number> = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };\n\n/** Roman numeral for an integer 0..3999 (0 gives \"\"). */\nexport function toRoman(n: number): string {\n  let rest = n;\n  let out = '';\n  for (const [symbol, value] of NUMERALS) {\n    while (rest >= value) {\n      out += symbol;\n      rest -= value;\n    }\n  }\n  return out;\n}\n\n/**\n * Value of a roman numeral, case-insensitive, with an optional leading \"-\".\n * Subtractive pairs are read left to right (\"MCMXCIX\" = 1999); \"\" is 0.\n * Any character other than IVXLCDM gives #VALUE!.\n */\nexport function fromRoman(text: string): number | FormulaError {\n  let s = text.trim().toUpperCase();\n  const negative = s.startsWith('-');\n  if (negative) s = s.slice(1);\n  let total = 0;\n  for (let i = 0; i < s.length; i++) {\n    const value = LETTER_VALUES[s[i]];\n    if (value === undefined) return err.value;\n    const next = i + 1 < s.length ? LETTER_VALUES[s[i + 1]] : undefined;\n    if (next !== undefined && next > value) total -= value;\n    else total += value;\n  }\n  return negative ? -total : total;\n}\n"
+        }
+      ]
+    }
+  ]
+}

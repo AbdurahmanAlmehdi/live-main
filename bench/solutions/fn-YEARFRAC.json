@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-YEARFRAC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/YEARFRAC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { yearFraction } from '../../helpers/dayCount';\n\n/** YEARFRAC(start_date, end_date, [basis]): the fraction of a year between the dates for a day-count basis (0 by default). */\nconst YEARFRAC: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const basis = optionalInteger(args, 2, 0);\n    if (isError(basis)) return basis;\n    return yearFraction(start, end, basis);\n  },\n};\n\nexport default YEARFRAC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  YEARFRAC: () => import('../functions/date/YEARFRAC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/YEARFRAC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { yearFraction } from '../../helpers/dayCount';\n\n/** YEARFRAC(start_date, end_date, [basis]): the fraction of a year between the dates for a day-count basis (0 by default). */\nconst YEARFRAC: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const basis = optionalInteger(args, 2, 0);\n    if (isError(basis)) return basis;\n    return yearFraction(start, end, basis);\n  },\n};\n\nexport default YEARFRAC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  YEARFRAC: () => import('../functions/date/YEARFRAC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/YEARFRAC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { yearFraction } from '../../helpers/dayCount';\n\n/** YEARFRAC(start_date, end_date, [basis]): the fraction of a year between the dates for a day-count basis (0 by default). */\nconst YEARFRAC: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const basis = optionalInteger(args[2], 0);\n    if (isError(basis)) return basis;\n    return yearFraction(start, end, basis);\n  },\n};\n\nexport default YEARFRAC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  YEARFRAC: () => import('../functions/date/YEARFRAC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/YEARFRAC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { yearFraction } from '../../helpers/dayCount';\n\n/** YEARFRAC(start_date, end_date, [basis]): the fraction of a year between the dates for a day-count basis (0 by default). */\nconst YEARFRAC: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const start = toNumber(args[0]);\n    if (isError(start)) return start;\n    const end = toNumber(args[1]);\n    if (isError(end)) return end;\n    const basis = optionalInteger(args[2], 0);\n    if (isError(basis)) return basis;\n    return yearFraction(start, end, basis);\n  },\n};\n\nexport default YEARFRAC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  YEARFRAC: () => import('../functions/date/YEARFRAC'),\n"
+        }
+      ]
+    }
+  ]
+}

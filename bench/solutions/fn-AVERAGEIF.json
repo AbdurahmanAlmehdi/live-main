@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-AVERAGEIF",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIF(range, criteria, [average_range]): the mean of the numbers whose range cell meets the criteria. */\nconst AVERAGEIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    const tested = cellsOf(range);\n    const averaged = args.length > 2 && args[2] !== null ? cellsOf(args[2]) : tested;\n    const numbers: number[] = [];\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = averaged[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIF: () => import('../functions/statistical/AVERAGEIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIF(range, criteria, [average_range]): the mean of the numbers whose range cell meets the criteria. */\nconst AVERAGEIF: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion);\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    const tested = cellsOf(range);\n    const averaged = args.length > 2 && args[2] !== null ? cellsOf(args[2]) : tested;\n    const numbers: number[] = [];\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = averaged[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIF: () => import('../functions/statistical/AVERAGEIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIF(range, criteria, [average_range]): the mean of the numbers whose range cell meets the criteria. */\nconst AVERAGEIF: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    const tested = cellsOf(range, { order: 'rows' });\n    const averaged = args.length > 2 && args[2] !== null ? cellsOf(args[2], { order: 'rows' }) : tested;\n    const numbers: number[] = [];\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = averaged[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIF: () => import('../functions/statistical/AVERAGEIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/AVERAGEIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { parseCriterion } from '../../helpers/criteria';\nimport { mean } from '../../helpers/moments';\n\n/** AVERAGEIF(range, criteria, [average_range]): the mean of the numbers whose range cell meets the criteria. */\nconst AVERAGEIF: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [range, criterion] = args;\n    if (isError(criterion)) return criterion;\n    const criterionCells = cellsOf(criterion, { order: 'rows' });\n    if (criterionCells.length !== 1) return err.value;\n    const matches = parseCriterion(criterionCells[0]);\n    const tested = cellsOf(range, { order: 'rows' });\n    const averaged = args.length > 2 && args[2] !== null ? cellsOf(args[2], { order: 'rows' }) : tested;\n    const numbers: number[] = [];\n    for (let i = 0; i < tested.length; i++) {\n      if (!matches(tested[i])) continue;\n      const cell = averaged[i];\n      if (isError(cell)) return cell;\n      if (typeof cell === 'number') numbers.push(cell);\n    }\n    return mean(numbers);\n  },\n};\n\nexport default AVERAGEIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  AVERAGEIF: () => import('../functions/statistical/AVERAGEIF'),\n"
+        }
+      ]
+    }
+  ]
+}

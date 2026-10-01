@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-SWITCH",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/SWITCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { scalarsEqual } from '../../core/compare';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SWITCH(expression, value1, result1, ..., [default]): the result for the first value equal\n * to expression (text compares case-insensitively), else the default, else #N/A.\n */\nconst SWITCH: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: Infinity,\n  call([expression, ...rest]) {\n    if (isError(expression)) return expression;\n    if (isRange(expression)) return err.value;\n    const pairs = Math.floor(rest.length / 2);\n    for (let i = 0; i < pairs; i++) {\n      const candidate = rest[2 * i];\n      if (isError(candidate)) return candidate;\n      if (!isRange(candidate) && scalarsEqual(expression, candidate)) return rest[2 * i + 1];\n    }\n    return rest.length % 2 === 1 ? rest[rest.length - 1] : err.na;\n  },\n};\n\nexport default SWITCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SWITCH: () => import('../functions/logical/SWITCH'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/SWITCH.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { scalarsEqual } from '../../core/compare';\nimport { err, isError } from '../../core/errors';\n\n/**\n * SWITCH(expression, value1, result1, ..., [default]): the result for the first value equal\n * to expression (text compares case-insensitively), else the default, else #N/A.\n */\nconst SWITCH: FormulaFunction = {\n  arity: [3, Infinity],\n  call([expression, ...rest]) {\n    if (isError(expression)) return expression;\n    if (isRange(expression)) return err.value;\n    const pairs = Math.floor(rest.length / 2);\n    for (let i = 0; i < pairs; i++) {\n      const candidate = rest[2 * i];\n      if (isError(candidate)) return candidate;\n      if (!isRange(candidate) && scalarsEqual(expression, candidate)) return rest[2 * i + 1];\n    }\n    return rest.length % 2 === 1 ? rest[rest.length - 1] : err.na;\n  },\n};\n\nexport default SWITCH;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  SWITCH: () => import('../functions/logical/SWITCH'),\n"
+        }
+      ]
+    }
+  ]
+}

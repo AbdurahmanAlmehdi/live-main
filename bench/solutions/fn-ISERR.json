@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ISERR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISERR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** ISERR(value): TRUE when the value is an error other than #N/A. */\nconst ISERR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    return isError(value) && value.code !== '#N/A';\n  },\n};\n\nexport default ISERR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISERR: () => import('../functions/information/ISERR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISERR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\n\n/** ISERR(value): TRUE when the value is an error other than #N/A. */\nconst ISERR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    return isError(value) && value.code !== '#N/A';\n  },\n};\n\nexport default ISERR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISERR: () => import('../functions/information/ISERR'),\n"
+        }
+      ]
+    }
+  ]
+}

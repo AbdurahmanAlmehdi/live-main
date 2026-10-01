@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-FIND",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** FIND(find_text, within_text, [start_num]): 1-based position of find_text (case-sensitive); #VALUE! when absent. */\nconst FIND: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const needle = toText(args[0]);\n    if (isError(needle)) return needle;\n    const haystack = toText(args[1]);\n    if (isError(haystack)) return haystack;\n    const start = optionalInteger(args, 2, 1);\n    if (isError(start)) return start;\n    if (start < 1 || start > haystack.length + 1) return err.value;\n    const index = haystack.indexOf(needle, start - 1);\n    return index < 0 ? err.value : index + 1;\n  },\n};\n\nexport default FIND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIND: () => import('../functions/text/FIND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** FIND(find_text, within_text, [start_num]): 1-based position of find_text (case-sensitive); #VALUE! when absent. */\nconst FIND: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const needle = toText(args[0]);\n    if (isError(needle)) return needle;\n    const haystack = toText(args[1]);\n    if (isError(haystack)) return haystack;\n    const start = optionalInteger(args, 2, 1);\n    if (isError(start)) return start;\n    if (start < 1 || start > haystack.length + 1) return err.value;\n    const index = haystack.indexOf(needle, start - 1);\n    return index < 0 ? err.value : index + 1;\n  },\n};\n\nexport default FIND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIND: () => import('../functions/text/FIND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** FIND(find_text, within_text, [start_num]): 1-based position of find_text (case-sensitive); #VALUE! when absent. */\nconst FIND: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const needle = toText(args[0]);\n    if (isError(needle)) return needle;\n    const haystack = toText(args[1]);\n    if (isError(haystack)) return haystack;\n    const start = optionalInteger(args[2], 1);\n    if (isError(start)) return start;\n    if (start < 1 || start > haystack.length + 1) return err.value;\n    const index = haystack.indexOf(needle, start - 1);\n    return index < 0 ? err.value : index + 1;\n  },\n};\n\nexport default FIND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIND: () => import('../functions/text/FIND'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/FIND.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** FIND(find_text, within_text, [start_num]): 1-based position of find_text (case-sensitive); #VALUE! when absent. */\nconst FIND: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const needle = toText(args[0]);\n    if (isError(needle)) return needle;\n    const haystack = toText(args[1]);\n    if (isError(haystack)) return haystack;\n    const start = optionalInteger(args[2], 1);\n    if (isError(start)) return start;\n    if (start < 1 || start > haystack.length + 1) return err.value;\n    const index = haystack.indexOf(needle, start - 1);\n    return index < 0 ? err.value : index + 1;\n  },\n};\n\nexport default FIND;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FIND: () => import('../functions/text/FIND'),\n"
+        }
+      ]
+    }
+  ]
+}

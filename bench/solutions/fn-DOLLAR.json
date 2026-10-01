@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-DOLLAR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/DOLLAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** DOLLAR(number, [decimals]): currency text such as \"$1,234.57\"; negative amounts in parentheses. */\nconst DOLLAR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args, 1, 2);\n    if (isError(decimals)) return decimals;\n    if (decimals > 127) return err.value;\n    const text = formatFixed(Math.abs(n), decimals, true);\n    return n < 0 && /[1-9]/.test(text) ? `($${text})` : `$${text}`;\n  },\n};\n\nexport default DOLLAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLAR: () => import('../functions/text/DOLLAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/DOLLAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** DOLLAR(number, [decimals]): currency text such as \"$1,234.57\"; negative amounts in parentheses. */\nconst DOLLAR: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args, 1, 2);\n    if (isError(decimals)) return decimals;\n    if (decimals > 127) return err.value;\n    const text = formatFixed(Math.abs(n), decimals, true);\n    return n < 0 && /[1-9]/.test(text) ? `($${text})` : `$${text}`;\n  },\n};\n\nexport default DOLLAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLAR: () => import('../functions/text/DOLLAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/DOLLAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** DOLLAR(number, [decimals]): currency text such as \"$1,234.57\"; negative amounts in parentheses. */\nconst DOLLAR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args[1], 2);\n    if (isError(decimals)) return decimals;\n    if (decimals > 127) return err.value;\n    const text = formatFixed(Math.abs(n), decimals, true);\n    return n < 0 && /[1-9]/.test(text) ? `($${text})` : `$${text}`;\n  },\n};\n\nexport default DOLLAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLAR: () => import('../functions/text/DOLLAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/DOLLAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatFixed } from '../../helpers/fixedFormat';\n\n/** DOLLAR(number, [decimals]): currency text such as \"$1,234.57\"; negative amounts in parentheses. */\nconst DOLLAR: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const n = toNumber(args[0]);\n    if (isError(n)) return n;\n    const decimals = optionalInteger(args[1], 2);\n    if (isError(decimals)) return decimals;\n    if (decimals > 127) return err.value;\n    const text = formatFixed(Math.abs(n), decimals, true);\n    return n < 0 && /[1-9]/.test(text) ? `($${text})` : `$${text}`;\n  },\n};\n\nexport default DOLLAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DOLLAR: () => import('../functions/text/DOLLAR'),\n"
+        }
+      ]
+    }
+  ]
+}

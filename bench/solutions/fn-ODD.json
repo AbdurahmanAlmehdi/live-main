@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ODD",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ODD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ODD(number): rounds away from zero to the nearest odd integer (ODD(0) is 1). */\nconst ODD: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    let magnitude = Math.ceil(Math.abs(n));\n    if (magnitude % 2 === 0) magnitude += 1;\n    return n < 0 ? -magnitude : magnitude;\n  },\n};\n\nexport default ODD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ODD: () => import('../functions/math/ODD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/ODD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ODD(number): rounds away from zero to the nearest odd integer (ODD(0) is 1). */\nconst ODD: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    let magnitude = Math.ceil(Math.abs(n));\n    if (magnitude % 2 === 0) magnitude += 1;\n    return n < 0 ? -magnitude : magnitude;\n  },\n};\n\nexport default ODD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ODD: () => import('../functions/math/ODD'),\n"
+        }
+      ]
+    }
+  ]
+}

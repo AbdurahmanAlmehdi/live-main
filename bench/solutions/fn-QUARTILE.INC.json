@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-QUARTILE.INC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/QUARTILE_INC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { percentileInclusive } from '../../helpers/quantile';\n\n/** QUARTILE.INC(array, quart): quartile 0 (minimum) to 4 (maximum); quart is truncated. */\nconst QUARTILE_INC: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, quartValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const quart = toInteger(quartValue);\n    if (isError(quart)) return quart;\n    if (quart < 0 || quart > 4) return err.num;\n    return percentileInclusive(numbers, quart / 4);\n  },\n};\n\nexport default QUARTILE_INC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'QUARTILE.INC': () => import('../functions/statistical/QUARTILE_INC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/QUARTILE_INC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { percentileInclusive } from '../../helpers/quantile';\n\n/** QUARTILE.INC(array, quart): quartile 0 (minimum) to 4 (maximum); quart is truncated. */\nconst QUARTILE_INC: FormulaFunction = {\n  arity: [2, 2],\n  call([array, quartValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const quart = toInteger(quartValue);\n    if (isError(quart)) return quart;\n    if (quart < 0 || quart > 4) return err.num;\n    return percentileInclusive(numbers, quart / 4);\n  },\n};\n\nexport default QUARTILE_INC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'QUARTILE.INC': () => import('../functions/statistical/QUARTILE_INC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/QUARTILE_INC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { percentileInclusive } from '../../helpers/quantile';\n\n/** QUARTILE.INC(array, quart): quartile 0 (minimum) to 4 (maximum); quart is truncated. */\nconst QUARTILE_INC: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, quartValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const quart = toIntTrunc(quartValue);\n    if (isError(quart)) return quart;\n    if (quart < 0 || quart > 4) return err.num;\n    return percentileInclusive(numbers, quart / 4);\n  },\n};\n\nexport default QUARTILE_INC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'QUARTILE.INC': () => import('../functions/statistical/QUARTILE_INC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/QUARTILE_INC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { percentileInclusive } from '../../helpers/quantile';\n\n/** QUARTILE.INC(array, quart): quartile 0 (minimum) to 4 (maximum); quart is truncated. */\nconst QUARTILE_INC: FormulaFunction = {\n  arity: [2, 2],\n  call([array, quartValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const quart = toIntTrunc(quartValue);\n    if (isError(quart)) return quart;\n    if (quart < 0 || quart > 4) return err.num;\n    return percentileInclusive(numbers, quart / 4);\n  },\n};\n\nexport default QUARTILE_INC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'QUARTILE.INC': () => import('../functions/statistical/QUARTILE_INC'),\n"
+        }
+      ]
+    }
+  ]
+}

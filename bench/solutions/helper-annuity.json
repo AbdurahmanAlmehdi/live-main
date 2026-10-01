@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-annuity",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/annuity.ts",
+          "content": "/**\n * Time-value-of-money relations for a level annuity, using the spreadsheet sign\n * convention (money paid out is negative). `type` is 0 for payments at the end of each\n * period and 1 for payments at the beginning. Results may be non-finite for extreme\n * inputs; callers map those to #NUM!.\n *\n * These functions all solve the same equation:\n *   pv·(1+r)^n + pmt·(1 + r·type)·((1+r)^n − 1)/r + fv = 0     (r ≠ 0)\n *   pv + pmt·n + fv = 0                                        (r = 0)\n */\n\nfunction growth(rate: number, nper: number): number {\n  return Math.exp(nper * Math.log1p(rate));\n}\n\n/** ((1 + rate)^nper - 1) / rate, accurate for rates close to 0. */\nfunction annuityFactor(rate: number, nper: number): number {\n  return Math.expm1(nper * Math.log1p(rate)) / rate;\n}\n\n/** Future value of an investment. */\nexport function futureValue(rate: number, nper: number, pmt: number, pv: number, type: number): number {\n  if (rate === 0) return -(pv + pmt * nper);\n  return -(pv * growth(rate, nper) + pmt * (1 + rate * type) * annuityFactor(rate, nper));\n}\n\n/** Present value of an investment. */\nexport function presentValue(rate: number, nper: number, pmt: number, fv: number, type: number): number {\n  if (rate === 0) return -(fv + pmt * nper);\n  return -(fv + pmt * (1 + rate * type) * annuityFactor(rate, nper)) / growth(rate, nper);\n}\n\n/** Periodic payment for a loan or investment. */\nexport function payment(rate: number, nper: number, pv: number, fv: number, type: number): number {\n  if (rate === 0) return -(pv + fv) / nper;\n  return -(pv * growth(rate, nper) + fv) / ((1 + rate * type) * annuityFactor(rate, nper));\n}\n\n/** Interest portion of the payment in period `per` (1-based), negative when interest is paid. */\nexport function interestPayment(rate: number, per: number, nper: number, pv: number, fv: number, type: number): number {\n  const pmt = payment(rate, nper, pv, fv, type);\n  let balance: number;\n  if (per === 1) balance = type === 1 ? 0 : -pv;\n  else if (type === 1) balance = futureValue(rate, per - 2, pmt, pv, 1) - pmt;\n  else balance = futureValue(rate, per - 1, pmt, pv, 0);\n  return balance * rate;\n}\n"
+        }
+      ]
+    }
+  ]
+}

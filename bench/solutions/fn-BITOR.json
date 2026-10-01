@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-BITOR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { toBitOperand } from '../../helpers/bits';\n\n/** BITOR(number1, number2): the bitwise OR of two integers in 0..2^48-1. */\nconst BITOR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([aValue, bValue]) {\n    const a = toBitOperand(aValue);\n    if (isError(a)) return a;\n    const b = toBitOperand(bValue);\n    if (isError(b)) return b;\n    return Number(BigInt(a) | BigInt(b));\n  },\n};\n\nexport default BITOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITOR: () => import('../functions/engineering/BITOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { toBitOperand } from '../../helpers/bits';\n\n/** BITOR(number1, number2): the bitwise OR of two integers in 0..2^48-1. */\nconst BITOR: FormulaFunction = {\n  arity: [2, 2],\n  call([aValue, bValue]) {\n    const a = toBitOperand(aValue);\n    if (isError(a)) return a;\n    const b = toBitOperand(bValue);\n    if (isError(b)) return b;\n    return Number(BigInt(a) | BigInt(b));\n  },\n};\n\nexport default BITOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITOR: () => import('../functions/engineering/BITOR'),\n"
+        }
+      ]
+    }
+  ]
+}

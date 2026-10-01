@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-XNPV",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XNPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\n\n/**\n * XNPV(rate, values, dates): the net present value of cash flows on the given dates,\n * discounted from the first date on an actual/365 basis (dates are truncated).\n */\nconst XNPV: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([rateValue, values, datesValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(datesValue);\n    if (isError(serials)) return serials;\n    if (flows.length === 0 || flows.length !== serials.length || rate <= -1) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    let total = 0;\n    for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n    return checkNumber(total);\n  },\n};\n\nexport default XNPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XNPV: () => import('../functions/financial/XNPV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XNPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\n\n/**\n * XNPV(rate, values, dates): the net present value of cash flows on the given dates,\n * discounted from the first date on an actual/365 basis (dates are truncated).\n */\nconst XNPV: FormulaFunction = {\n  arity: [3, 3],\n  call([rateValue, values, datesValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(datesValue);\n    if (isError(serials)) return serials;\n    if (flows.length === 0 || flows.length !== serials.length || rate <= -1) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    let total = 0;\n    for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n    return checkNumber(total);\n  },\n};\n\nexport default XNPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XNPV: () => import('../functions/financial/XNPV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XNPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\n\n/**\n * XNPV(rate, values, dates): the net present value of cash flows on the given dates,\n * discounted from the first date on an actual/365 basis (dates are truncated).\n */\nconst XNPV: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([rateValue, values, datesValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(datesValue);\n    if (isError(serials)) return serials;\n    if (flows.length === 0 || flows.length !== serials.length || rate <= -1) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    let total = 0;\n    for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n    return numberResult(total);\n  },\n};\n\nexport default XNPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XNPV: () => import('../functions/financial/XNPV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/XNPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { collectCashflows } from '../../helpers/cashflows';\n\n/**\n * XNPV(rate, values, dates): the net present value of cash flows on the given dates,\n * discounted from the first date on an actual/365 basis (dates are truncated).\n */\nconst XNPV: FormulaFunction = {\n  arity: [3, 3],\n  call([rateValue, values, datesValue]) {\n    const rate = toNumber(rateValue);\n    if (isError(rate)) return rate;\n    const flows = collectCashflows(values);\n    if (isError(flows)) return flows;\n    const serials = collectCashflows(datesValue);\n    if (isError(serials)) return serials;\n    if (flows.length === 0 || flows.length !== serials.length || rate <= -1) return err.num;\n    const dates = serials.map((serial) => Math.floor(serial));\n    if (dates.some((d) => d < dates[0])) return err.num;\n    let total = 0;\n    for (let i = 0; i < flows.length; i++) total += flows[i] / Math.pow(1 + rate, (dates[i] - dates[0]) / 365);\n    return numberResult(total);\n  },\n};\n\nexport default XNPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  XNPV: () => import('../functions/financial/XNPV'),\n"
+        }
+      ]
+    }
+  ]
+}

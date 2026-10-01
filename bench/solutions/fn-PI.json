@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-PI",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/PI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** PI(): the number pi. */\nconst PI: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: 0,\n  call() {\n    return Math.PI;\n  },\n};\n\nexport default PI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PI: () => import('../functions/math/PI'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/PI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** PI(): the number pi. */\nconst PI: FormulaFunction = {\n  arity: [0, 0],\n  call() {\n    return Math.PI;\n  },\n};\n\nexport default PI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  PI: () => import('../functions/math/PI'),\n"
+        }
+      ]
+    }
+  ]
+}

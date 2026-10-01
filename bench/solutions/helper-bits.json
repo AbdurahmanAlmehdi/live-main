@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-bits",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/bits.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { toNumber } from '../core/coerce';\n\n/** Largest value the bitwise functions accept, exclusive: 2^48. */\nexport const BIT_LIMIT = 2 ** 48;\n\n/**\n * Reads an operand for BITAND / BITOR / BITXOR / BITLSHIFT / BITRSHIFT: a whole\n * number with 0 <= n < 2^48. Non-integers and out-of-range values give #NUM!.\n */\nexport function toBitOperand(value: Value): number | FormulaError {\n  const n = toNumber(value);\n  if (isError(n)) return n;\n  if (!Number.isInteger(n) || n < 0 || n >= BIT_LIMIT) return err.num;\n  return n;\n}\n"
+        }
+      ]
+    }
+  ]
+}

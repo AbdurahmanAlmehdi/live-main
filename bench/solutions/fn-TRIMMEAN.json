@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-TRIMMEAN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/TRIMMEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { mean } from '../../helpers/moments';\n\n/**\n * TRIMMEAN(array, percent): the mean after dropping floor(n * percent / 2) numbers from\n * each end. percent must be in [0, 1).\n */\nconst TRIMMEAN: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([array, percentValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const percent = toNumber(percentValue);\n    if (isError(percent)) return percent;\n    if (percent < 0 || percent >= 1 || numbers.length === 0) return err.num;\n    const drop = Math.floor((numbers.length * percent) / 2);\n    const sorted = [...numbers].sort((a, b) => a - b);\n    return mean(sorted.slice(drop, sorted.length - drop));\n  },\n};\n\nexport default TRIMMEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRIMMEAN: () => import('../functions/statistical/TRIMMEAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/TRIMMEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { mean } from '../../helpers/moments';\n\n/**\n * TRIMMEAN(array, percent): the mean after dropping floor(n * percent / 2) numbers from\n * each end. percent must be in [0, 1).\n */\nconst TRIMMEAN: FormulaFunction = {\n  arity: [2, 2],\n  call([array, percentValue]) {\n    const numbers = collectNumbers([array]);\n    if (isError(numbers)) return numbers;\n    const percent = toNumber(percentValue);\n    if (isError(percent)) return percent;\n    if (percent < 0 || percent >= 1 || numbers.length === 0) return err.num;\n    const drop = Math.floor((numbers.length * percent) / 2);\n    const sorted = [...numbers].sort((a, b) => a - b);\n    return mean(sorted.slice(drop, sorted.length - drop));\n  },\n};\n\nexport default TRIMMEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TRIMMEAN: () => import('../functions/statistical/TRIMMEAN'),\n"
+        }
+      ]
+    }
+  ]
+}

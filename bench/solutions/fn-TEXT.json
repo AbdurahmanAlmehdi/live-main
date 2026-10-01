@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-TEXT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { parseNumber, toNumber, toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { formatWithPattern } from '../../helpers/textFormat';\n\n/** TEXT(value, format_text): formats a number with a format code; non-numeric text is returned unchanged. */\nconst TEXT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([value, formatValue]) {\n    const format = toText(formatValue);\n    if (isError(format)) return format;\n    if (typeof value === 'string' && parseNumber(value) === null) return value;\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return formatWithPattern(n, format);\n  },\n};\n\nexport default TEXT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXT: () => import('../functions/text/TEXT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/TEXT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { parseNumber, toNumber, toText } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { formatWithPattern } from '../../helpers/textFormat';\n\n/** TEXT(value, format_text): formats a number with a format code; non-numeric text is returned unchanged. */\nconst TEXT: FormulaFunction = {\n  arity: [2, 2],\n  call([value, formatValue]) {\n    const format = toText(formatValue);\n    if (isError(format)) return format;\n    if (typeof value === 'string' && parseNumber(value) === null) return value;\n    const n = toNumber(value);\n    if (isError(n)) return n;\n    return formatWithPattern(n, format);\n  },\n};\n\nexport default TEXT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  TEXT: () => import('../functions/text/TEXT'),\n"
+        }
+      ]
+    }
+  ]
+}

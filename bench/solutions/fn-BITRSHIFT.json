@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-BITRSHIFT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITRSHIFT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { BIT_LIMIT, toBitOperand } from '../../helpers/bits';\n\n/** Largest shift accepted, in either direction. */\nconst MAX_SHIFT = 53;\n\n/** BITRSHIFT(number, shift_amount): shifts an integer right by shift_amount bits (left when negative); the result must stay below 2^48. */\nconst BITRSHIFT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, shiftValue]) {\n    const n = toBitOperand(numberValue);\n    if (isError(n)) return n;\n    const shift = toInteger(shiftValue);\n    if (isError(shift)) return shift;\n    if (Math.abs(shift) > MAX_SHIFT) return err.num;\n    const result = Math.floor(n * 2 ** -shift);\n    return result < BIT_LIMIT ? result : err.num;\n  },\n};\n\nexport default BITRSHIFT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITRSHIFT: () => import('../functions/engineering/BITRSHIFT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITRSHIFT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { BIT_LIMIT, toBitOperand } from '../../helpers/bits';\n\n/** Largest shift accepted, in either direction. */\nconst MAX_SHIFT = 53;\n\n/** BITRSHIFT(number, shift_amount): shifts an integer right by shift_amount bits (left when negative); the result must stay below 2^48. */\nconst BITRSHIFT: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, shiftValue]) {\n    const n = toBitOperand(numberValue);\n    if (isError(n)) return n;\n    const shift = toInteger(shiftValue);\n    if (isError(shift)) return shift;\n    if (Math.abs(shift) > MAX_SHIFT) return err.num;\n    const result = Math.floor(n * 2 ** -shift);\n    return result < BIT_LIMIT ? result : err.num;\n  },\n};\n\nexport default BITRSHIFT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITRSHIFT: () => import('../functions/engineering/BITRSHIFT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITRSHIFT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { BIT_LIMIT, toBitOperand } from '../../helpers/bits';\n\n/** Largest shift accepted, in either direction. */\nconst MAX_SHIFT = 53;\n\n/** BITRSHIFT(number, shift_amount): shifts an integer right by shift_amount bits (left when negative); the result must stay below 2^48. */\nconst BITRSHIFT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, shiftValue]) {\n    const n = toBitOperand(numberValue);\n    if (isError(n)) return n;\n    const shift = toIntTrunc(shiftValue);\n    if (isError(shift)) return shift;\n    if (Math.abs(shift) > MAX_SHIFT) return err.num;\n    const result = Math.floor(n * 2 ** -shift);\n    return result < BIT_LIMIT ? result : err.num;\n  },\n};\n\nexport default BITRSHIFT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITRSHIFT: () => import('../functions/engineering/BITRSHIFT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITRSHIFT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { BIT_LIMIT, toBitOperand } from '../../helpers/bits';\n\n/** Largest shift accepted, in either direction. */\nconst MAX_SHIFT = 53;\n\n/** BITRSHIFT(number, shift_amount): shifts an integer right by shift_amount bits (left when negative); the result must stay below 2^48. */\nconst BITRSHIFT: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, shiftValue]) {\n    const n = toBitOperand(numberValue);\n    if (isError(n)) return n;\n    const shift = toIntTrunc(shiftValue);\n    if (isError(shift)) return shift;\n    if (Math.abs(shift) > MAX_SHIFT) return err.num;\n    const result = Math.floor(n * 2 ** -shift);\n    return result < BIT_LIMIT ? result : err.num;\n  },\n};\n\nexport default BITRSHIFT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITRSHIFT: () => import('../functions/engineering/BITRSHIFT'),\n"
+        }
+      ]
+    }
+  ]
+}

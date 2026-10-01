@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-KURT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/KURT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { kurtosis } from '../../helpers/shape';\n\n/** KURT(number1, ...): the sample excess kurtosis of the numbers. */\nconst KURT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return kurtosis(numbers);\n  },\n};\n\nexport default KURT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  KURT: () => import('../functions/statistical/KURT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/KURT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { isError } from '../../core/errors';\nimport { kurtosis } from '../../helpers/shape';\n\n/** KURT(number1, ...): the sample excess kurtosis of the numbers. */\nconst KURT: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    return kurtosis(numbers);\n  },\n};\n\nexport default KURT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  KURT: () => import('../functions/statistical/KURT'),\n"
+        }
+      ]
+    }
+  ]
+}

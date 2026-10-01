@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-RATE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * The annuity equation pv·(1+r)^n + pmt·(1+r·type)·((1+r)^n − 1)/r + fv as a function of\n * r, evaluated with log1p/expm1 so that it stays accurate for rates close to zero.\n */\nfunction annuityBalance(rate: number, nper: number, pmt: number, pv: number, fv: number, type: number): number {\n  if (rate <= -1) return NaN;\n  const exponent = nper * Math.log1p(rate);\n  const factor = rate === 0 ? nper : Math.expm1(exponent) / rate;\n  return pv * Math.exp(exponent) + pmt * (1 + rate * type) * factor + fv;\n}\n\n/** RATE(nper, pmt, pv, [fv], [type], [guess]): the interest rate per period of an annuity, solved from guess (10% by default). */\nconst RATE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const nper = toNumber(args[0]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    const guess = optionalNumber(args, 5, 0.1);\n    if (isError(guess)) return guess;\n    if (nper <= 0) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return solveNewton((rate) => annuityBalance(rate, nper, pmt, pv, fv, due), guess);\n  },\n};\n\nexport default RATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RATE: () => import('../functions/financial/RATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * The annuity equation pv·(1+r)^n + pmt·(1+r·type)·((1+r)^n − 1)/r + fv as a function of\n * r, evaluated with log1p/expm1 so that it stays accurate for rates close to zero.\n */\nfunction annuityBalance(rate: number, nper: number, pmt: number, pv: number, fv: number, type: number): number {\n  if (rate <= -1) return NaN;\n  const exponent = nper * Math.log1p(rate);\n  const factor = rate === 0 ? nper : Math.expm1(exponent) / rate;\n  return pv * Math.exp(exponent) + pmt * (1 + rate * type) * factor + fv;\n}\n\n/** RATE(nper, pmt, pv, [fv], [type], [guess]): the interest rate per period of an annuity, solved from guess (10% by default). */\nconst RATE: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const nper = toNumber(args[0]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    const guess = optionalNumber(args, 5, 0.1);\n    if (isError(guess)) return guess;\n    if (nper <= 0) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return solveNewton((rate) => annuityBalance(rate, nper, pmt, pv, fv, due), guess);\n  },\n};\n\nexport default RATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RATE: () => import('../functions/financial/RATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * The annuity equation pv·(1+r)^n + pmt·(1+r·type)·((1+r)^n − 1)/r + fv as a function of\n * r, evaluated with log1p/expm1 so that it stays accurate for rates close to zero.\n */\nfunction annuityBalance(rate: number, nper: number, pmt: number, pv: number, fv: number, type: number): number {\n  if (rate <= -1) return NaN;\n  const exponent = nper * Math.log1p(rate);\n  const factor = rate === 0 ? nper : Math.expm1(exponent) / rate;\n  return pv * Math.exp(exponent) + pmt * (1 + rate * type) * factor + fv;\n}\n\n/** RATE(nper, pmt, pv, [fv], [type], [guess]): the interest rate per period of an annuity, solved from guess (10% by default). */\nconst RATE: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 6,\n  call(args) {\n    const nper = toNumber(args[0]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    const guess = optionalNumber(args[5], 0.1);\n    if (isError(guess)) return guess;\n    if (nper <= 0) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return solveNewton((rate) => annuityBalance(rate, nper, pmt, pv, fv, due), guess);\n  },\n};\n\nexport default RATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RATE: () => import('../functions/financial/RATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { solveNewton } from '../../helpers/solver';\n\n/**\n * The annuity equation pv·(1+r)^n + pmt·(1+r·type)·((1+r)^n − 1)/r + fv as a function of\n * r, evaluated with log1p/expm1 so that it stays accurate for rates close to zero.\n */\nfunction annuityBalance(rate: number, nper: number, pmt: number, pv: number, fv: number, type: number): number {\n  if (rate <= -1) return NaN;\n  const exponent = nper * Math.log1p(rate);\n  const factor = rate === 0 ? nper : Math.expm1(exponent) / rate;\n  return pv * Math.exp(exponent) + pmt * (1 + rate * type) * factor + fv;\n}\n\n/** RATE(nper, pmt, pv, [fv], [type], [guess]): the interest rate per period of an annuity, solved from guess (10% by default). */\nconst RATE: FormulaFunction = {\n  arity: [3, 6],\n  call(args) {\n    const nper = toNumber(args[0]);\n    if (isError(nper)) return nper;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    const guess = optionalNumber(args[5], 0.1);\n    if (isError(guess)) return guess;\n    if (nper <= 0) return err.num;\n    const due = type === 0 ? 0 : 1;\n    return solveNewton((rate) => annuityBalance(rate, nper, pmt, pv, fv, due), guess);\n  },\n};\n\nexport default RATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RATE: () => import('../functions/financial/RATE'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-ISODD",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISODD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISODD(number): TRUE when the number, truncated to an integer, is odd. */\nconst ISODD: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 1;\n  },\n};\n\nexport default ISODD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISODD: () => import('../functions/information/ISODD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISODD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISODD(number): TRUE when the number, truncated to an integer, is odd. */\nconst ISODD: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 1;\n  },\n};\n\nexport default ISODD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISODD: () => import('../functions/information/ISODD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISODD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISODD(number): TRUE when the number, truncated to an integer, is odd. */\nconst ISODD: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 1;\n  },\n};\n\nexport default ISODD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISODD: () => import('../functions/information/ISODD'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ISODD.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { isError } from '../../core/errors';\n\n/** ISODD(number): TRUE when the number, truncated to an integer, is odd. */\nconst ISODD: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    return Math.abs(n) % 2 === 1;\n  },\n};\n\nexport default ISODD;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ISODD: () => import('../functions/information/ISODD'),\n"
+        }
+      ]
+    }
+  ]
+}

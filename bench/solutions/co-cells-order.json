@@ -1,0 +1,67 @@
+{
+  "taskId": "co-cells-order",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/range.ts",
+          "oldString": "/** All cells in row-major order (a scalar gives a one-element list). */\nexport function cellsOf(value: Value): Scalar[] {\n  return value instanceof RangeValue ? value.rows.flat() : [value];\n}",
+          "newString": "export interface CellOrder {\n  /** 'rows': left to right, top to bottom; 'columns': top to bottom, left to right. */\n  order: 'rows' | 'columns';\n}\n\n/** All cells in the requested order (a scalar gives a one-element list). */\nexport function cellsOf(value: Value, opts: CellOrder): Scalar[] {\n  const { order } = opts;\n  if (!(value instanceof RangeValue)) return [value];\n  return order === 'rows' ? value.rows.flat() : transpose(value).rows.flat();\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\bcellsOf\\(((?:(?!\\{ order)[^()])*)\\)",
+          "flags": "g",
+          "replace": "cellsOf($1, { order: 'rows' })"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\bcellsOf\\(((?:(?!\\{ order)[^()])*)\\)",
+          "flags": "g",
+          "replace": "cellsOf($1, { order: 'rows' })"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-cells-order.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { cellsOf } from '../../src/core/range';\nimport { evaluate } from '../../src/eval/evaluate';\n\ndescribe('cellsOf order', () => {\n  it('walks rows or columns', async () => {\n    const m = await evaluate('={1, 2; 3, 4}');\n    expect(cellsOf(m, { order: 'rows' })).toEqual([1, 2, 3, 4]);\n    expect(cellsOf(m, { order: 'columns' })).toEqual([1, 3, 2, 4]);\n    expect(cellsOf(5, { order: 'columns' })).toEqual([5]);\n  });\n\n  it('requires the order', () => {\n    const call = cellsOf as unknown as (v: unknown) => unknown;\n    expect(() => call(5)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/range.ts",
+          "oldString": "/** All cells in row-major order (a scalar gives a one-element list). */\nexport function cellsOf(value: Value): Scalar[] {\n  return value instanceof RangeValue ? value.toRows().flat() : [value];\n}",
+          "newString": "export interface CellOrder {\n  /** 'rows': left to right, top to bottom; 'columns': top to bottom, left to right. */\n  order: 'rows' | 'columns';\n}\n\n/** All cells in the requested order (a scalar gives a one-element list). */\nexport function cellsOf(value: Value, opts: CellOrder): Scalar[] {\n  const { order } = opts;\n  if (!(value instanceof RangeValue)) return [value];\n  return order === 'rows' ? value.toRows().flat() : transpose(value).toRows().flat();\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\bcellsOf\\(((?:(?!\\{ order)[^()])*)\\)",
+          "flags": "g",
+          "replace": "cellsOf($1, { order: 'rows' })"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\bcellsOf\\(((?:(?!\\{ order)[^()])*)\\)",
+          "flags": "g",
+          "replace": "cellsOf($1, { order: 'rows' })"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-cells-order.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { cellsOf } from '../../src/core/range';\nimport { evaluate } from '../../src/eval/evaluate';\n\ndescribe('cellsOf order', () => {\n  it('walks rows or columns', async () => {\n    const m = await evaluate('={1, 2; 3, 4}');\n    expect(cellsOf(m, { order: 'rows' })).toEqual([1, 2, 3, 4]);\n    expect(cellsOf(m, { order: 'columns' })).toEqual([1, 3, 2, 4]);\n    expect(cellsOf(5, { order: 'columns' })).toEqual([5]);\n  });\n\n  it('requires the order', () => {\n    const call = cellsOf as unknown as (v: unknown) => unknown;\n    expect(() => call(5)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

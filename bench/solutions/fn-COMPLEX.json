@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-COMPLEX",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/COMPLEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** COMPLEX(real_num, i_num, [suffix]): the complex number real_num + i_num·i as text; suffix is \"i\" (default) or \"j\". */\nconst COMPLEX: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const re = toNumber(args[0]);\n    if (isError(re)) return re;\n    const im = toNumber(args[1]);\n    if (isError(im)) return im;\n    const suffix = optionalText(args, 2, 'i');\n    if (isError(suffix)) return suffix;\n    if (suffix !== 'i' && suffix !== 'j' && suffix !== '') return err.value;\n    return formatComplex({ re, im, suffix: suffix === 'j' ? 'j' : 'i' });\n  },\n};\n\nexport default COMPLEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMPLEX: () => import('../functions/engineering/COMPLEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/COMPLEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** COMPLEX(real_num, i_num, [suffix]): the complex number real_num + i_num·i as text; suffix is \"i\" (default) or \"j\". */\nconst COMPLEX: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const re = toNumber(args[0]);\n    if (isError(re)) return re;\n    const im = toNumber(args[1]);\n    if (isError(im)) return im;\n    const suffix = optionalText(args, 2, 'i');\n    if (isError(suffix)) return suffix;\n    if (suffix !== 'i' && suffix !== 'j' && suffix !== '') return err.value;\n    return formatComplex({ re, im, suffix: suffix === 'j' ? 'j' : 'i' });\n  },\n};\n\nexport default COMPLEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMPLEX: () => import('../functions/engineering/COMPLEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/COMPLEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** COMPLEX(real_num, i_num, [suffix]): the complex number real_num + i_num·i as text; suffix is \"i\" (default) or \"j\". */\nconst COMPLEX: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const re = toNumber(args[0]);\n    if (isError(re)) return re;\n    const im = toNumber(args[1]);\n    if (isError(im)) return im;\n    const suffix = optionalText(args[2], 'i');\n    if (isError(suffix)) return suffix;\n    if (suffix !== 'i' && suffix !== 'j' && suffix !== '') return err.value;\n    return formatComplex({ re, im, suffix: suffix === 'j' ? 'j' : 'i' });\n  },\n};\n\nexport default COMPLEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMPLEX: () => import('../functions/engineering/COMPLEX'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/COMPLEX.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalText } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** COMPLEX(real_num, i_num, [suffix]): the complex number real_num + i_num·i as text; suffix is \"i\" (default) or \"j\". */\nconst COMPLEX: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const re = toNumber(args[0]);\n    if (isError(re)) return re;\n    const im = toNumber(args[1]);\n    if (isError(im)) return im;\n    const suffix = optionalText(args[2], 'i');\n    if (isError(suffix)) return suffix;\n    if (suffix !== 'i' && suffix !== 'j' && suffix !== '') return err.value;\n    return formatComplex({ re, im, suffix: suffix === 'j' ? 'j' : 'i' });\n  },\n};\n\nexport default COMPLEX;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  COMPLEX: () => import('../functions/engineering/COMPLEX'),\n"
+        }
+      ]
+    }
+  ]
+}

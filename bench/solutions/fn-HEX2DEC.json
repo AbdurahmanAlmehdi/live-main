@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-HEX2DEC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/HEX2DEC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** HEX2DEC(number): the decimal value of a hexadecimal number (at most 10 digits, two's complement). */\nconst HEX2DEC: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (typeof value === 'boolean') return err.value;\n    const text = toText(value);\n    if (isError(text)) return text;\n    return parseRadix(text, 16);\n  },\n};\n\nexport default HEX2DEC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HEX2DEC: () => import('../functions/engineering/HEX2DEC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/HEX2DEC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { parseRadix } from '../../helpers/radixParse';\n\n/** HEX2DEC(number): the decimal value of a hexadecimal number (at most 10 digits, two's complement). */\nconst HEX2DEC: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (typeof value === 'boolean') return err.value;\n    const text = toText(value);\n    if (isError(text)) return text;\n    return parseRadix(text, 16);\n  },\n};\n\nexport default HEX2DEC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  HEX2DEC: () => import('../functions/engineering/HEX2DEC'),\n"
+        }
+      ]
+    }
+  ]
+}

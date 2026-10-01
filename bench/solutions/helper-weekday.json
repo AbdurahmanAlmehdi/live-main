@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-weekday",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/weekday.ts",
+          "content": "import type { FormulaError } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { dateFromSerial, serialFromDate } from './dateSerial';\n\n/** Day of week of a serial, 0 = Sunday .. 6 = Saturday (serial 1, 1900-01-01, counts as a Sunday). */\nexport function dayOfWeek(serial: number): number {\n  return (((Math.floor(serial) - 1) % 7) + 7) % 7;\n}\n\n/** For each WEEKDAY return_type: the day (0 = Sunday) numbered 1, and whether numbering starts at 0. */\nconst RETURN_TYPES: Record<number, { first: number; zeroBased: boolean }> = {\n  1: { first: 0, zeroBased: false },\n  2: { first: 1, zeroBased: false },\n  3: { first: 1, zeroBased: true },\n  11: { first: 1, zeroBased: false },\n  12: { first: 2, zeroBased: false },\n  13: { first: 3, zeroBased: false },\n  14: { first: 4, zeroBased: false },\n  15: { first: 5, zeroBased: false },\n  16: { first: 6, zeroBased: false },\n  17: { first: 0, zeroBased: false },\n};\n\n/**\n * WEEKDAY numbering: return_type 1 (Sunday = 1 .. Saturday = 7), 2 (Monday = 1 .. Sunday = 7),\n * 3 (Monday = 0 .. Sunday = 6), 11..17 (week starting Monday..Sunday = 1).\n * #NUM! for other return types or out-of-range serials.\n */\nexport function weekdayOf(serial: number, returnType: number): number | FormulaError {\n  const spec = RETURN_TYPES[returnType];\n  if (!spec || serial < 0) return err.num;\n  const offset = (dayOfWeek(serial) - spec.first + 7) % 7;\n  return spec.zeroBased ? offset : offset + 1;\n}\n\n/**\n * Week of the year in \"system 1\": the week containing January 1 is week 1, and weeks\n * start on `weekStart` (0 = Sunday .. 6 = Saturday).\n */\nexport function weekOfYear(serial: number, weekStart: number): number | FormulaError {\n  const parts = dateFromSerial(serial);\n  if (isError(parts)) return parts;\n  const jan1 = serialFromDate(parts.year, 1, 1) as number;\n  const jan1Offset = (dayOfWeek(jan1) - weekStart + 7) % 7;\n  return Math.floor((Math.floor(serial) - jan1 + jan1Offset) / 7) + 1;\n}\n"
+        }
+      ]
+    }
+  ]
+}

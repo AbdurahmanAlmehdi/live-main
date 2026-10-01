@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-DEVSQ",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/DEVSQ.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { sumOfSquaredDeviations } from '../../helpers/moments';\n\n/** DEVSQ(number1, ...): the sum of squared deviations from the mean; #NUM! when there are no numbers. */\nconst DEVSQ: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return err.num;\n    return sumOfSquaredDeviations(numbers);\n  },\n};\n\nexport default DEVSQ;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DEVSQ: () => import('../functions/statistical/DEVSQ'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/DEVSQ.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { sumOfSquaredDeviations } from '../../helpers/moments';\n\n/** DEVSQ(number1, ...): the sum of squared deviations from the mean; #NUM! when there are no numbers. */\nconst DEVSQ: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0) return err.num;\n    return sumOfSquaredDeviations(numbers);\n  },\n};\n\nexport default DEVSQ;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DEVSQ: () => import('../functions/statistical/DEVSQ'),\n"
+        }
+      ]
+    }
+  ]
+}

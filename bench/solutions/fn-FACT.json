@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-FACT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return checkNumber(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return checkNumber(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return checkNumber(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return checkNumber(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return numberResult(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toInteger(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return numberResult(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return numberResult(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FACT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { factorial } from '../../helpers/combinatorics';\n\n/** FACT(number): the factorial of a number, truncated to an integer. */\nconst FACT: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const n = toIntTrunc(value);\n    if (isError(n)) return n;\n    if (n < 0) return err.num;\n    return numberResult(factorial(n));\n  },\n};\n\nexport default FACT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FACT: () => import('../functions/math/FACT'),\n"
+        }
+      ]
+    }
+  ]
+}

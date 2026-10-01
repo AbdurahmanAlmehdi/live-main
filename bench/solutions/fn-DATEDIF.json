@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-DATEDIF",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATEDIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { dateFromSerial, serialFromDate } from '../../helpers/dateSerial';\n\n/**\n * DATEDIF(start_date, end_date, unit): complete years \"Y\", months \"M\" or days \"D\" between\n * the dates, or the remaining days \"MD\", months \"YM\" or days \"YD\" ignoring larger units.\n */\nconst DATEDIF: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([startValue, endValue, unitValue]) {\n    const start = toNumber(startValue);\n    if (isError(start)) return start;\n    const end = toNumber(endValue);\n    if (isError(end)) return end;\n    const unitText = toText(unitValue);\n    if (isError(unitText)) return unitText;\n    if (start > end) return err.num;\n    const a = dateFromSerial(start);\n    if (isError(a)) return a;\n    const b = dateFromSerial(end);\n    if (isError(b)) return b;\n    let months = (b.year - a.year) * 12 + (b.month - a.month);\n    if (b.day < a.day) months--;\n    switch (unitText.toUpperCase()) {\n      case 'Y':\n        return Math.floor(months / 12);\n      case 'M':\n        return months;\n      case 'D':\n        return Math.floor(end) - Math.floor(start);\n      case 'MD': {\n        if (b.day >= a.day) return b.day - a.day;\n        const previousMonth = serialFromDate(b.year, b.month, 0) as number;\n        const lastDay = dateFromSerial(previousMonth);\n        return isError(lastDay) ? lastDay : lastDay.day - a.day + b.day;\n      }\n      case 'YM':\n        return months % 12;\n      case 'YD': {\n        const sameYear = serialFromDate(b.year, a.month, a.day) as number;\n        const anchor = sameYear > Math.floor(end) ? (serialFromDate(b.year - 1, a.month, a.day) as number) : sameYear;\n        return Math.floor(end) - anchor;\n      }\n      default:\n        return err.num;\n    }\n  },\n};\n\nexport default DATEDIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATEDIF: () => import('../functions/date/DATEDIF'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/date/DATEDIF.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber, toText } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { dateFromSerial, serialFromDate } from '../../helpers/dateSerial';\n\n/**\n * DATEDIF(start_date, end_date, unit): complete years \"Y\", months \"M\" or days \"D\" between\n * the dates, or the remaining days \"MD\", months \"YM\" or days \"YD\" ignoring larger units.\n */\nconst DATEDIF: FormulaFunction = {\n  arity: [3, 3],\n  call([startValue, endValue, unitValue]) {\n    const start = toNumber(startValue);\n    if (isError(start)) return start;\n    const end = toNumber(endValue);\n    if (isError(end)) return end;\n    const unitText = toText(unitValue);\n    if (isError(unitText)) return unitText;\n    if (start > end) return err.num;\n    const a = dateFromSerial(start);\n    if (isError(a)) return a;\n    const b = dateFromSerial(end);\n    if (isError(b)) return b;\n    let months = (b.year - a.year) * 12 + (b.month - a.month);\n    if (b.day < a.day) months--;\n    switch (unitText.toUpperCase()) {\n      case 'Y':\n        return Math.floor(months / 12);\n      case 'M':\n        return months;\n      case 'D':\n        return Math.floor(end) - Math.floor(start);\n      case 'MD': {\n        if (b.day >= a.day) return b.day - a.day;\n        const previousMonth = serialFromDate(b.year, b.month, 0) as number;\n        const lastDay = dateFromSerial(previousMonth);\n        return isError(lastDay) ? lastDay : lastDay.day - a.day + b.day;\n      }\n      case 'YM':\n        return months % 12;\n      case 'YD': {\n        const sameYear = serialFromDate(b.year, a.month, a.day) as number;\n        const anchor = sameYear > Math.floor(end) ? (serialFromDate(b.year - 1, a.month, a.day) as number) : sameYear;\n        return Math.floor(end) - anchor;\n      }\n      default:\n        return err.num;\n    }\n  },\n};\n\nexport default DATEDIF;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DATEDIF: () => import('../functions/date/DATEDIF'),\n"
+        }
+      ]
+    }
+  ]
+}

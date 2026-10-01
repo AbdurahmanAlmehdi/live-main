@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-NPV",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { netPresentValue } from '../../helpers/cashflows';\n\n/**\n * NPV(rate, value1, [value2], ...): the net present value of cash flows at the end of\n * periods 1, 2, ... (numbers inside arrays only; direct numeric text and booleans count).\n */\nconst NPV: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const flows = collectNumbers(args.slice(1));\n    if (isError(flows)) return flows;\n    if (rate === -1) return err.div0;\n    return checkNumber(netPresentValue(rate, flows));\n  },\n};\n\nexport default NPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPV: () => import('../functions/financial/NPV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { netPresentValue } from '../../helpers/cashflows';\n\n/**\n * NPV(rate, value1, [value2], ...): the net present value of cash flows at the end of\n * periods 1, 2, ... (numbers inside arrays only; direct numeric text and booleans count).\n */\nconst NPV: FormulaFunction = {\n  arity: [2, Infinity],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const flows = collectNumbers(args.slice(1));\n    if (isError(flows)) return flows;\n    if (rate === -1) return err.div0;\n    return checkNumber(netPresentValue(rate, flows));\n  },\n};\n\nexport default NPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPV: () => import('../functions/financial/NPV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { netPresentValue } from '../../helpers/cashflows';\n\n/**\n * NPV(rate, value1, [value2], ...): the net present value of cash flows at the end of\n * periods 1, 2, ... (numbers inside arrays only; direct numeric text and booleans count).\n */\nconst NPV: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const flows = collectNumbers(args.slice(1));\n    if (isError(flows)) return flows;\n    if (rate === -1) return err.div0;\n    return numberResult(netPresentValue(rate, flows));\n  },\n};\n\nexport default NPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPV: () => import('../functions/financial/NPV'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPV.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\nimport { netPresentValue } from '../../helpers/cashflows';\n\n/**\n * NPV(rate, value1, [value2], ...): the net present value of cash flows at the end of\n * periods 1, 2, ... (numbers inside arrays only; direct numeric text and booleans count).\n */\nconst NPV: FormulaFunction = {\n  arity: [2, Infinity],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const flows = collectNumbers(args.slice(1));\n    if (isError(flows)) return flows;\n    if (rate === -1) return err.div0;\n    return numberResult(netPresentValue(rate, flows));\n  },\n};\n\nexport default NPV;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPV: () => import('../functions/financial/NPV'),\n"
+        }
+      ]
+    }
+  ]
+}

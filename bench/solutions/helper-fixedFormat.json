@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-fixedFormat",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/fixedFormat.ts",
+          "content": "import { roundHalfAwayFromZero } from './rounding';\n\n/**\n * Formats a number with a fixed number of decimals, as FIXED and DOLLAR do:\n * rounds half away from zero (negative `decimals` round to tens, hundreds, ...),\n * shows max(decimals, 0) decimals, and groups thousands with \",\" when `grouping` is true.\n * A negative result is prefixed with \"-\".\n */\nexport function formatFixed(n: number, decimals: number, grouping: boolean): string {\n  const rounded = roundHalfAwayFromZero(n, decimals);\n  const [whole, fraction] = Math.abs(rounded).toFixed(Math.max(decimals, 0)).split('.');\n  const grouped = grouping ? whole.replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',') : whole;\n  const body = fraction === undefined ? grouped : `${grouped}.${fraction}`;\n  return rounded < 0 ? `-${body}` : body;\n}\n"
+        }
+      ]
+    }
+  ]
+}

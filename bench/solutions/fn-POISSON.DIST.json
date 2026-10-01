@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-POISSON.DIST",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toInteger(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  arity: [3, 3],\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toInteger(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toIntTrunc(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  arity: [3, 3],\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toIntTrunc(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue);\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toInteger(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  arity: [3, 3],\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toInteger(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toIntTrunc(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/POISSON_DIST.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { gammaLn } from '../../helpers/gamma';\nimport { regularizedGammaQ } from '../../helpers/incompleteGamma';\n\n/** POISSON.DIST(x, mean, cumulative): the Poisson distribution of x events (truncated): P(X <= x) or P(X = x). */\nconst POISSON_DIST: FormulaFunction = {\n  arity: [3, 3],\n  call([xValue, meanValue, cumulativeValue]) {\n    const x = toIntTrunc(xValue);\n    if (isError(x)) return x;\n    const mean = toNumber(meanValue);\n    if (isError(mean)) return mean;\n    const cumulative = toBoolean(cumulativeValue, { text: 'parse' });\n    if (isError(cumulative)) return cumulative;\n    if (x < 0 || mean < 0) return err.num;\n    if (cumulative) return regularizedGammaQ(x + 1, mean);\n    if (x === 0) return Math.exp(-mean);\n    return Math.exp(x * Math.log(mean) - mean - gammaLn(x + 1));\n  },\n};\n\nexport default POISSON_DIST;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'POISSON.DIST': () => import('../functions/statistical/POISSON_DIST'),\n"
+        }
+      ]
+    }
+  ]
+}

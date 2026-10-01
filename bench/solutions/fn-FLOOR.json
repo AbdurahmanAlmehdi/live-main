@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-FLOOR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FLOOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { floorToMultiple } from '../../helpers/multiples';\n\n/**\n * FLOOR(number, significance): rounds down to a multiple of significance. A negative\n * number with a negative significance rounds toward zero; a negative number with a\n * positive significance rounds away from zero (down).\n */\nconst FLOOR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([numberValue, significanceValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const significance = toNumber(significanceValue);\n    if (isError(significance)) return significance;\n    if (significance === 0) return n === 0 ? 0 : err.div0;\n    if (n > 0 && significance < 0) return err.num;\n    if (significance < 0) return -floorToMultiple(-n, -significance);\n    return floorToMultiple(n, significance);\n  },\n};\n\nexport default FLOOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FLOOR: () => import('../functions/math/FLOOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/math/FLOOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\nimport { floorToMultiple } from '../../helpers/multiples';\n\n/**\n * FLOOR(number, significance): rounds down to a multiple of significance. A negative\n * number with a negative significance rounds toward zero; a negative number with a\n * positive significance rounds away from zero (down).\n */\nconst FLOOR: FormulaFunction = {\n  arity: [2, 2],\n  call([numberValue, significanceValue]) {\n    const n = toNumber(numberValue);\n    if (isError(n)) return n;\n    const significance = toNumber(significanceValue);\n    if (isError(significance)) return significance;\n    if (significance === 0) return n === 0 ? 0 : err.div0;\n    if (n > 0 && significance < 0) return err.num;\n    if (significance < 0) return -floorToMultiple(-n, -significance);\n    return floorToMultiple(n, significance);\n  },\n};\n\nexport default FLOOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FLOOR: () => import('../functions/math/FLOOR'),\n"
+        }
+      ]
+    }
+  ]
+}

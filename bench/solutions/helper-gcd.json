@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-gcd",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/gcd.ts",
+          "content": "/** Greatest common divisor / least common multiple of non-negative integers. */\n\n/** gcd(0, 0) is 0. */\nexport function gcd(a: number, b: number): number {\n  let x = Math.abs(a);\n  let y = Math.abs(b);\n  while (y !== 0) [x, y] = [y, x % y];\n  return x;\n}\n\n/** lcm(a, 0) is 0. */\nexport function lcm(a: number, b: number): number {\n  if (a === 0 || b === 0) return 0;\n  return Math.abs(a / gcd(a, b) * b);\n}\n"
+        }
+      ]
+    }
+  ]
+}

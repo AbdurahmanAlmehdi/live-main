@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-CHAR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHAR(number): the character with code 1..255 (truncated). */\nconst CHAR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const code = toInteger(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 255) return err.value;\n    return String.fromCharCode(code);\n  },\n};\n\nexport default CHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHAR: () => import('../functions/text/CHAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toInteger } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHAR(number): the character with code 1..255 (truncated). */\nconst CHAR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const code = toInteger(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 255) return err.value;\n    return String.fromCharCode(code);\n  },\n};\n\nexport default CHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHAR: () => import('../functions/text/CHAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHAR(number): the character with code 1..255 (truncated). */\nconst CHAR: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const code = toIntTrunc(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 255) return err.value;\n    return String.fromCharCode(code);\n  },\n};\n\nexport default CHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHAR: () => import('../functions/text/CHAR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/text/CHAR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toIntTrunc } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** CHAR(number): the character with code 1..255 (truncated). */\nconst CHAR: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const code = toIntTrunc(value);\n    if (isError(code)) return code;\n    if (code < 1 || code > 255) return err.value;\n    return String.fromCharCode(code);\n  },\n};\n\nexport default CHAR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  CHAR: () => import('../functions/text/CHAR'),\n"
+        }
+      ]
+    }
+  ]
+}

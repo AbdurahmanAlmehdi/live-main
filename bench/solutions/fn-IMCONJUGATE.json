@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IMCONJUGATE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMCONJUGATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** IMCONJUGATE(inumber): the complex conjugate of a complex number. */\nconst IMCONJUGATE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return formatComplex({ ...z, im: -z.im });\n  },\n};\n\nexport default IMCONJUGATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMCONJUGATE: () => import('../functions/engineering/IMCONJUGATE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMCONJUGATE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\nimport { formatComplex } from '../../helpers/complexFormat';\n\n/** IMCONJUGATE(inumber): the complex conjugate of a complex number. */\nconst IMCONJUGATE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return formatComplex({ ...z, im: -z.im });\n  },\n};\n\nexport default IMCONJUGATE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMCONJUGATE: () => import('../functions/engineering/IMCONJUGATE'),\n"
+        }
+      ]
+    }
+  ]
+}

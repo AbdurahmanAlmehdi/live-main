@@ -1,0 +1,27 @@
+{
+  "taskId": "helper-workdays",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/workdays.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf } from '../core/range';\nimport { dayOfWeek } from './weekday';\n\n/** True for Monday..Friday serials that are not in `holidays` (whole-day serials). */\nexport function isWorkday(serial: number, holidays: ReadonlySet<number>): boolean {\n  const day = dayOfWeek(serial);\n  return day !== 0 && day !== 6 && !holidays.has(Math.floor(serial));\n}\n\n/**\n * The holiday list argument of NETWORKDAYS / WORKDAY as a set of whole-day serials.\n * Omitted (undefined or empty) gives an empty set; numbers are truncated; text and\n * booleans give #VALUE!; errors are returned.\n */\nexport function collectHolidays(value: Value | undefined): ReadonlySet<number> | FormulaError {\n  const holidays = new Set<number>();\n  if (value === undefined || value === null) return holidays;\n  for (const cell of cellsOf(value)) {\n    if (isError(cell)) return cell;\n    if (cell === null) continue;\n    if (typeof cell !== 'number') return err.value;\n    holidays.add(Math.floor(cell));\n  }\n  return holidays;\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/workdays.ts",
+          "content": "import type { FormulaError, Value } from '../core/value';\nimport { err, isError } from '../core/errors';\nimport { cellsOf } from '../core/range';\nimport { dayOfWeek } from './weekday';\n\n/** True for Monday..Friday serials that are not in `holidays` (whole-day serials). */\nexport function isWorkday(serial: number, holidays: ReadonlySet<number>): boolean {\n  const day = dayOfWeek(serial);\n  return day !== 0 && day !== 6 && !holidays.has(Math.floor(serial));\n}\n\n/**\n * The holiday list argument of NETWORKDAYS / WORKDAY as a set of whole-day serials.\n * Omitted (undefined or empty) gives an empty set; numbers are truncated; text and\n * booleans give #VALUE!; errors are returned.\n */\nexport function collectHolidays(value: Value | undefined): ReadonlySet<number> | FormulaError {\n  const holidays = new Set<number>();\n  if (value === undefined || value === null) return holidays;\n  for (const cell of cellsOf(value, { order: 'rows' })) {\n    if (isError(cell)) return cell;\n    if (cell === null) continue;\n    if (typeof cell !== 'number') return err.value;\n    holidays.add(Math.floor(cell));\n  }\n  return holidays;\n}\n"
+        }
+      ]
+    }
+  ]
+}

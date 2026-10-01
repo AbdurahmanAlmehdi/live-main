@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-UNIQUE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args, 1, false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args, 2, false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.rows) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args, 1, false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args, 2, false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.rows) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args, 1, false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args, 2, false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.toRows()) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args, 1, false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args, 2, false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.toRows()) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args[1], false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args[2], false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.rows) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args[1], false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args[2], false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.rows) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-range-immutable",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 3,\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args[1], false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args[2], false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.toRows()) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-range-immutable",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/UNIQUE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport type { Scalar } from '../../core/value';\nimport { fromRows, toRange, transpose } from '../../core/range';\nimport { scalarsEqual } from '../../core/compare';\nimport { optionalBoolean } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\nfunction sameLine(a: readonly Scalar[], b: readonly Scalar[]): boolean {\n  return a.every((cell, i) => {\n    const other = b[i];\n    if (isError(cell) || isError(other)) return isError(cell) && isError(other) && cell.code === other.code;\n    return typeof cell === typeof other && scalarsEqual(cell, other);\n  });\n}\n\n/**\n * UNIQUE(array, [by_col], [exactly_once]): the distinct rows (or columns) in order of first\n * appearance; with exactly_once, only those that occur once. Text compares case-insensitively.\n */\nconst UNIQUE: FormulaFunction = {\n  arity: [1, 3],\n  call(args) {\n    if (isError(args[0])) return args[0];\n    const byCol = optionalBoolean(args[1], false);\n    if (isError(byCol)) return byCol;\n    const exactlyOnce = optionalBoolean(args[2], false);\n    if (isError(exactlyOnce)) return exactlyOnce;\n    const range = byCol ? transpose(toRange(args[0])) : toRange(args[0]);\n    const groups: { line: Scalar[]; count: number }[] = [];\n    for (const line of range.toRows()) {\n      const group = groups.find((g) => sameLine(g.line, line));\n      if (group) group.count++;\n      else groups.push({ line, count: 1 });\n    }\n    const kept = groups.filter((g) => !exactlyOnce || g.count === 1).map((g) => g.line);\n    if (kept.length === 0) return err.value;\n    const result = fromRows(kept);\n    return byCol ? transpose(result) : result;\n  },\n};\n\nexport default UNIQUE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  UNIQUE: () => import('../functions/lookup/UNIQUE'),\n"
+        }
+      ]
+    }
+  ]
+}

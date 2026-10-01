@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-LOOKUP",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/LOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * LOOKUP(lookup_value, lookup_vector, [result_vector]): the largest value <= lookup_value in a\n * sorted vector, or the corresponding value of result_vector.\n */\nconst LOOKUP: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [needle, vector] = args;\n    if (isError(needle)) return needle;\n    if (isError(vector)) return vector;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = cellsOf(vector);\n    const index = findApproximate(lookupValue, keys, 'ascending');\n    if (index < 0) return err.na;\n    if (args.length < 3) return keys[index];\n    const results = cellsOf(args[2]);\n    return index < results.length ? results[index] : err.na;\n  },\n};\n\nexport default LOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LOOKUP: () => import('../functions/lookup/LOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/LOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * LOOKUP(lookup_value, lookup_vector, [result_vector]): the largest value <= lookup_value in a\n * sorted vector, or the corresponding value of result_vector.\n */\nconst LOOKUP: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [needle, vector] = args;\n    if (isError(needle)) return needle;\n    if (isError(vector)) return vector;\n    const lookupValue = cellsOf(needle)[0];\n    const keys = cellsOf(vector);\n    const index = findApproximate(lookupValue, keys, 'ascending');\n    if (index < 0) return err.na;\n    if (args.length < 3) return keys[index];\n    const results = cellsOf(args[2]);\n    return index < results.length ? results[index] : err.na;\n  },\n};\n\nexport default LOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LOOKUP: () => import('../functions/lookup/LOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/LOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * LOOKUP(lookup_value, lookup_vector, [result_vector]): the largest value <= lookup_value in a\n * sorted vector, or the corresponding value of result_vector.\n */\nconst LOOKUP: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 3,\n  call(args) {\n    const [needle, vector] = args;\n    if (isError(needle)) return needle;\n    if (isError(vector)) return vector;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = cellsOf(vector, { order: 'rows' });\n    const index = findApproximate(lookupValue, keys, 'ascending');\n    if (index < 0) return err.na;\n    if (args.length < 3) return keys[index];\n    const results = cellsOf(args[2], { order: 'rows' });\n    return index < results.length ? results[index] : err.na;\n  },\n};\n\nexport default LOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LOOKUP: () => import('../functions/lookup/LOOKUP'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-cells-order"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/lookup/LOOKUP.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { cellsOf } from '../../core/range';\nimport { err, isError } from '../../core/errors';\nimport { findApproximate } from '../../helpers/lookupApprox';\n\n/**\n * LOOKUP(lookup_value, lookup_vector, [result_vector]): the largest value <= lookup_value in a\n * sorted vector, or the corresponding value of result_vector.\n */\nconst LOOKUP: FormulaFunction = {\n  arity: [2, 3],\n  call(args) {\n    const [needle, vector] = args;\n    if (isError(needle)) return needle;\n    if (isError(vector)) return vector;\n    const lookupValue = cellsOf(needle, { order: 'rows' })[0];\n    const keys = cellsOf(vector, { order: 'rows' });\n    const index = findApproximate(lookupValue, keys, 'ascending');\n    if (index < 0) return err.na;\n    if (args.length < 3) return keys[index];\n    const results = cellsOf(args[2], { order: 'rows' });\n    return index < results.length ? results[index] : err.na;\n  },\n};\n\nexport default LOOKUP;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  LOOKUP: () => import('../functions/lookup/LOOKUP'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-COVARIANCE.S",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COVARIANCE_S.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\nimport { mean } from '../../helpers/moments';\n\n/** COVARIANCE.S(array1, array2): the sample covariance of the numeric pairs. */\nconst COVARIANCE_S: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([left, right]) {\n    const pairs = collectPairs(left, right);\n    if (isError(pairs)) return pairs;\n    const { xs, ys } = pairs;\n    if (xs.length < 2) return err.div0;\n    const mx = mean(xs) as number;\n    const my = mean(ys) as number;\n    let sxy = 0;\n    let sxx = 0;\n    let syy = 0;\n    for (let i = 0; i < xs.length; i++) {\n      sxy += (xs[i] - mx) * (ys[i] - my);\n      sxx += (xs[i] - mx) ** 2;\n      syy += (ys[i] - my) ** 2;\n    }\n    return sxy / (xs.length - 1);\n  },\n};\n\nexport default COVARIANCE_S;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'COVARIANCE.S': () => import('../functions/statistical/COVARIANCE_S'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/COVARIANCE_S.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { err, isError } from '../../core/errors';\nimport { collectPairs } from '../../helpers/pairs';\nimport { mean } from '../../helpers/moments';\n\n/** COVARIANCE.S(array1, array2): the sample covariance of the numeric pairs. */\nconst COVARIANCE_S: FormulaFunction = {\n  arity: [2, 2],\n  call([left, right]) {\n    const pairs = collectPairs(left, right);\n    if (isError(pairs)) return pairs;\n    const { xs, ys } = pairs;\n    if (xs.length < 2) return err.div0;\n    const mx = mean(xs) as number;\n    const my = mean(ys) as number;\n    let sxy = 0;\n    let sxx = 0;\n    let syy = 0;\n    for (let i = 0; i < xs.length; i++) {\n      sxy += (xs[i] - mx) * (ys[i] - my);\n      sxx += (xs[i] - mx) ** 2;\n      syy += (ys[i] - my) ** 2;\n    }\n    return sxy / (xs.length - 1);\n  },\n};\n\nexport default COVARIANCE_S;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'COVARIANCE.S': () => import('../functions/statistical/COVARIANCE_S'),\n"
+        }
+      ]
+    }
+  ]
+}

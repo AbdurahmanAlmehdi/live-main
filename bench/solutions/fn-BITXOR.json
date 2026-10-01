@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-BITXOR",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITXOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { toBitOperand } from '../../helpers/bits';\n\n/** BITXOR(number1, number2): the bitwise exclusive OR of two integers in 0..2^48-1. */\nconst BITXOR: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([aValue, bValue]) {\n    const a = toBitOperand(aValue);\n    if (isError(a)) return a;\n    const b = toBitOperand(bValue);\n    if (isError(b)) return b;\n    return Number(BigInt(a) ^ BigInt(b));\n  },\n};\n\nexport default BITXOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITXOR: () => import('../functions/engineering/BITXOR'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/BITXOR.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { toBitOperand } from '../../helpers/bits';\n\n/** BITXOR(number1, number2): the bitwise exclusive OR of two integers in 0..2^48-1. */\nconst BITXOR: FormulaFunction = {\n  arity: [2, 2],\n  call([aValue, bValue]) {\n    const a = toBitOperand(aValue);\n    if (isError(a)) return a;\n    const b = toBitOperand(bValue);\n    if (isError(b)) return b;\n    return Number(BigInt(a) ^ BigInt(b));\n  },\n};\n\nexport default BITXOR;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  BITXOR: () => import('../functions/engineering/BITXOR'),\n"
+        }
+      ]
+    }
+  ]
+}

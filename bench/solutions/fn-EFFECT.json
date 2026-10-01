@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-EFFECT",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toInteger(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return checkNumber(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  arity: [2, 2],\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toInteger(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return checkNumber(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toIntTrunc(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return checkNumber(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  arity: [2, 2],\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toIntTrunc(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return checkNumber(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toInteger(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return numberResult(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toInteger, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  arity: [2, 2],\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toInteger(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return numberResult(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: 2,\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toIntTrunc(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return numberResult(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-int-explicit",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/EFFECT.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toIntTrunc, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** EFFECT(nominal_rate, npery): the effective annual rate of a nominal rate compounded npery (truncated) times a year. */\nconst EFFECT: FormulaFunction = {\n  arity: [2, 2],\n  call([rateValue, nperyValue]) {\n    const nominal = toNumber(rateValue);\n    if (isError(nominal)) return nominal;\n    const npery = toIntTrunc(nperyValue);\n    if (isError(npery)) return npery;\n    if (nominal <= 0 || npery < 1) return err.num;\n    return numberResult(Math.pow(1 + nominal / npery, npery) - 1);\n  },\n};\n\nexport default EFFECT;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  EFFECT: () => import('../functions/financial/EFFECT'),\n"
+        }
+      ]
+    }
+  ]
+}

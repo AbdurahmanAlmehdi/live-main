@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-GEOMEAN",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GEOMEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** GEOMEAN(number1, ...): the geometric mean of positive numbers. */\nconst GEOMEAN: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: Infinity,\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0 || numbers.some((n) => n <= 0)) return err.num;\n    const logSum = numbers.reduce((total, n) => total + Math.log(n), 0);\n    return Math.exp(logSum / numbers.length);\n  },\n};\n\nexport default GEOMEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  GEOMEAN: () => import('../functions/statistical/GEOMEAN'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/statistical/GEOMEAN.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { collectNumbers } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** GEOMEAN(number1, ...): the geometric mean of positive numbers. */\nconst GEOMEAN: FormulaFunction = {\n  arity: [1, Infinity],\n  call(args) {\n    const numbers = collectNumbers(args);\n    if (isError(numbers)) return numbers;\n    if (numbers.length === 0 || numbers.some((n) => n <= 0)) return err.num;\n    const logSum = numbers.reduce((total, n) => total + Math.log(n), 0);\n    return Math.exp(logSum / numbers.length);\n  },\n};\n\nexport default GEOMEAN;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  GEOMEAN: () => import('../functions/statistical/GEOMEAN'),\n"
+        }
+      ]
+    }
+  ]
+}

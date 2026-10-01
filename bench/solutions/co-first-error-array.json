@@ -1,0 +1,35 @@
+{
+  "taskId": "co-first-error-array",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "edit",
+          "path": "src/core/errors.ts",
+          "oldString": "/**\n * Returns the first argument that is an error, or undefined.\n * Typical use: `const e = firstError(a, b); if (e) return e;`\n */\nexport function firstError(...values: unknown[]): FormulaError | undefined {\n  for (const value of values) {\n    if (isError(value)) return value;\n  }\n  return undefined;\n}",
+          "newString": "/**\n * Returns the first value in the list that is an error, or undefined.\n * Typical use: `const e = firstError([a, b]); if (e) return e;`\n */\nexport function firstError(values: readonly unknown[]): FormulaError | undefined {\n  return values.find((value): value is FormulaError => isError(value));\n}"
+        },
+        {
+          "op": "codemod",
+          "glob": "src/**/*.ts",
+          "find": "(?<!function )\\bfirstError\\((?!\\[)([^()]*)\\)",
+          "flags": "g",
+          "replace": "firstError([$1])"
+        },
+        {
+          "op": "codemod",
+          "glob": "tests/core/**/*.ts",
+          "find": "(?<!function )\\bfirstError\\((?!\\[)([^()]*)\\)",
+          "flags": "g",
+          "replace": "firstError([$1])"
+        },
+        {
+          "op": "write",
+          "path": "tests/core/co-first-error-array.test.ts",
+          "content": "import { describe, expect, it } from 'vitest';\nimport { err, firstError } from '../../src/core/errors';\n\ndescribe('firstError(values)', () => {\n  it('finds the first error in a list', () => {\n    expect(firstError([1, err.num, err.na])).toBe(err.num);\n    expect(firstError(['a', true, null])).toBeUndefined();\n    expect(firstError([])).toBeUndefined();\n  });\n\n  it('rejects the old variadic call', () => {\n    const call = firstError as unknown as (...v: unknown[]) => unknown;\n    expect(() => call(1, err.na)).toThrow(TypeError);\n  });\n});\n"
+        }
+      ]
+    }
+  ]
+}

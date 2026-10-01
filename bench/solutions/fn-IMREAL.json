@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-IMREAL",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMREAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMREAL(inumber): the real coefficient of a complex number. */\nconst IMREAL: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return z.re;\n  },\n};\n\nexport default IMREAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMREAL: () => import('../functions/engineering/IMREAL'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/IMREAL.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isError } from '../../core/errors';\nimport { parseComplex } from '../../helpers/complexParse';\n\n/** IMREAL(inumber): the real coefficient of a complex number. */\nconst IMREAL: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const z = parseComplex(value);\n    if (isError(z)) return z;\n    return z.re;\n  },\n};\n\nexport default IMREAL;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IMREAL: () => import('../functions/engineering/IMREAL'),\n"
+        }
+      ]
+    }
+  ]
+}

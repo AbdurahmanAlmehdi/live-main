@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ERROR.TYPE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ERROR_TYPE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { ERROR_CODES } from '../../core/value';\nimport { err, isError } from '../../core/errors';\n\n/** ERROR.TYPE(error_val): 1 #NULL!, 2 #DIV/0!, 3 #VALUE!, 4 #REF!, 5 #NAME?, 6 #NUM!, 7 #N/A; #N/A for non-errors. */\nconst ERROR_TYPE: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    if (!isError(value)) return err.na;\n    return ERROR_CODES.indexOf(value.code) + 1;\n  },\n};\n\nexport default ERROR_TYPE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'ERROR.TYPE': () => import('../functions/information/ERROR_TYPE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/ERROR_TYPE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { ERROR_CODES } from '../../core/value';\nimport { err, isError } from '../../core/errors';\n\n/** ERROR.TYPE(error_val): 1 #NULL!, 2 #DIV/0!, 3 #VALUE!, 4 #REF!, 5 #NAME?, 6 #NUM!, 7 #N/A; #N/A for non-errors. */\nconst ERROR_TYPE: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    if (!isError(value)) return err.na;\n    return ERROR_CODES.indexOf(value.code) + 1;\n  },\n};\n\nexport default ERROR_TYPE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  'ERROR.TYPE': () => import('../functions/information/ERROR_TYPE'),\n"
+        }
+      ]
+    }
+  ]
+}

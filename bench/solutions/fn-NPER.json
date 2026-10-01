@@ -1,0 +1,152 @@
+{
+  "taskId": "fn-NPER",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return checkNumber(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return checkNumber(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return checkNumber(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return checkNumber(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return checkNumber(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return checkNumber(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return checkNumber(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return checkNumber(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return numberResult(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return numberResult(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args, 3, 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args, 4, 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return numberResult(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return numberResult(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 5,\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return numberResult(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return numberResult(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/NPER.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { optionalInteger, optionalNumber } from '../../core/args';\nimport { err, isError } from '../../core/errors';\n\n/** NPER(rate, pmt, pv, [fv], [type]): the number of periods needed to go from pv to fv with constant payments. */\nconst NPER: FormulaFunction = {\n  arity: [3, 5],\n  call(args) {\n    const rate = toNumber(args[0]);\n    if (isError(rate)) return rate;\n    const pmt = toNumber(args[1]);\n    if (isError(pmt)) return pmt;\n    const pv = toNumber(args[2]);\n    if (isError(pv)) return pv;\n    const fv = optionalNumber(args[3], 0);\n    if (isError(fv)) return fv;\n    const type = optionalInteger(args[4], 0);\n    if (isError(type)) return type;\n    if (rate === 0) {\n      if (pmt === 0) return err.num;\n      return numberResult(-(pv + fv) / pmt);\n    }\n    const adjusted = pmt * (1 + rate * (type === 0 ? 0 : 1));\n    const ratio = (adjusted - fv * rate) / (adjusted + pv * rate);\n    if (!(ratio > 0)) return err.num;\n    return numberResult(Math.log(ratio) / Math.log(1 + rate));\n  },\n};\n\nexport default NPER;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  NPER: () => import('../functions/financial/NPER'),\n"
+        }
+      ]
+    }
+  ]
+}

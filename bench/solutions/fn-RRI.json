@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-RRI",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RRI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** RRI(nper, pv, fv): the equivalent rate per period for pv to grow to fv over nper periods. */\nconst RRI: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([nperValue, pvValue, fvValue]) {\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (nper <= 0) return err.num;\n    return checkNumber(Math.pow(fv / pv, 1 / nper) - 1);\n  },\n};\n\nexport default RRI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RRI: () => import('../functions/financial/RRI'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RRI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { checkNumber, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** RRI(nper, pv, fv): the equivalent rate per period for pv to grow to fv over nper periods. */\nconst RRI: FormulaFunction = {\n  arity: [3, 3],\n  call([nperValue, pvValue, fvValue]) {\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (nper <= 0) return err.num;\n    return checkNumber(Math.pow(fv / pv, 1 / nper) - 1);\n  },\n};\n\nexport default RRI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RRI: () => import('../functions/financial/RRI'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RRI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** RRI(nper, pv, fv): the equivalent rate per period for pv to grow to fv over nper periods. */\nconst RRI: FormulaFunction = {\n  minArgs: 3,\n  maxArgs: 3,\n  call([nperValue, pvValue, fvValue]) {\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (nper <= 0) return err.num;\n    return numberResult(Math.pow(fv / pv, 1 / nper) - 1);\n  },\n};\n\nexport default RRI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RRI: () => import('../functions/financial/RRI'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-check-number-rename"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/financial/RRI.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { numberResult, toNumber } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** RRI(nper, pv, fv): the equivalent rate per period for pv to grow to fv over nper periods. */\nconst RRI: FormulaFunction = {\n  arity: [3, 3],\n  call([nperValue, pvValue, fvValue]) {\n    const nper = toNumber(nperValue);\n    if (isError(nper)) return nper;\n    const pv = toNumber(pvValue);\n    if (isError(pv)) return pv;\n    const fv = toNumber(fvValue);\n    if (isError(fv)) return fv;\n    if (nper <= 0) return err.num;\n    return numberResult(Math.pow(fv / pv, 1 / nper) - 1);\n  },\n};\n\nexport default RRI;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  RRI: () => import('../functions/financial/RRI'),\n"
+        }
+      ]
+    }
+  ]
+}

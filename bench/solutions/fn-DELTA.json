@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-DELTA",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DELTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\n\n/** DELTA(number1, [number2]): 1 when the two numbers are equal (number2 defaults to 0), 0 otherwise. */\nconst DELTA: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const a = toNumber(args[0]);\n    if (isError(a)) return a;\n    const b = optionalNumber(args, 1, 0);\n    if (isError(b)) return b;\n    return a === b ? 1 : 0;\n  },\n};\n\nexport default DELTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DELTA: () => import('../functions/engineering/DELTA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DELTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\n\n/** DELTA(number1, [number2]): 1 when the two numbers are equal (number2 defaults to 0), 0 otherwise. */\nconst DELTA: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const a = toNumber(args[0]);\n    if (isError(a)) return a;\n    const b = optionalNumber(args, 1, 0);\n    if (isError(b)) return b;\n    return a === b ? 1 : 0;\n  },\n};\n\nexport default DELTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DELTA: () => import('../functions/engineering/DELTA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DELTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\n\n/** DELTA(number1, [number2]): 1 when the two numbers are equal (number2 defaults to 0), 0 otherwise. */\nconst DELTA: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 2,\n  call(args) {\n    const a = toNumber(args[0]);\n    if (isError(a)) return a;\n    const b = optionalNumber(args[1], 0);\n    if (isError(b)) return b;\n    return a === b ? 1 : 0;\n  },\n};\n\nexport default DELTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DELTA: () => import('../functions/engineering/DELTA'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-optional-arg-value"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/DELTA.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { optionalNumber } from '../../core/args';\nimport { isError } from '../../core/errors';\n\n/** DELTA(number1, [number2]): 1 when the two numbers are equal (number2 defaults to 0), 0 otherwise. */\nconst DELTA: FormulaFunction = {\n  arity: [1, 2],\n  call(args) {\n    const a = toNumber(args[0]);\n    if (isError(a)) return a;\n    const b = optionalNumber(args[1], 0);\n    if (isError(b)) return b;\n    return a === b ? 1 : 0;\n  },\n};\n\nexport default DELTA;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  DELTA: () => import('../functions/engineering/DELTA'),\n"
+        }
+      ]
+    }
+  ]
+}

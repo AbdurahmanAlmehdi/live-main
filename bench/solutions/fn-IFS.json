@@ -1,0 +1,76 @@
+{
+  "taskId": "fn-IFS",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** IFS(test1, value1, [test2, value2], ...): the value of the first TRUE test; #N/A when none is TRUE. */\nconst IFS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call(args) {\n    if (args.length % 2 !== 0) return err.value;\n    for (let i = 0; i < args.length; i += 2) {\n      const test = toBoolean(args[i]);\n      if (isError(test)) return test;\n      if (test) return args[i + 1] ?? 0;\n    }\n    return err.na;\n  },\n};\n\nexport default IFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFS: () => import('../functions/logical/IFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** IFS(test1, value1, [test2, value2], ...): the value of the first TRUE test; #N/A when none is TRUE. */\nconst IFS: FormulaFunction = {\n  arity: [2, Infinity],\n  call(args) {\n    if (args.length % 2 !== 0) return err.value;\n    for (let i = 0; i < args.length; i += 2) {\n      const test = toBoolean(args[i]);\n      if (isError(test)) return test;\n      if (test) return args[i + 1] ?? 0;\n    }\n    return err.na;\n  },\n};\n\nexport default IFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFS: () => import('../functions/logical/IFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** IFS(test1, value1, [test2, value2], ...): the value of the first TRUE test; #N/A when none is TRUE. */\nconst IFS: FormulaFunction = {\n  minArgs: 2,\n  maxArgs: Infinity,\n  call(args) {\n    if (args.length % 2 !== 0) return err.value;\n    for (let i = 0; i < args.length; i += 2) {\n      const test = toBoolean(args[i], { text: 'parse' });\n      if (isError(test)) return test;\n      if (test) return args[i + 1] ?? 0;\n    }\n    return err.na;\n  },\n};\n\nexport default IFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFS: () => import('../functions/logical/IFS'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple",
+        "co-to-boolean-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/IFS.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toBoolean } from '../../core/coerce';\nimport { err, isError } from '../../core/errors';\n\n/** IFS(test1, value1, [test2, value2], ...): the value of the first TRUE test; #N/A when none is TRUE. */\nconst IFS: FormulaFunction = {\n  arity: [2, Infinity],\n  call(args) {\n    if (args.length % 2 !== 0) return err.value;\n    for (let i = 0; i < args.length; i += 2) {\n      const test = toBoolean(args[i], { text: 'parse' });\n      if (isError(test)) return test;\n      if (test) return args[i + 1] ?? 0;\n    }\n    return err.na;\n  },\n};\n\nexport default IFS;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  IFS: () => import('../functions/logical/IFS'),\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "taskId": "helper-lookupApprox",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/lookupApprox.ts",
+          "content": "import type { Scalar } from '../core/value';\nimport { compareScalars } from '../core/compare';\n\n/**\n * Approximate-match search over sorted data (MATCH 1 / -1, VLOOKUP TRUE, LOOKUP):\n *   - 'ascending': index of the largest value <= needle;\n *   - 'descending': index of the smallest value >= needle.\n * Only cells of the needle's type are considered; the scan stops at the first cell\n * that is past the needle. Returns -1 when there is no such value.\n */\nexport function findApproximate(needle: Scalar, haystack: readonly Scalar[], order: 'ascending' | 'descending'): number {\n  let found = -1;\n  for (let i = 0; i < haystack.length; i++) {\n    const cell = haystack[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle);\n    if (order === 'ascending' ? c > 0 : c < 0) break;\n    found = i;\n  }\n  return found;\n}\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-compare-opts"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/lookupApprox.ts",
+          "content": "import type { Scalar } from '../core/value';\nimport { compareScalars } from '../core/compare';\n\n/**\n * Approximate-match search over sorted data (MATCH 1 / -1, VLOOKUP TRUE, LOOKUP):\n *   - 'ascending': index of the largest value <= needle;\n *   - 'descending': index of the smallest value >= needle.\n * Only cells of the needle's type are considered; the scan stops at the first cell\n * that is past the needle. Returns -1 when there is no such value.\n */\nexport function findApproximate(needle: Scalar, haystack: readonly Scalar[], order: 'ascending' | 'descending'): number {\n  let found = -1;\n  for (let i = 0; i < haystack.length; i++) {\n    const cell = haystack[i];\n    if (cell === null || typeof cell !== typeof needle) continue;\n    const c = compareScalars(cell, needle, { caseSensitive: false });\n    if (order === 'ascending' ? c > 0 : c < 0) break;\n    found = i;\n  }\n  return found;\n}\n"
+        }
+      ]
+    }
+  ]
+}

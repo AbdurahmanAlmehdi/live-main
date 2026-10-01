@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-N",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/N.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { isError } from '../../core/errors';\n\n/** N(value): numbers stay, TRUE is 1, FALSE and text are 0, errors pass through; an array gives its first cell. */\nconst N: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const cell = isRange(value) ? value.at(0, 0) : value;\n    if (isError(cell)) return cell;\n    if (typeof cell === 'number') return cell;\n    if (typeof cell === 'boolean') return cell ? 1 : 0;\n    return 0;\n  },\n};\n\nexport default N;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  N: () => import('../functions/information/N'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/information/N.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { isRange } from '../../core/value';\nimport { isError } from '../../core/errors';\n\n/** N(value): numbers stay, TRUE is 1, FALSE and text are 0, errors pass through; an array gives its first cell. */\nconst N: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const cell = isRange(value) ? value.at(0, 0) : value;\n    if (isError(cell)) return cell;\n    if (typeof cell === 'number') return cell;\n    if (typeof cell === 'boolean') return cell ? 1 : 0;\n    return 0;\n  },\n};\n\nexport default N;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  N: () => import('../functions/information/N'),\n"
+        }
+      ]
+    }
+  ]
+}

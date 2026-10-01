@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-ERFC",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/ERFC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { erfc } from '../../helpers/erf';\n\n/** ERFC(x): the complementary error function, 1 - ERF(x). */\nconst ERFC: FormulaFunction = {\n  minArgs: 1,\n  maxArgs: 1,\n  call([value]) {\n    const x = toNumber(value);\n    if (isError(x)) return x;\n    return erfc(x);\n  },\n};\n\nexport default ERFC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ERFC: () => import('../functions/engineering/ERFC'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/engineering/ERFC.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\nimport { toNumber } from '../../core/coerce';\nimport { isError } from '../../core/errors';\nimport { erfc } from '../../helpers/erf';\n\n/** ERFC(x): the complementary error function, 1 - ERF(x). */\nconst ERFC: FormulaFunction = {\n  arity: [1, 1],\n  call([value]) {\n    const x = toNumber(value);\n    if (isError(x)) return x;\n    return erfc(x);\n  },\n};\n\nexport default ERFC;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  ERFC: () => import('../functions/engineering/ERFC'),\n"
+        }
+      ]
+    }
+  ]
+}

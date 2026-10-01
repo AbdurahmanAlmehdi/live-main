@@ -1,0 +1,15 @@
+{
+  "taskId": "helper-wildcard",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/helpers/wildcard.ts",
+          "content": "/**\n * Spreadsheet wildcard patterns: \"*\" matches any run of characters, \"?\" matches one\n * character, and \"~\" escapes the next character (\"~*\" is a literal asterisk).\n * Matching is case-insensitive and covers the whole text.\n */\n\n/** True when the pattern contains an unescaped * or ?. */\nexport function hasWildcards(pattern: string): boolean {\n  for (let i = 0; i < pattern.length; i++) {\n    const ch = pattern[i];\n    if (ch === '~') i++;\n    else if (ch === '*' || ch === '?') return true;\n  }\n  return false;\n}\n\n/** A case-insensitive RegExp that matches whole texts against the pattern. */\nexport function wildcardToRegExp(pattern: string): RegExp {\n  let source = '';\n  for (let i = 0; i < pattern.length; i++) {\n    const ch = pattern[i];\n    if (ch === '~' && i + 1 < pattern.length) {\n      source += escapeRegExp(pattern[++i]);\n    } else if (ch === '*') {\n      source += '[\\\\s\\\\S]*';\n    } else if (ch === '?') {\n      source += '[\\\\s\\\\S]';\n    } else {\n      source += escapeRegExp(ch);\n    }\n  }\n  return new RegExp(`^${source}$`, 'i');\n}\n\nfunction escapeRegExp(text: string): string {\n  return text.replace(/[.*+?^${}()|[\\]\\\\/]/g, '\\\\$&');\n}\n"
+        }
+      ]
+    }
+  ]
+}

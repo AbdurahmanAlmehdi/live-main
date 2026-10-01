@@ -1,0 +1,39 @@
+{
+  "taskId": "fn-FALSE",
+  "variants": [
+    {
+      "requires": [],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/FALSE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** FALSE(): the logical value FALSE. */\nconst FALSE: FormulaFunction = {\n  minArgs: 0,\n  maxArgs: 0,\n  call() {\n    return false;\n  },\n};\n\nexport default FALSE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FALSE: () => import('../functions/logical/FALSE'),\n"
+        }
+      ]
+    },
+    {
+      "requires": [
+        "co-arity-tuple"
+      ],
+      "ops": [
+        {
+          "op": "write",
+          "path": "src/functions/logical/FALSE.ts",
+          "content": "import type { FormulaFunction } from '../../core/types';\n\n/** FALSE(): the logical value FALSE. */\nconst FALSE: FormulaFunction = {\n  arity: [0, 0],\n  call() {\n    return false;\n  },\n};\n\nexport default FALSE;\n"
+        },
+        {
+          "op": "insertBefore",
+          "path": "src/core/registry.ts",
+          "anchor": "  // functions (one per line",
+          "text": "  FALSE: () => import('../functions/logical/FALSE'),\n"
+        }
+      ]
+    }
+  ]
+}
