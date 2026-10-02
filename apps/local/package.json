@@ -1,0 +1,28 @@
+{
+  "name": "@livemain/local",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "livemain": "./src/bench.ts"
+  },
+  "scripts": {
+    "livemain": "tsx src/bench.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@livemain/agent": "workspace:*",
+    "@livemain/core": "workspace:*",
+    "@livemain/planner": "workspace:*",
+    "@livemain/protocol": "workspace:*",
+    "@livemain/swarm": "workspace:*",
+    "better-sqlite3": "^12.4.0",
+    "undici": "7.29.1",
+    "ws": "^8.18.0",
+    "@livemain/api": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/ws": "^8.18.1"
+  }
+}
