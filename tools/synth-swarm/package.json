@@ -1,0 +1,13 @@
+{
+  "name": "@livemain/synth-swarm",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": { "start": "tsx src/main.ts", "typecheck": "tsc --noEmit" },
+  "dependencies": {
+    "@livemain/core": "workspace:*",
+    "@livemain/local": "workspace:*",
+    "@livemain/protocol": "workspace:*",
+    "better-sqlite3": "^12.4.0"
+  }
+}
