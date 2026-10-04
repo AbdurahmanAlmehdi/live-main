@@ -1,0 +1,25 @@
+{
+  "name": "@livemain/edge",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "assets": "node scripts/build-assets.mjs",
+    "dev": "pnpm assets && wrangler dev",
+    "deploy": "pnpm assets && wrangler deploy",
+    "check": "pnpm assets && wrangler deploy --dry-run --outdir dist",
+    "types": "wrangler types",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@livemain/agent": "workspace:*",
+    "@livemain/core": "workspace:*",
+    "@livemain/protocol": "workspace:*",
+    "@livemain/swarm": "workspace:*",
+    "@livemain/api": "workspace:*"
+  },
+  "devDependencies": {
+    "wrangler": "^4.146.0"
+  }
+}

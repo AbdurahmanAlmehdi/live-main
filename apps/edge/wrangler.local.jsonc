@@ -1,0 +1,43 @@
+// Local full-stack config: real containers (FUSE workcells) under `wrangler dev`, with the
+// workcell image's git server standing in for Artifacts. Start it first:
+//   docker run -d --name livemain-devgit -p 18190:8090 livemain/workcell:dev \
+//     serve-git --listen :8090 --root /srv/git --public-url http://host.docker.internal:18190
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "live-main",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": "./public", "binding": "ASSETS", "not_found_handling": "single-page-application", "run_worker_first": ["/v1/*", "/git/*", "/cli/*", "/api/*", "/runs/*", "/bench/solutions/*", "/debug/*"] },
+  "containers": [
+    {
+      "class_name": "Workcell",
+      "scheduling_policy": "durable_object",
+      "images": {
+        "workcell": { "dockerfile": "../../containers/workcell/Dockerfile", "build_context": "../.." }
+      }
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "ORG", "class_name": "OrgDO" },
+      { "name": "REPO", "class_name": "RepoDO" },
+      { "name": "REPO_AGENT", "class_name": "RepoAgentDO" },
+      { "name": "COORDINATOR", "class_name": "CoordinatorDO" },
+      { "name": "WORKCELL", "class_name": "Workcell" },
+      { "name": "AGENT", "class_name": "SwarmAgentDO" },
+      { "name": "RUN", "class_name": "RunDO" }
+    ]
+  },
+  "exports": {
+    "OrgDO": { "type": "durable-object", "storage": "sqlite" },
+    "RepoDO": { "type": "durable-object", "storage": "sqlite" },
+    "RepoAgentDO": { "type": "durable-object", "storage": "sqlite" },
+    "CoordinatorDO": { "type": "durable-object", "storage": "sqlite" },
+    "Workcell": { "type": "durable-object", "storage": "sqlite" },
+    "SwarmAgentDO": { "type": "durable-object", "storage": "sqlite" },
+    "RunDO": { "type": "durable-object", "storage": "sqlite" }
+  },
+  "vars": { "WORKER_MODEL": "claude-haiku-4-5", "GIT_REMOTE_BASE": "http://localhost:18190" },
+  "observability": { "enabled": true }
+}
