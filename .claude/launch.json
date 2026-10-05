@@ -1,0 +1,50 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dashboard-dist",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5180",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "apps/dashboard/dist"
+      ],
+      "port": 5180
+    },
+    {
+      "name": "livemain",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "livemain",
+        "serve",
+        "--workcells",
+        "2",
+        "--think-ms",
+        "600"
+      ],
+      "port": 8787
+    },
+    {
+      "name": "edge-dev",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-lc",
+        "cd apps/edge && npx -y -p node@22 -- node node_modules/wrangler/bin/wrangler.js dev -c wrangler.dev.jsonc --port 8788"
+      ],
+      "port": 8788
+    },
+    {
+      "name": "edge-artifacts",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-lc",
+        "cd apps/edge && npx -y -p node@22 -- node node_modules/wrangler/bin/wrangler.js dev -c wrangler.dev-artifacts.jsonc --port 8789 --persist-to .wrangler/state-artifacts"
+      ],
+      "port": 8789
+    }
+  ]
+}
