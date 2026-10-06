@@ -1,0 +1,21 @@
+{
+  "name": "@livemain/cli",
+  "version": "0.1.0",
+  "description": "lm: the Live Main CLI and MCP server",
+  "type": "module",
+  "bin": {
+    "lm": "./dist/lm.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node20 --format=esm --outfile=dist/lm.mjs --banner:js='#!/usr/bin/env node' --legal-comments=none && chmod +x dist/lm.mjs",
+    "dev": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@livemain/protocol": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.32.0"
+  }
+}
