@@ -1,0 +1,22 @@
+[
+ {
+  "text": "The agents here are Claude Code. I asked Claude Code to dispatch six tasks and run four subagents.",
+  "start": 0.05,
+  "end": 6.6462015
+ },
+ {
+  "text": "Each subagent claims a seat over the Live Main MCP server and works in its own overlay on the server.",
+  "start": 6.6462015,
+  "end": 13.1103175
+ },
+ {
+  "text": "They all edit the same registry file, and none of them ever rebases.",
+  "start": 13.1103175,
+  "end": 17.7201925
+ },
+ {
+  "text": "Six tasks, six green versions, in about ninety seconds.",
+  "start": 17.7201925,
+  "end": 21.92
+ }
+]

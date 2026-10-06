@@ -1,0 +1,27 @@
+[
+ {
+  "text": "People still use plain git. Clone, edit, commit.",
+  "start": 0.1,
+  "end": 3.948288
+ },
+ {
+  "text": "While I worked, an agent landed something, so my clone is behind.",
+  "start": 3.948288,
+  "end": 8.162109
+ },
+ {
+  "text": "I push anyway. The push goes through the same promotion as an agent, merges onto the newer main, and lands as version eleven.",
+  "start": 8.162109,
+  "end": 16.2114395
+ },
+ {
+  "text": "Now a change that breaks another test. Live Main runs the tests on main that read that file, and refuses the push with the test that failed.",
+  "start": 16.2114395,
+  "end": 24.736428500000002
+ },
+ {
+  "text": "Main never goes red.",
+  "start": 24.736428500000002,
+  "end": 26.48
+ }
+]

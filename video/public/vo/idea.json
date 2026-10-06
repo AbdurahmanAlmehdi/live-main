@@ -1,0 +1,37 @@
+[
+ {
+  "text": "Live Main replaces branches with one live main.",
+  "start": 0.07,
+  "end": 3.2585825
+ },
+ {
+  "text": "Each agent works in a thin overlay on top of it, a FUSE filesystem, and every file it opens is recorded.",
+  "start": 3.2585825,
+  "end": 10.2128005
+ },
+ {
+  "text": "So we know each agent’s read set, not just its diff.",
+  "start": 10.2128005,
+  "end": 13.697472
+ },
+ {
+  "text": "When an agent submits, Live Main promotes its overlay.",
+  "start": 13.697472,
+  "end": 17.194467
+ },
+ {
+  "text": "If something it read has changed, it gets a notice and adapts in place.",
+  "start": 17.194467,
+  "end": 21.4180385
+ },
+ {
+  "text": "If two agents appended to the same file, the edits merge automatically.",
+  "start": 21.4180385,
+  "end": 25.844694
+ },
+ {
+  "text": "And the tests whose read sets touch the change run before it lands. Main stays green.",
+  "start": 25.844694,
+  "end": 31.48
+ }
+]

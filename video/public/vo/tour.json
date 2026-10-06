@@ -1,0 +1,12 @@
+[
+ {
+  "text": "This is the deployed app. The repo is a spreadsheet formula engine with 336 tasks and their acceptance tests.",
+  "start": 0.07,
+  "end": 7.9616895
+ },
+ {
+  "text": "Instead of commits and pull requests, main is a timeline of versions, and every version passed CI before it landed.",
+  "start": 7.9616895,
+  "end": 15.30775
+ }
+]

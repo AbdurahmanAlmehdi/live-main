@@ -1,0 +1,22 @@
+[
+ {
+  "text": "In our benchmark, sixteen agents with a normal pull-request flow wasted 93 percent of their time rebasing and redoing work.",
+  "start": 0.11,
+  "end": 8.280544500000001
+ },
+ {
+  "text": "Worse, git can’t see the most dangerous conflict.",
+  "start": 8.280544500000001,
+  "end": 11.8577665
+ },
+ {
+  "text": "Agent A reads how a helper works. Agent B changes it. Both merge cleanly, and A’s code is now wrong.",
+  "start": 11.8577665,
+  "end": 19.162449000000002
+ },
+ {
+  "text": "Nothing in git records what an agent read.",
+  "start": 19.162449000000002,
+  "end": 22
+ }
+]

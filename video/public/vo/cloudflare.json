@@ -1,0 +1,27 @@
+[
+ {
+  "text": "It’s built entirely on Cloudflare.",
+  "start": 0.07,
+  "end": 2.2229140000000003
+ },
+ {
+  "text": "A Worker behind Access serves the app, the API and the git gateway.",
+  "start": 2.2229140000000003,
+  "end": 6.948016
+ },
+ {
+  "text": "Each repository and each agent is a Durable Object.",
+  "start": 6.948016,
+  "end": 10.846824999999999
+ },
+ {
+  "text": "Workcells are Containers running the FUSE overlays.",
+  "start": 10.846824999999999,
+  "end": 14.1098865
+ },
+ {
+  "text": "And main itself is an Artifacts git repository you can clone.",
+  "start": 14.1098865,
+  "end": 19
+ }
+]

@@ -1,0 +1,17 @@
+[
+ {
+  "text": "Git and GitHub were built for people who take turns: branch, open a pull request, wait for review, merge.",
+  "start": 0.05,
+  "end": 7.805873
+ },
+ {
+  "text": "Agents don’t take turns.",
+  "start": 7.805873,
+  "end": 9.850941
+ },
+ {
+  "text": "Put fifty of them on one repository and they spend most of their time fighting each other.",
+  "start": 9.850941,
+  "end": 14.8
+ }
+]

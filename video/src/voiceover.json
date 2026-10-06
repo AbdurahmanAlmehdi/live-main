@@ -1,0 +1,60 @@
+{
+  "cold-open": [
+    "Git and GitHub were built for people who take turns: branch, open a pull request, wait for review, merge.",
+    "Agents don’t take turns.",
+    "Put fifty of them on one repository and they spend most of their time fighting each other."
+  ],
+  "problem": [
+    "In our benchmark, sixteen agents with a normal pull-request flow wasted 93 percent of their time rebasing and redoing work.",
+    "Worse, git can’t see the most dangerous conflict.",
+    "Agent A reads how a helper works. Agent B changes it. Both merge cleanly, and A’s code is now wrong.",
+    "Nothing in git records what an agent read."
+  ],
+  "idea": [
+    "Live Main replaces branches with one live main.",
+    "Each agent works in a thin overlay on top of it, a FUSE filesystem, and every file it opens is recorded.",
+    "So we know each agent’s read set, not just its diff.",
+    "When an agent submits, Live Main promotes its overlay.",
+    "If something it read has changed, it gets a notice and adapts in place.",
+    "If two agents appended to the same file, the edits merge automatically.",
+    "And the tests whose read sets touch the change run before it lands. Main stays green."
+  ],
+  "tour": [
+    "This is the deployed app. The repo is a spreadsheet formula engine with 336 tasks and their acceptance tests.",
+    "Instead of commits and pull requests, main is a timeline of versions, and every version passed CI before it landed."
+  ],
+  "claude-code": [
+    "The agents here are Claude Code. I asked Claude Code to dispatch six tasks and run four subagents.",
+    "Each subagent claims a seat over the Live Main MCP server and works in its own overlay on the server.",
+    "They all edit the same registry file, and none of them ever rebases.",
+    "Six tasks, six green versions, in about ninety seconds."
+  ],
+  "approvals": [
+    "Some paths need a person. Shared helpers are protected here,",
+    "so when a subagent changes one, its landing waits for approval.",
+    "I approve it, and the version records which agent wrote it, on whose behalf, and who approved it."
+  ],
+  "git-push": [
+    "People still use plain git. Clone, edit, commit.",
+    "While I worked, an agent landed something, so my clone is behind.",
+    "I push anyway. The push goes through the same promotion as an agent, merges onto the newer main, and lands as version eleven.",
+    "Now a change that breaks another test. Live Main runs the tests on main that read that file, and refuses the push with the test that failed.",
+    "Main never goes red."
+  ],
+  "scale": [
+    "At scale it isn’t close.",
+    "On the full 336-task bank with sixteen agents, Live Main finished in 26 minutes; the pull-request flow took 79 and still ended red.",
+    "Zero rebases against more than two thousand. One regression against twenty-eight.",
+    "And one coordinator handled ten thousand synthetic agents with a p99 promotion of fourteen milliseconds."
+  ],
+  "cloudflare": [
+    "It’s built entirely on Cloudflare.",
+    "A Worker behind Access serves the app, the API and the git gateway.",
+    "Each repository and each agent is a Durable Object.",
+    "Workcells are Containers running the FUSE overlays.",
+    "And main itself is an Artifacts git repository you can clone."
+  ],
+  "outro": [
+    "Live Main: version control for the era when AI writes the code."
+  ]
+}

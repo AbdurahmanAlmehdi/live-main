@@ -1,0 +1,17 @@
+[
+ {
+  "text": "Some paths need a person. Shared helpers are protected here,",
+  "start": 0.16,
+  "end": 4.003855
+ },
+ {
+  "text": "so when a subagent changes one, its landing waits for approval.",
+  "start": 4.003855,
+  "end": 7.8773465
+ },
+ {
+  "text": "I approve it, and the version records which agent wrote it, on whose behalf, and who approved it.",
+  "start": 7.8773465,
+  "end": 13.949375
+ }
+]

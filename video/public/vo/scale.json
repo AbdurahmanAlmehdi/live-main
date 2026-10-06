@@ -1,0 +1,22 @@
+[
+ {
+  "text": "At scale it isn’t close.",
+  "start": 0.06,
+  "end": 2.2008615000000002
+ },
+ {
+  "text": "On the full 336-task bank with sixteen agents, Live Main finished in 26 minutes; the pull-request flow took 79 and still ended red.",
+  "start": 2.2008615000000002,
+  "end": 12.4121425
+ },
+ {
+  "text": "Zero rebases against more than two thousand. One regression against twenty-eight.",
+  "start": 12.4121425,
+  "end": 17.6720975
+ },
+ {
+  "text": "And one coordinator handled ten thousand synthetic agents with a p99 promotion of fourteen milliseconds.",
+  "start": 17.6720975,
+  "end": 24.2
+ }
+]
