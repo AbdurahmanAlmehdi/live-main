@@ -1,0 +1,20 @@
+{
+  "name": "livemain-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Demo out/live-main-demo.raw.mp4 --concurrency=4 --timeout=180000 && ffmpeg -v error -y -i out/live-main-demo.raw.mp4 -c:v copy -af loudnorm=I=-16:TP=-1.5:LRA=11 -c:a aac -b:a 192k -ar 48000 out/live-main-demo.mp4 && rm out/live-main-demo.raw.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.532",
+    "@remotion/google-fonts": "^4.0.532",
+    "@remotion/media-utils": "^4.0.532",
+    "@types/react": "^19.3.0",
+    "playwright-core": "^1.63.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.532",
+    "typescript": "^7.0.2"
+  }
+}
